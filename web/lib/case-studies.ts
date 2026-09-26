@@ -162,11 +162,11 @@ export type Testimonial = {
 
 export const TESTIMONIALS: Testimonial[] = [
   {
-    initials: "DG",
+    initials: "TR",
     quote:
-      "The DigiFarm AI platform transformed our agricultural field tracking. Farmers receive actionable predictions directly on mobile, reducing crop loss significantly.",
-    name: "Dr. G. Haile",
-    role: "Director of AgriTech Operations",
+      "The Tway Realestate platform transformed how our clients explore properties in Addis Ababa. The responsive design and instant inquiry workflow significantly boosted our verified buyer leads.",
+    name: "Tway Real Estate",
+    role: "Management • Tway Real Estate PLC",
   },
   {
     initials: "AM",

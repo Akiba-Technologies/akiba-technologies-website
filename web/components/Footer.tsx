@@ -42,24 +42,6 @@ export function Footer() {
               ))}
             </ul>
           </div>
-
-          <div>
-            <h2>Standards</h2>
-            <ul>
-              <li>
-                <span>OWASP ASVS aligned</span>
-              </li>
-              <li>
-                <span>GDPR data handling</span>
-              </li>
-              <li>
-                <span>Full IP transfer</span>
-              </li>
-              <li>
-                <span>Mutual NDA on request</span>
-              </li>
-            </ul>
-          </div>
         </div>
 
         <div className="foot-bar">

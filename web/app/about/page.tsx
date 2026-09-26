@@ -5,10 +5,10 @@ import { Band } from "@/components/Band";
 export const metadata: Metadata = {
   title: "About Us | Akiba Technologies",
   description:
-    "Learn about Akiba Technologies, our mission, vision, engineering standards, and leadership team based in Addis Ababa, Ethiopia.",
+    "Akiba Technologies is an Ethiopian software engineering company and tech academy based in Addis Ababa. We build custom ERPs, scalable web platforms, and AI solutions.",
   openGraph: {
     title: "About Us | Akiba Technologies",
-    description: "Empowering businesses through scalable software engineering, AI solutions, and tech education.",
+    description: "Engineering Ethiopia's digital future with world-class technical rigor.",
   },
 };
 
@@ -24,25 +24,25 @@ const LEADERSHIP: TeamMember[] = [
     initials: "AH",
     name: "Abdulhamid Hayredin",
     role: "Chief Executive Officer (CEO)",
-    bio: "Leads overall company vision, strategic partnerships, and operations, driving digital transformation and sustainable business growth.",
+    bio: "Leads overall company vision, strategic partnerships, and business operations, championing digital transformation and modern software adoption across Ethiopian enterprises.",
   },
   {
     initials: "AS",
     name: "Abdrehim Shemsu",
     role: "Chief Product Officer (CPO)",
-    bio: "Directs product strategy, user experience, and feature roadmaps, ensuring technical solutions translate into seamless client outcomes.",
+    bio: "Directs product strategy, user experience design, and client discovery, ensuring complex operational workflows are translated into intuitive, reliable software.",
   },
   {
     initials: "EA",
     name: "Efrem Alemnew",
     role: "Chief Technology Officer (CTO)",
-    bio: "Oversees core system architecture, engineering rigor, and infrastructure scalability, ensuring enterprise-grade performance and security.",
+    bio: "Oversees core system architecture, cloud infrastructure, and technical rigor, ensuring every production release meets high standards of performance and security.",
   },
   {
     initials: "OS",
     name: "Osama Seid",
     role: "Chief Marketing Officer (CMO)",
-    bio: "Leads market expansion, client engagement, and brand strategy, connecting businesses with modern software and AI capabilities.",
+    bio: "Leads market expansion, client engagement, and brand strategy, connecting businesses with Akiba's software engineering and AI capabilities.",
   },
 ];
 
@@ -72,30 +72,30 @@ export default function AboutPage() {
             About Akiba Technologies
           </Reveal>
           <Reveal as="h1" delay={60} id="about-h">
-            Engineering Solutions That Drive Real Business Growth
+            Engineering Ethiopia&rsquo;s Digital Future With World-Class Rigor
           </Reveal>
           <Reveal as="p" className="lede" delay={120}>
-            We design, develop, and maintain high-performance software systems for growing businesses and enterprises.
-            Based in Addis Ababa, Ethiopia, our focus is practical: delivering reliable digital infrastructure that
-            saves time, reduces operational costs, and accelerates growth.
+            We are a team of software engineers, architects, and product builders rooted in Addis Ababa.
+            We build custom ERP systems, modern web platforms, and intelligent AI tools designed to solve real
+            operational challenges for Ethiopian businesses and growing enterprises.
           </Reveal>
           <Reveal as="div" className="phead-meta" delay={180}>
-            <span><b>50+</b> Production Systems Deployed</span>
-            <span><b>200+</b> Engineers Trained at Academy</span>
-            <span><b>99.9%</b> System Uptime SLA</span>
-            <span><b>100%</b> Full IP Transfer</span>
+            <span><b>50+</b> Enterprise Deployments</span>
+            <span><b>200+</b> Ethiopian Engineers Trained</span>
+            <span><b>99.9%</b> System SLA Uptime</span>
+            <span><b>100%</b> Full IP Ownership</span>
           </Reveal>
         </div>
       </section>
 
-      {/* ===================== MISSION & VISION ===================== */}
-      <section className="sec" aria-labelledby="mv-h">
+      {/* ===================== OUR STORY & PURPOSE ===================== */}
+      <section className="sec" aria-labelledby="story-h">
         <div className="wrap">
           <Reveal className="sec-head">
-            <p className="kicker">Mission &amp; Vision</p>
-            <h2 id="mv-h">Our Purpose and Direction</h2>
+            <p className="kicker">Our Story</p>
+            <h2 id="story-h">Why We Founded Akiba in Addis Ababa</h2>
             <p className="lede">
-              Clear commitments that guide how we engineer software and build relationships with our clients.
+              Building software that understands local reality while meeting international engineering benchmarks.
             </p>
           </Reveal>
 
@@ -131,13 +131,14 @@ export default function AboutPage() {
                 <h3 style={{ margin: 0, fontSize: "1.28rem" }}>Our Mission</h3>
               </div>
               <p style={{ color: "var(--slate)", lineHeight: 1.65, fontSize: "0.95rem", margin: "0 0 20px" }}>
-                To deliver scalable, production-grade software and industry-leading technical education that empowers
-                businesses to automate workflows, streamline operations, and scale with confidence.
+                To empower businesses across Ethiopia and East Africa with robust, custom software that saves time,
+                eliminates manual bottlenecks, and accelerates growth — while actively training the next generation
+                of African engineering talent through our tech academy.
               </p>
               <div className="b-stack">
-                <span className="chip">Scalable Systems</span>
-                <span className="chip">Measurable Business ROI</span>
-                <span className="chip">Reliable Support</span>
+                <span className="chip">Addis Ababa Headquartered</span>
+                <span className="chip">Custom Business Software</span>
+                <span className="chip">Practical Impact</span>
               </div>
             </Reveal>
 
@@ -165,27 +166,27 @@ export default function AboutPage() {
                 <h3 style={{ margin: 0, fontSize: "1.28rem" }}>Our Vision</h3>
               </div>
               <p style={{ color: "var(--slate)", lineHeight: 1.65, fontSize: "0.95rem", margin: "0 0 20px" }}>
-                To establish East Africa as a premier global hub for software engineering and AI innovation, building
-                world-class digital solutions that compete on the international stage.
+                To make Ethiopia a premier hub for software engineering and AI innovation, proving that world-class
+                digital platforms can be built locally to transform regional industries and compete globally.
               </p>
               <div className="b-stack">
+                <span className="chip">Regional Tech Hub</span>
+                <span className="chip">AI &amp; ERP Leadership</span>
                 <span className="chip">Global Quality Standards</span>
-                <span className="chip">Regional Tech Leadership</span>
-                <span className="chip">Elite Engineering Talent</span>
               </div>
             </Reveal>
           </div>
         </div>
       </section>
 
-      {/* ===================== CORE VALUES ===================== */}
+      {/* ===================== VALUES AS ETHIOPIAN BUILDERS ===================== */}
       <section className="sec sec-tint" aria-labelledby="values-h">
         <div className="wrap">
           <Reveal className="sec-head">
-            <p className="kicker">Core Values</p>
-            <h2 id="values-h">How We Work &amp; What We Stand For</h2>
+            <p className="kicker">Engineering Ethos</p>
+            <h2 id="values-h">How We Build Software</h2>
             <p className="lede">
-              Practical principles that define our engineering approach and delivery quality.
+              Practical values shaped by solving real problems on the ground in Ethiopia.
             </p>
           </Reveal>
 
@@ -199,37 +200,37 @@ export default function AboutPage() {
           >
             <Reveal as="article" className="card" delay={40} style={{ padding: "26px 22px" }}>
               <span className="ix">01</span>
-              <h3 style={{ margin: "14px 0 8px", fontSize: "1.1rem" }}>Technical Excellence</h3>
+              <h3 style={{ margin: "14px 0 8px", fontSize: "1.1rem" }}>Built For Local Reality</h3>
               <p style={{ color: "var(--slate)", fontSize: "0.88rem", lineHeight: 1.6, margin: 0 }}>
-                Clean, typed, and well-architected code built for longevity. We prioritize maintainability and performance
-                over temporary shortcuts.
+                We design for multi-branch operations, real-time inventory synchronization, offline-first reliability,
+                and seamless local business workflows.
               </p>
             </Reveal>
 
             <Reveal as="article" className="card" delay={80} style={{ padding: "26px 22px" }}>
               <span className="ix">02</span>
-              <h3 style={{ margin: "14px 0 8px", fontSize: "1.1rem" }}>Client Collaboration</h3>
+              <h3 style={{ margin: "14px 0 8px", fontSize: "1.1rem" }}>Code Rigor &amp; Longevity</h3>
               <p style={{ color: "var(--slate)", fontSize: "0.88rem", lineHeight: 1.6, margin: 0 }}>
-                Transparent communication, bi-weekly progress demos, and clear delivery roadmaps so you are always in
-                complete control.
+                No quick fixes or fragile templates. We write clean, typed, and well-tested code that your business can
+                depend on and scale for years.
               </p>
             </Reveal>
 
             <Reveal as="article" className="card" delay={120} style={{ padding: "26px 22px" }}>
               <span className="ix">03</span>
-              <h3 style={{ margin: "14px 0 8px", fontSize: "1.1rem" }}>Measurable Impact</h3>
+              <h3 style={{ margin: "14px 0 8px", fontSize: "1.1rem" }}>AkibaTech Academy</h3>
               <p style={{ color: "var(--slate)", fontSize: "0.88rem", lineHeight: 1.6, margin: 0 }}>
-                Software designed to solve tangible operational challenges: saving team hours, automating repetitive tasks,
-                and increasing capacity.
+                We don&rsquo;t just consume tech — we teach it. Over 200+ Ethiopian developers have been trained in backend
+                architecture, algorithms, and system design.
               </p>
             </Reveal>
 
             <Reveal as="article" className="card" delay={160} style={{ padding: "26px 22px" }}>
               <span className="ix">04</span>
-              <h3 style={{ margin: "14px 0 8px", fontSize: "1.1rem" }}>Education &amp; Talent</h3>
+              <h3 style={{ margin: "14px 0 8px", fontSize: "1.1rem" }}>Full Client Ownership</h3>
               <p style={{ color: "var(--slate)", fontSize: "0.88rem", lineHeight: 1.6, margin: 0 }}>
-                Through AkibaTech Academy, we actively train hundreds of developers in backend architecture, system design,
-                and algorithms.
+                You own 100% of your source code, infrastructure configurations, and business data upon delivery. No
+                hidden vendor lock-in.
               </p>
             </Reveal>
           </div>
@@ -243,7 +244,7 @@ export default function AboutPage() {
             <p className="kicker">Leadership Team</p>
             <h2 id="team-h">Meet Our Leadership</h2>
             <p className="lede">
-              Experienced leaders guiding product innovation, engineering rigor, and client success.
+              Passionate Ethiopian technologists committed to delivering outstanding digital solutions.
             </p>
           </Reveal>
 
@@ -270,73 +271,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ===================== TRUST & STANDARDS ===================== */}
-      <section className="sec-tight sec-tint" aria-labelledby="trust-h">
-        <div className="wrap">
-          <Reveal className="sec-head">
-            <p className="kicker">Trust &amp; Standards</p>
-            <h2 id="trust-h">Built On Industry-Standard Commitments</h2>
-            <p className="lede">
-              Clear agreements and operational practices you can depend on.
-            </p>
-          </Reveal>
-
-          <Reveal delay={60}>
-            <div className="comply">
-              <div>
-                <span className="ico" aria-hidden="true">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="4" y="10.5" width="16" height="10" rx="2" />
-                    <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5M12 14.5v2.5" />
-                  </svg>
-                </span>
-                <h3>Full IP Ownership</h3>
-                <p>All source code, database structures, configurations, and documentation belong 100% to you upon delivery.</p>
-              </div>
-
-              <div>
-                <span className="ico" aria-hidden="true">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 3 4.5 6v6c0 4.4 3.1 7.9 7.5 9 4.4-1.1 7.5-4.6 7.5-9V6L12 3Z" />
-                    <path d="m9 12 2.2 2.2L15.4 10" />
-                  </svg>
-                </span>
-                <h3>Security by Design</h3>
-                <p>Role-based access control, encrypted data storage and transmission, and regular code reviews for peace of mind.</p>
-              </div>
-
-              <div>
-                <span className="ico" aria-hidden="true">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" />
-                    <path d="M14 3v5h5M9 14h6M9 17.5h4" />
-                  </svg>
-                </span>
-                <h3>Confidentiality &amp; NDA</h3>
-                <p>Mutual non-disclosure agreements signed before discussing technical specifications or business data.</p>
-              </div>
-
-              <div>
-                <span className="ico" aria-hidden="true">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M12 7v5.2l3.4 2" />
-                  </svg>
-                </span>
-                <h3>Dedicated SLA &amp; Support</h3>
-                <p>Proactive monitoring, uptime guarantees, and responsive support channels for production environments.</p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ===================== BOTTOM CTA ===================== */}
       <Band
-        heading="Ready to discuss your software project?"
-        body="Get in touch with our team today for a free discovery consultation and technical assessment."
+        heading="Let's build something meaningful for your business."
+        body="Whether you need an enterprise ERP, custom web application, or AI integration, talk directly with our engineering team."
         ctaHref="/contact"
-        ctaLabel="Contact Our Team"
+        ctaLabel="Talk to an Engineer"
       />
     </>
   );
