@@ -83,7 +83,6 @@ export default function AboutPage() {
             <span><b>50+</b> Enterprise Deployments</span>
             <span><b>200+</b> Ethiopian Engineers Trained</span>
             <span><b>99.9%</b> System SLA Uptime</span>
-            <span><b>100%</b> Full IP Ownership</span>
           </Reveal>
         </div>
       </section>
@@ -193,7 +192,7 @@ export default function AboutPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
               gap: 16,
               marginTop: 20,
             }}
@@ -222,15 +221,6 @@ export default function AboutPage() {
               <p style={{ color: "var(--slate)", fontSize: "0.88rem", lineHeight: 1.6, margin: 0 }}>
                 We don&rsquo;t just consume tech — we teach it. Over 200+ Ethiopian developers have been trained in backend
                 architecture, algorithms, and system design.
-              </p>
-            </Reveal>
-
-            <Reveal as="article" className="card" delay={160} style={{ padding: "26px 22px" }}>
-              <span className="ix">04</span>
-              <h3 style={{ margin: "14px 0 8px", fontSize: "1.1rem" }}>Full Client Ownership</h3>
-              <p style={{ color: "var(--slate)", fontSize: "0.88rem", lineHeight: 1.6, margin: 0 }}>
-                You own 100% of your source code, infrastructure configurations, and business data upon delivery. No
-                hidden vendor lock-in.
               </p>
             </Reveal>
           </div>
