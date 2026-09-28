@@ -43,9 +43,48 @@ export const metadata: Metadata = {
   },
   description:
     "Akiba Technologies builds high-concurrency enterprise software, ERP platforms and cloud infrastructure that hold up under real load. Save time. Save money. Save resources.",
+  keywords: [
+    "Akiba Technologies",
+    "enterprise software development",
+    "ERP software Addis Ababa",
+    "cloud infrastructure engineering",
+    "distributed systems",
+    "fintech systems",
+    "custom software development Ethiopia",
+    "high-concurrency architecture",
+  ],
+  authors: [{ name: "Akiba Technologies", url: siteUrl }],
+  creator: "Akiba Technologies",
+  publisher: "Akiba Technologies",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
+    locale: "en_US",
+    url: siteUrl,
     siteName: "Akiba Technologies",
+    title: "Akiba Technologies | Scalable Systems and Enterprise Software Engineering",
+    description:
+      "Akiba Technologies builds high-concurrency enterprise software, ERP platforms and cloud infrastructure that hold up under real load.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Akiba Technologies | Scalable Systems and Enterprise Software Engineering",
+    description:
+      "Akiba Technologies builds high-concurrency enterprise software, ERP platforms and cloud infrastructure that hold up under real load.",
+    creator: "@akibatech",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -58,11 +97,56 @@ export const viewport: Viewport = {
 // before paint so there's no flash of the wrong theme on repeat visits.
 const themeInitScript = `(function(){try{var t=localStorage.getItem('akiba-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();`;
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: "Akiba Technologies",
+      url: siteUrl,
+      logo: `${siteUrl}/icon.svg`,
+      description:
+        "Akiba Technologies builds high-concurrency enterprise software, ERP platforms and cloud infrastructure that hold up under real load.",
+      email: "contact@akibatech.com",
+      telephone: "+251 911 648 816",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Bethel",
+        addressLocality: "Addis Ababa",
+        addressCountry: "ET",
+      },
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: "+251 911 648 816",
+          contactType: "customer service",
+          areaServed: ["ET", "Global"],
+          availableLanguage: ["English", "Amharic"],
+        },
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: "Akiba Technologies",
+      publisher: {
+        "@id": `${siteUrl}/#organization`,
+      },
+    },
+  ],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body>
         <a className="skip" href="#main">
