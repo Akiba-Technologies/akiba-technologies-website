@@ -22,6 +22,13 @@ import {
   saveHomeConfig,
   resetHomeConfig,
 } from "@/lib/home-store";
+import {
+  type ContactPageConfig,
+  DEFAULT_CONTACT_CONFIG,
+  getStoredContactConfig,
+  saveContactConfig,
+  resetContactConfig,
+} from "@/lib/contact-store";
 
 interface AdminImageCardProps {
   id: string;
@@ -144,7 +151,7 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState("");
 
   // Navigation
-  const [activeTab, setActiveTab] = useState<"overview" | "inquiries" | "projects" | "home-cms">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "inquiries" | "projects" | "home-cms" | "contact-cms">("overview");
 
   // Inquiries State
   const [inquiries, setInquiries] = useState<AdminInquiry[]>([]);
@@ -163,6 +170,9 @@ export default function AdminPage() {
   // Home CMS State
   const [homeConfig, setHomeConfig] = useState<HomePageConfig>(DEFAULT_HOME_CONFIG);
 
+  // Contact CMS State
+  const [contactConfig, setContactConfig] = useState<ContactPageConfig>(DEFAULT_CONTACT_CONFIG);
+
   // Toast feedback
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -178,6 +188,7 @@ export default function AdminPage() {
     setInquiries(getStoredInquiries());
     setProjects(getStoredProjects());
     setHomeConfig(getStoredHomeConfig());
+    setContactConfig(getStoredContactConfig());
   }, []);
 
   // Update Inquiries helper
@@ -347,6 +358,19 @@ export default function AdminPage() {
       ...homeConfig,
       hero: { ...homeConfig.hero, stats: updated },
     });
+  };
+
+  // Contact CMS Handlers
+  const handleSaveContactConfig = () => {
+    saveContactConfig(contactConfig);
+    showToast("Contact page information saved successfully!");
+  };
+
+  const handleResetContactConfig = () => {
+    if (!window.confirm("Reset all contact details back to default?")) return;
+    const def = resetContactConfig();
+    setContactConfig(def);
+    showToast("Reset to default contact details");
   };
 
   // Image File Upload Processor (Canvas compression to keep state light)
@@ -700,6 +724,17 @@ export default function AdminPage() {
               </svg>
               <span>Home Content &amp; Stats</span>
             </button>
+
+            <button
+              type="button"
+              className={`admin-tab-btn ${activeTab === "contact-cms" ? "active" : ""}`}
+              onClick={() => setActiveTab("contact-cms")}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <span>Contact Page Info</span>
+            </button>
           </div>
 
           <div className="admin-tabs-actions">
@@ -731,6 +766,38 @@ export default function AdminPage() {
                   className="admin-btn admin-btn-primary admin-btn-sm"
                 >
                   Save Changes
+                </button>
+              </div>
+            )}
+
+            {activeTab === "contact-cms" && (
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <button
+                  type="button"
+                  onClick={handleResetContactConfig}
+                  className="admin-btn admin-btn-ghost admin-btn-sm"
+                  title="Reset to default content"
+                >
+                  Reset Defaults
+                </button>
+                <Link
+                  href="/contact"
+                  target="_blank"
+                  className="admin-btn admin-btn-outline admin-btn-sm"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                  <span>Preview Contact</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleSaveContactConfig}
+                  className="admin-btn admin-btn-primary admin-btn-sm"
+                >
+                  Save Contact Changes
                 </button>
               </div>
             )}
@@ -1644,6 +1711,328 @@ export default function AdminPage() {
                 className="admin-btn admin-btn-primary"
               >
                 Save All Home Page Changes
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB 5: CONTACT PAGE CMS & INFO                            */}
+        {/* ========================================================= */}
+        {activeTab === "contact-cms" && (
+          <div className="admin-tab-panel admin-cms-panel">
+            {/* Live Contact Card Preview */}
+            <div className="admin-contact-preview-card">
+              <div className="admin-contact-preview-head">
+                <span className="admin-contact-preview-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  Live Contact Page Preview
+                </span>
+                <span style={{ fontSize: "0.74rem", color: "var(--slate)", fontFamily: "var(--font-m)" }}>
+                  Updates live as you type
+                </span>
+              </div>
+
+              <div className="admin-contact-preview-grid">
+                <div className="admin-preview-contact-item">
+                  <span className="lbl">Page Title</span>
+                  <span className="val">{contactConfig.title || "Contact Information"}</span>
+                </div>
+
+                <div className="admin-preview-contact-item">
+                  <span className="lbl">Email Address</span>
+                  <span className="val" style={{ color: "var(--mint)" }}>
+                    {contactConfig.email || "contact@akibatech.com"}
+                  </span>
+                </div>
+
+                <div className="admin-preview-contact-item">
+                  <span className="lbl">Direct Phone</span>
+                  <span className="val">{contactConfig.phone || "+251 911 648 816"}</span>
+                </div>
+
+                <div className="admin-preview-contact-item">
+                  <span className="lbl">Office Location</span>
+                  <span className="val">
+                    {[contactConfig.address, contactConfig.cityCountry].filter(Boolean).join(", ") ||
+                      "Bethel, Addis Ababa, Ethiopia"}
+                  </span>
+                </div>
+
+                <div className="admin-preview-contact-item">
+                  <span className="lbl">Business Hours</span>
+                  <span className="val">
+                    {contactConfig.workingHours || "Mon – Fri: 8:30 AM – 5:30 PM (EAT)"}
+                  </span>
+                </div>
+
+                <div className="admin-preview-contact-item">
+                  <span className="lbl">Response SLA</span>
+                  <span className="val" style={{ color: "#38bdf8" }}>
+                    {contactConfig.responseSLA || "Under 2 hours"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Section 1: Page Headline & Description */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head">
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <path d="M4 7V4h16v3" />
+                      <path d="M9 20h6" />
+                      <path d="M12 4v16" />
+                    </svg>
+                    Page Headline &amp; Introduction
+                  </h3>
+                  <p>Configure the kicker, main heading, and lede description on the public /contact page.</p>
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Section Kicker</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={contactConfig.kicker}
+                    onChange={(e) => setContactConfig({ ...contactConfig, kicker: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Page Title (H1)</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={contactConfig.title}
+                    onChange={(e) => setContactConfig({ ...contactConfig, title: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="admin-fgroup">
+                <label>Introductory Lede Text</label>
+                <textarea
+                  rows={2}
+                  className="admin-textarea"
+                  value={contactConfig.lede}
+                  onChange={(e) => setContactConfig({ ...contactConfig, lede: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {/* Section 2: Direct Contact Channels */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head">
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                    Direct Communication Channels
+                  </h3>
+                  <p>Inquiries email addresses and telephone numbers (formatted automatically as clickable links on the site).</p>
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Primary Inquiries Email *</label>
+                  <input
+                    type="email"
+                    className="admin-input"
+                    value={contactConfig.email}
+                    onChange={(e) => setContactConfig({ ...contactConfig, email: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Secondary / Support Email (Optional)</label>
+                  <input
+                    type="email"
+                    className="admin-input"
+                    placeholder="support@akibatech.com"
+                    value={contactConfig.secondaryEmail || ""}
+                    onChange={(e) => setContactConfig({ ...contactConfig, secondaryEmail: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Primary Phone Number *</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={contactConfig.phone}
+                    onChange={(e) => setContactConfig({ ...contactConfig, phone: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Secondary / WhatsApp Phone (Optional)</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    placeholder="+251 9XX XXX XXX"
+                    value={contactConfig.secondaryPhone || ""}
+                    onChange={(e) => setContactConfig({ ...contactConfig, secondaryPhone: e.target.value })}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 3: Physical Office Presence */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head">
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" />
+                      <circle cx="12" cy="10" r="2.6" />
+                    </svg>
+                    Office Location &amp; Physical Address
+                  </h3>
+                  <p>Physical office address shown to clients, partners, and visitors.</p>
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Office Area / Building / District</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    placeholder="e.g. Bethel"
+                    value={contactConfig.address}
+                    onChange={(e) => setContactConfig({ ...contactConfig, address: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>City &amp; Country</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    placeholder="e.g. Addis Ababa, Ethiopia"
+                    value={contactConfig.cityCountry}
+                    onChange={(e) => setContactConfig({ ...contactConfig, cityCountry: e.target.value })}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 4: Operating Schedule & Response SLA */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head">
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    Business Hours &amp; Response SLA
+                  </h3>
+                  <p>Operating schedule and guaranteed response time SLA.</p>
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Weekday Working Hours</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    placeholder="Monday – Friday: 8:30 AM – 5:30 PM (EAT)"
+                    value={contactConfig.workingHours}
+                    onChange={(e) => setContactConfig({ ...contactConfig, workingHours: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Weekend / Saturday Hours (Optional)</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    placeholder="Saturday: 9:00 AM – 1:00 PM (EAT)"
+                    value={contactConfig.weekendHours || ""}
+                    onChange={(e) => setContactConfig({ ...contactConfig, weekendHours: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="admin-fgroup">
+                <label>Response Time SLA Guarantee</label>
+                <input
+                  type="text"
+                  className="admin-input"
+                  placeholder="Under 2 hours during active business hours"
+                  value={contactConfig.responseSLA}
+                  onChange={(e) => setContactConfig({ ...contactConfig, responseSLA: e.target.value })}
+                />
+              </div>
+            </div>
+
+            {/* Section 5: Professional & Social Channels */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head">
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                      <rect width="4" height="12" x="2" y="9" />
+                      <circle cx="4" cy="4" r="2" />
+                    </svg>
+                    Professional Profiles &amp; Social Channels
+                  </h3>
+                  <p>Manage external links and handles connected to Akiba Technologies.</p>
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Official LinkedIn Company URL</label>
+                  <input
+                    type="url"
+                    className="admin-input"
+                    value={contactConfig.linkedin}
+                    onChange={(e) => setContactConfig({ ...contactConfig, linkedin: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Telegram Direct / Channel Link (Optional)</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    placeholder="https://t.me/akibatech or @akibatech"
+                    value={contactConfig.telegram || ""}
+                    onChange={(e) => setContactConfig({ ...contactConfig, telegram: e.target.value })}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Save Bar */}
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 12, marginTop: 10 }}>
+              <button
+                type="button"
+                onClick={handleResetContactConfig}
+                className="admin-btn admin-btn-ghost"
+              >
+                Reset to Defaults
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveContactConfig}
+                className="admin-btn admin-btn-primary"
+              >
+                Save All Contact Changes
               </button>
             </div>
           </div>
