@@ -13,6 +13,15 @@ import {
   getStoredAuth,
   setStoredAuth,
 } from "@/lib/admin-store";
+import {
+  type HomePageConfig,
+  type HomeStat,
+  DEFAULT_HOME_CONFIG,
+  AVAILABLE_WORK_IMAGES,
+  getStoredHomeConfig,
+  saveHomeConfig,
+  resetHomeConfig,
+} from "@/lib/home-store";
 
 export default function AdminPage() {
   const [mounted, setMounted] = useState(false);
@@ -24,7 +33,7 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState("");
 
   // Navigation
-  const [activeTab, setActiveTab] = useState<"overview" | "inquiries" | "projects">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "inquiries" | "projects" | "home-cms">("overview");
 
   // Inquiries State
   const [inquiries, setInquiries] = useState<AdminInquiry[]>([]);
@@ -40,6 +49,9 @@ export default function AdminPage() {
   const [isEditingProject, setIsEditingProject] = useState(false);
   const [editingProject, setEditingProject] = useState<Partial<AdminProject> | null>(null);
 
+  // Home CMS State
+  const [homeConfig, setHomeConfig] = useState<HomePageConfig>(DEFAULT_HOME_CONFIG);
+
   // Toast feedback
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -54,6 +66,7 @@ export default function AdminPage() {
     setAuthenticated(isAuth);
     setInquiries(getStoredInquiries());
     setProjects(getStoredProjects());
+    setHomeConfig(getStoredHomeConfig());
   }, []);
 
   // Update Inquiries helper
@@ -172,6 +185,57 @@ export default function AdminPage() {
     link.click();
     document.body.removeChild(link);
     showToast("Inquiries CSV exported successfully");
+  };
+
+  // Home CMS Handlers
+  const handleSaveHomeConfig = () => {
+    saveHomeConfig(homeConfig);
+    showToast("Home page content & statistics updated successfully!");
+  };
+
+  const handleResetHomeConfig = () => {
+    if (!window.confirm("Reset all home page content and stats back to default?")) return;
+    const def = resetHomeConfig();
+    setHomeConfig(def);
+    showToast("Reset to default home page content");
+  };
+
+  const handleUpdateHeroStat = (index: number, field: "value" | "label", val: string) => {
+    const current = homeConfig.hero.stats[index];
+    if (!current) return;
+    const updated = [...homeConfig.hero.stats];
+    updated[index] = {
+      id: current.id,
+      value: field === "value" ? val : current.value,
+      label: field === "label" ? val : current.label,
+    };
+    setHomeConfig({
+      ...homeConfig,
+      hero: { ...homeConfig.hero, stats: updated },
+    });
+  };
+
+  const handleAddHeroStat = () => {
+    const updated = [
+      ...homeConfig.hero.stats,
+      { id: "stat-" + Date.now(), value: "10+", label: "African Countries Reached" },
+    ];
+    setHomeConfig({
+      ...homeConfig,
+      hero: { ...homeConfig.hero, stats: updated },
+    });
+  };
+
+  const handleRemoveHeroStat = (index: number) => {
+    if (homeConfig.hero.stats.length <= 1) {
+      alert("At least one stat is required.");
+      return;
+    }
+    const updated = homeConfig.hero.stats.filter((_, i) => i !== index);
+    setHomeConfig({
+      ...homeConfig,
+      hero: { ...homeConfig.hero, stats: updated },
+    });
   };
 
   // Auth Submit
@@ -420,9 +484,54 @@ export default function AdminPage() {
               <span>Portfolio Case Studies</span>
               <span className="admin-tab-count">{projects.length}</span>
             </button>
+
+            <button
+              type="button"
+              className={`admin-tab-btn ${activeTab === "home-cms" ? "active" : ""}`}
+              onClick={() => setActiveTab("home-cms")}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                <circle cx="9" cy="9" r="2" />
+                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+              </svg>
+              <span>Home Content &amp; Stats</span>
+            </button>
           </div>
 
           <div className="admin-tabs-actions">
+            {activeTab === "home-cms" && (
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <button
+                  type="button"
+                  onClick={handleResetHomeConfig}
+                  className="admin-btn admin-btn-ghost admin-btn-sm"
+                  title="Reset to default content"
+                >
+                  Reset Defaults
+                </button>
+                <Link
+                  href="/"
+                  target="_blank"
+                  className="admin-btn admin-btn-outline admin-btn-sm"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                  <span>Preview Home</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleSaveHomeConfig}
+                  className="admin-btn admin-btn-primary admin-btn-sm"
+                >
+                  Save Changes
+                </button>
+              </div>
+            )}
+
             {activeTab === "inquiries" && (
               <button type="button" onClick={handleExportCSV} className="admin-btn admin-btn-outline admin-btn-sm">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -898,6 +1007,583 @@ export default function AdminPage() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB 4: HOME PAGE CONTENT, IMAGES & STATS                  */}
+        {/* ========================================================= */}
+        {activeTab === "home-cms" && (
+          <div className="admin-tab-panel admin-cms-panel">
+            {/* Live Preview Ribbon */}
+            <div className="admin-home-preview-ribbon">
+              <span className="admin-preview-ribbon-title">Live Hero Stats Ribbon Preview:</span>
+              <div style={{ display: "flex", gap: 30, flexWrap: "wrap" }}>
+                {homeConfig.hero.stats.map((st) => (
+                  <div key={st.id} className="admin-preview-stat-item">
+                    <span className="val">{st.value}</span>
+                    <span className="lbl">{st.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Section 1: Hero Statistics Ribbon */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head">
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <line x1="18" y1="20" x2="18" y2="10" />
+                      <line x1="12" y1="20" x2="12" y2="4" />
+                      <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                    Hero Telemetry &amp; Quick Statistics
+                  </h3>
+                  <p>Edit or add metrics displayed directly below the main hero headline on the homepage.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddHeroStat}
+                  className="admin-btn admin-btn-outline admin-btn-sm"
+                >
+                  + Add Metric Card
+                </button>
+              </div>
+
+              <div className="admin-stats-edit-grid">
+                {homeConfig.hero.stats.map((st, idx) => (
+                  <div key={st.id} className="admin-stat-edit-card">
+                    <div className="admin-stat-card-head">
+                      <span className="admin-stat-badge-num">Metric #{idx + 1}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveHeroStat(idx)}
+                        className="admin-stat-del-btn"
+                        title="Remove metric"
+                      >
+                        &times;
+                      </button>
+                    </div>
+
+                    <div className="admin-fgroup">
+                      <label>Metric Value (Number / Percentage)</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        placeholder="e.g. 50+ or 99.9%"
+                        value={st.value}
+                        onChange={(e) => handleUpdateHeroStat(idx, "value", e.target.value)}
+                      />
+                    </div>
+
+                    <div className="admin-fgroup">
+                      <label>Metric Description Label</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        placeholder="e.g. Enterprise Deployments"
+                        value={st.label}
+                        onChange={(e) => handleUpdateHeroStat(idx, "label", e.target.value)}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Section 2: Hero Headline & Copy */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head">
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <path d="M4 7V4h16v3" />
+                      <path d="M9 20h6" />
+                      <path d="M12 4v16" />
+                    </svg>
+                    Hero Copy &amp; Value Proposition
+                  </h3>
+                  <p>Modify the primary hero badge, headline, and lede description.</p>
+                </div>
+              </div>
+
+              <div className="admin-fgroup">
+                <label>Top Pill Badge</label>
+                <input
+                  type="text"
+                  className="admin-input"
+                  value={homeConfig.hero.badge}
+                  onChange={(e) =>
+                    setHomeConfig({
+                      ...homeConfig,
+                      hero: { ...homeConfig.hero, badge: e.target.value },
+                    })
+                  }
+                />
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Title Prefix</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.hero.titlePrefix}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        hero: { ...homeConfig.hero, titlePrefix: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Highlighted Gradient Text</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.hero.titleHighlight}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        hero: { ...homeConfig.hero, titleHighlight: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="admin-fgroup">
+                <label>Hero Description (Lede)</label>
+                <textarea
+                  rows={2}
+                  className="admin-textarea"
+                  value={homeConfig.hero.lede}
+                  onChange={(e) =>
+                    setHomeConfig({
+                      ...homeConfig,
+                      hero: { ...homeConfig.hero, lede: e.target.value },
+                    })
+                  }
+                />
+              </div>
+            </div>
+
+            {/* Section 3: Hero Mosaic Photos (4 Showcase Images) */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head">
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                      <circle cx="9" cy="9" r="2" />
+                      <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                    </svg>
+                    Hero Photo Mosaic (4 Visual Showcase Images)
+                  </h3>
+                  <p>Choose from project image presets or enter custom URLs/paths to change the hero mosaic photos.</p>
+                </div>
+              </div>
+
+              <div className="admin-image-picker-grid">
+                {/* Photo 1 */}
+                <div className="admin-image-picker-card">
+                  <div className="admin-img-preview-box">
+                    {homeConfig.mosaic.photo1 ? (
+                      <img src={homeConfig.mosaic.photo1} alt="Preview 1" />
+                    ) : (
+                      <span className="admin-img-preview-placeholder">No image selected</span>
+                    )}
+                  </div>
+                  <h4 className="admin-img-slot-label">Photo 1 &bull; Mid-Left (Mobile / AgriFarm)</h4>
+                  <div className="admin-fgroup">
+                    <label>Choose Preset</label>
+                    <select
+                      className="admin-preset-select"
+                      value={homeConfig.mosaic.photo1}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          mosaic: { ...homeConfig.mosaic, photo1: e.target.value },
+                        })
+                      }
+                    >
+                      {AVAILABLE_WORK_IMAGES.map((img) => (
+                        <option key={img.value} value={img.value}>
+                          {img.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="admin-fgroup">
+                    <label>Or Custom Image Path / URL</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      value={homeConfig.mosaic.photo1}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          mosaic: { ...homeConfig.mosaic, photo1: e.target.value },
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                {/* Photo 2 */}
+                <div className="admin-image-picker-card">
+                  <div className="admin-img-preview-box">
+                    {homeConfig.mosaic.photo2 ? (
+                      <img src={homeConfig.mosaic.photo2} alt="Preview 2" />
+                    ) : (
+                      <span className="admin-img-preview-placeholder">No image selected</span>
+                    )}
+                  </div>
+                  <h4 className="admin-img-slot-label">Photo 2 &bull; Bottom-Left (SaaS / Web Platform)</h4>
+                  <div className="admin-fgroup">
+                    <label>Choose Preset</label>
+                    <select
+                      className="admin-preset-select"
+                      value={homeConfig.mosaic.photo2}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          mosaic: { ...homeConfig.mosaic, photo2: e.target.value },
+                        })
+                      }
+                    >
+                      {AVAILABLE_WORK_IMAGES.map((img) => (
+                        <option key={img.value} value={img.value}>
+                          {img.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="admin-fgroup">
+                    <label>Or Custom Image Path / URL</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      value={homeConfig.mosaic.photo2}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          mosaic: { ...homeConfig.mosaic, photo2: e.target.value },
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                {/* Photo 3 */}
+                <div className="admin-image-picker-card">
+                  <div className="admin-img-preview-box">
+                    {homeConfig.mosaic.photo3 ? (
+                      <img src={homeConfig.mosaic.photo3} alt="Preview 3" />
+                    ) : (
+                      <span className="admin-img-preview-placeholder">No image selected</span>
+                    )}
+                  </div>
+                  <h4 className="admin-img-slot-label">Photo 3 &bull; Top-Right (Flagship Financial)</h4>
+                  <div className="admin-fgroup">
+                    <label>Choose Preset</label>
+                    <select
+                      className="admin-preset-select"
+                      value={homeConfig.mosaic.photo3}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          mosaic: { ...homeConfig.mosaic, photo3: e.target.value },
+                        })
+                      }
+                    >
+                      {AVAILABLE_WORK_IMAGES.map((img) => (
+                        <option key={img.value} value={img.value}>
+                          {img.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="admin-fgroup">
+                    <label>Or Custom Image Path / URL</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      value={homeConfig.mosaic.photo3}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          mosaic: { ...homeConfig.mosaic, photo3: e.target.value },
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                {/* Photo 4 */}
+                <div className="admin-image-picker-card">
+                  <div className="admin-img-preview-box">
+                    {homeConfig.mosaic.photo4 ? (
+                      <img src={homeConfig.mosaic.photo4} alt="Preview 4" />
+                    ) : (
+                      <span className="admin-img-preview-placeholder">No image selected</span>
+                    )}
+                  </div>
+                  <h4 className="admin-img-slot-label">Photo 4 &bull; Bottom-Right (Engineering Team)</h4>
+                  <div className="admin-fgroup">
+                    <label>Choose Preset</label>
+                    <select
+                      className="admin-preset-select"
+                      value={homeConfig.mosaic.photo4}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          mosaic: { ...homeConfig.mosaic, photo4: e.target.value },
+                        })
+                      }
+                    >
+                      {AVAILABLE_WORK_IMAGES.map((img) => (
+                        <option key={img.value} value={img.value}>
+                          {img.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="admin-fgroup">
+                    <label>Or Custom Image Path / URL</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      value={homeConfig.mosaic.photo4}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          mosaic: { ...homeConfig.mosaic, photo4: e.target.value },
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Section 4: Flagship ERP Spotlight Showcase */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head">
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <rect width="20" height="14" x="2" y="3" rx="2" />
+                      <line x1="8" y1="21" x2="16" y2="21" />
+                      <line x1="12" y1="17" x2="12" y2="21" />
+                    </svg>
+                    Flagship ERP Spotlight Screenshot &amp; Badges
+                  </h3>
+                  <p>Configure the spotlight visual and the floating telemetry audit badges.</p>
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div>
+                  <div className="admin-img-preview-box" style={{ height: 200, marginBottom: 12 }}>
+                    <img src={homeConfig.erpSpotlight.image || "/work/akiba-erp-dashboard.png"} alt="ERP preview" />
+                  </div>
+                  <div className="admin-fgroup">
+                    <label>ERP Dashboard Screenshot Preset</label>
+                    <select
+                      className="admin-preset-select"
+                      value={homeConfig.erpSpotlight.image}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          erpSpotlight: { ...homeConfig.erpSpotlight, image: e.target.value },
+                        })
+                      }
+                    >
+                      {AVAILABLE_WORK_IMAGES.map((img) => (
+                        <option key={img.value} value={img.value}>
+                          {img.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="admin-fgroup" style={{ marginTop: 8 }}>
+                    <label>Or Custom Screenshot URL</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      value={homeConfig.erpSpotlight.image}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          erpSpotlight: { ...homeConfig.erpSpotlight, image: e.target.value },
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  <div className="admin-fgroup">
+                    <label>Top-Right Floating Badge: Metric Value</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      value={homeConfig.erpSpotlight.badgeTopVal}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          erpSpotlight: { ...homeConfig.erpSpotlight, badgeTopVal: e.target.value },
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="admin-fgroup">
+                    <label>Top-Right Floating Badge: Label</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      value={homeConfig.erpSpotlight.badgeTopLbl}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          erpSpotlight: { ...homeConfig.erpSpotlight, badgeTopLbl: e.target.value },
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div className="admin-fgroup">
+                    <label>Bottom-Left Floating Badge: Metric Value</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      value={homeConfig.erpSpotlight.badgeBottomVal}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          erpSpotlight: { ...homeConfig.erpSpotlight, badgeBottomVal: e.target.value },
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="admin-fgroup">
+                    <label>Bottom-Left Floating Badge: Label</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      value={homeConfig.erpSpotlight.badgeBottomLbl}
+                      onChange={(e) =>
+                        setHomeConfig({
+                          ...homeConfig,
+                          erpSpotlight: { ...homeConfig.erpSpotlight, badgeBottomLbl: e.target.value },
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Section 5: AI Telemetry & Performance Gauges */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head">
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="2" y1="12" x2="22" y2="12" />
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                    AI Telemetry &amp; Lighthouse Performance Metrics
+                  </h3>
+                  <p>Configured in the &quot;Why Choose Us&quot; bento section.</p>
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>AI Accuracy Metric</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.telemetry.aiAccuracy}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        telemetry: { ...homeConfig.telemetry, aiAccuracy: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>AI Throughput Multiplier</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.telemetry.aiThroughput}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        telemetry: { ...homeConfig.telemetry, aiThroughput: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Pipeline Latency</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.telemetry.aiLatency}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        telemetry: { ...homeConfig.telemetry, aiLatency: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Lighthouse Performance Score</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.telemetry.lighthouseScore}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        telemetry: { ...homeConfig.telemetry, lighthouseScore: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Save Bar */}
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 12, marginTop: 10 }}>
+              <button
+                type="button"
+                onClick={handleResetHomeConfig}
+                className="admin-btn admin-btn-ghost"
+              >
+                Reset to Defaults
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveHomeConfig}
+                className="admin-btn admin-btn-primary"
+              >
+                Save All Home Page Changes
+              </button>
             </div>
           </div>
         )}

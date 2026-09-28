@@ -1,0 +1,64 @@
+"use client";
+
+import Link from "next/link";
+import { Reveal } from "./Reveal";
+import { useHomeConfig } from "@/lib/home-store";
+
+export function HomeHeroCopy() {
+  const { config } = useHomeConfig();
+  const { hero } = config;
+
+  return (
+    <div className="hero-copy">
+      <Reveal as="div" className="pill pill-brand">
+        <span className="dot dot-pulse" aria-hidden="true" />
+        <span>{hero.badge || "Software Engineering • Enterprise Services • Tech Academy"}</span>
+      </Reveal>
+
+      <Reveal as="h1" delay={60}>
+        {hero.titlePrefix || "Building scalable software and"}{" "}
+        <span className="grad">{hero.titleHighlight || "digital solutions"}</span>
+      </Reveal>
+
+      <Reveal as="p" className="lede" delay={120}>
+        {hero.lede ||
+          "We design, engineer, and deploy high-performance custom software, ERP platforms, and cloud systems for growing enterprises."}
+      </Reveal>
+
+      <Reveal className="hero-cta" delay={180}>
+        <Link className="btn btn-em" href="/contact">
+          Schedule Consultation
+          <svg className="btn-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </Link>
+        <Link className="btn btn-ghost" href="/services">
+          Our Services
+          <svg className="btn-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </Link>
+      </Reveal>
+
+      <Reveal as="div" className="hero-note" delay={240}>
+        <Link href="/services#erp">ERP Systems</Link>
+        <Link href="/services#web">Web &amp; Mobile</Link>
+        <Link href="/services#ai">AI &amp; ML</Link>
+        <Link href="/services#academy">AkibaTech Academy</Link>
+      </Reveal>
+
+      {/* Mini-telemetry stats ribbon */}
+      <Reveal as="div" className="hero-quick-stats" delay={300}>
+        {hero.stats.map((st, idx) => (
+          <div key={st.id || idx} style={{ display: "contents" }}>
+            {idx > 0 && <div className="quick-stat-divider" />}
+            <div className="quick-stat">
+              <div className="quick-stat-val">{st.value}</div>
+              <div className="quick-stat-lbl">{st.label}</div>
+            </div>
+          </div>
+        ))}
+      </Reveal>
+    </div>
+  );
+}

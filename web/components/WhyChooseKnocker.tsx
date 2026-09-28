@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { Reveal } from "./Reveal";
+import { useHomeConfig } from "@/lib/home-store";
 
 export function WhyChooseKnocker() {
+  const { config } = useHomeConfig();
+  const { telemetry } = config;
   return (
     <section className="sec sec-why-knocker" id="why-choose" aria-labelledby="why-knocker-h">
       {/* Background ambient lighting */}
@@ -65,18 +70,18 @@ export function WhyChooseKnocker() {
                     <span className="telemetry-live-dot" />
                     <span>Neural Pipeline Active</span>
                   </div>
-                  <span className="telemetry-speed">Latency: 82ms</span>
+                  <span className="telemetry-speed">Latency: {telemetry.aiLatency || "82ms"}</span>
                 </div>
                 <div className="why-telemetry-meter">
                   <div className="why-telemetry-bar" style={{ width: "94%" }} />
                 </div>
                 <div className="why-telemetry-metrics">
                   <div className="metric-pill">
-                    <span className="metric-val">99.4%</span>
+                    <span className="metric-val">{telemetry.aiAccuracy || "99.4%"}</span>
                     <span className="metric-lbl">Accuracy</span>
                   </div>
                   <div className="metric-pill">
-                    <span className="metric-val">+4.8x</span>
+                    <span className="metric-val">{telemetry.aiThroughput || "+4.8x"}</span>
                     <span className="metric-lbl">Throughput</span>
                   </div>
                   <div className="metric-pill">
@@ -117,7 +122,7 @@ export function WhyChooseKnocker() {
               {/* Visual Performance Gauge */}
               <div className="why-web-visual">
                 <div className="lighthouse-badge">
-                  <div className="lighthouse-circle">100</div>
+                  <div className="lighthouse-circle">{telemetry.lighthouseScore || "100"}</div>
                   <div className="lighthouse-text">
                     <span className="lh-title">Lighthouse Score</span>
                     <span className="lh-sub">Sub-second First Contentful Paint</span>

@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useHomeConfig } from "@/lib/home-store";
 
 /**
  * 4-Photo Asymmetric Mosaic
@@ -10,6 +13,9 @@ import Link from "next/link";
  * - Authentic, subtle shadows without artificial AI badges
  */
 export function HeroMosaic() {
+  const { config } = useHomeConfig();
+  const { mosaic } = config;
+
   return (
     <div className="mention-mosaic-wrap" aria-label="Akiba Technologies projects and engineering">
       <div className="mention-mosaic-grid">
@@ -23,8 +29,8 @@ export function HeroMosaic() {
           >
             <div className="mention-img-frame">
               <Image
-                src="/work/hero-agrifarm-app.webp"
-                alt="AgriFARM smart farming mobile application interface showing crop health telemetry and weather radar"
+                src={mosaic.photo1 || "/work/hero-agrifarm-app.webp"}
+                alt={mosaic.photo1Alt || "AgriFARM smart farming mobile application interface"}
                 width={900}
                 height={1200}
                 sizes="(max-width: 768px) 150px, 220px"
@@ -42,8 +48,8 @@ export function HeroMosaic() {
           >
             <div className="mention-img-frame">
               <Image
-                src="/work/hero-powerfit-gym.webp"
-                alt="PowerFit Gym management SaaS platform dashboard showing member analytics and class schedules"
+                src={mosaic.photo2 || "/work/hero-powerfit-gym.webp"}
+                alt={mosaic.photo2Alt || "PowerFit Gym management SaaS platform dashboard"}
                 width={1500}
                 height={850}
                 sizes="(max-width: 768px) 150px, 220px"
@@ -63,8 +69,8 @@ export function HeroMosaic() {
           >
             <div className="mention-img-frame">
               <Image
-                src="/work/hero-akiba-erp.webp"
-                alt="Akiba ERP Financial Analytics Dashboard showing revenue growth, ARR, and transaction activity"
+                src={mosaic.photo3 || "/work/hero-akiba-erp.webp"}
+                alt={mosaic.photo3Alt || "Akiba ERP Financial Analytics Dashboard showing revenue growth"}
                 width={1600}
                 height={900}
                 sizes="(max-width: 768px) 100vw, 380px"
@@ -82,8 +88,8 @@ export function HeroMosaic() {
           >
             <div className="mention-img-frame">
               <Image
-                src="/work/hero-engineering-team.webp"
-                alt="Senior Akiba Technologies software engineers collaborating over system architecture in studio"
+                src={mosaic.photo4 || "/work/hero-engineering-team.webp"}
+                alt={mosaic.photo4Alt || "Senior Akiba Technologies software engineers collaborating over system architecture"}
                 width={1400}
                 height={788}
                 sizes="(max-width: 768px) 100vw, 350px"
