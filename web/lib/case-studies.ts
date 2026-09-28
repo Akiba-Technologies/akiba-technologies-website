@@ -38,7 +38,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: "2025",
     title: "DigiFarm AI",
     summary:
-      "An AI-powered platform for managing agricultural operations, including crop tracking, inventory management, and farmer support services. Features include real-time weather updates, crop disease detection, and personalized recommendations for optimal growth. AI-powered insights for decision-making and improved productivity.",
+      "AI-powered crop health monitoring, disease detection, and yield prediction for farmers.",
     metricValue: "AI Driven",
     metricLabel: "disease detection & agricultural forecasting",
     stack: ["Python", "Scikit-learn", "FastAPI", "Redis"],
@@ -58,7 +58,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: "2025",
     title: "GYM Management System",
     summary:
-      "A complete gym management solution featuring member management, workout tracking, payment processing, class scheduling, and trainer assignment. Includes comprehensive reporting, mobile-responsive design, and real-time notifications for enhanced member experience.",
+      "All-in-one gym operations with member tracking, class scheduling, and automated billing.",
     metricValue: "Full Suite",
     metricLabel: "members, workout tracking & payment processing",
     stack: ["Laravel", "React.js", "REST API"],
@@ -78,14 +78,14 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: "2025",
     title: "Akiba ERP",
     summary:
-      "A comprehensive inventory management system with real-time stock tracking, automated reorder alerts, barcode scanning, supplier management, and detailed reporting. Includes multi-location support, role-based access control, and integration with accounting systems.",
+      "Multi-location inventory tracking, automated reorder alerts, and real-time ledger audits.",
     metricValue: "Multi-Hub",
     metricLabel: "real-time stock tracking & barcode reorder alerts",
     stack: ["Laravel", "React", "MySQL", "REST API"],
     categories: ["web"],
     liveDemoUrl: "https://test2.qudwaerp.com/",
     image: {
-      src: "/work/akiba-erp-dashboard.webp",
+      src: "/work/akiba-erp-dashboard.png",
       alt: "Akiba ERP real-time inventory management, stock tracking, and supplier portal",
       width: 1904,
       height: 943,
@@ -98,7 +98,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: "2025",
     title: "Royal Candy & Chocolate",
     summary:
-      "A modern, elegant landing page for Royal Candy & Chocolate company featuring product showcase, company information, contact forms, and responsive design optimized for mobile and desktop. Includes admin panel for content management and SEO optimization.",
+      "Modern confectionery showcase with dynamic catalog management and SEO optimization.",
     metricValue: "High Performance",
     metricLabel: "modern product showcase with admin CMS & SEO",
     stack: ["Laravel", "React", "MySQL", "Bootstrap"],
@@ -118,7 +118,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: "2024",
     title: "Hailemariam Melese Import & Export",
     summary:
-      "A professional business landing page showcasing Ethiopia's agricultural excellence and industrial potential to global markets. Features company services, product catalogs, contact information, and business inquiry forms designed to attract international clients and partners.",
+      "Global commodity trading platform connecting Ethiopian agricultural exports to world markets.",
     metricValue: "Global Reach",
     metricLabel: "international commodity catalogs & inquiry pipelines",
     stack: ["React", "Laravel", "MySQL", "Tailwind CSS"],
@@ -138,7 +138,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: "2024",
     title: "Tway Realestate",
     summary:
-      "A real estate company landing page showcasing their properties, services, and contact information. Features a modern design with a focus on user experience and conversion optimization.",
+      "Modern property listing platform with virtual property showcases and inquiry workflows.",
     metricValue: "Conversion Focused",
     metricLabel: "optimized property listings & architectural inquiry platform",
     stack: ["React", "Laravel", "MySQL", "Tailwind CSS"],

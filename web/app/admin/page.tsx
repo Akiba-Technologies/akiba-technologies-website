@@ -249,9 +249,25 @@ export default function AdminPage() {
     e.preventDefault();
     if (!editingProject?.title || !editingProject?.client) return;
 
+    const stackArray = Array.isArray(editingProject.stack)
+      ? editingProject.stack
+      : typeof editingProject.stack === "string"
+      ? (editingProject.stack as string).split(",").map((s) => s.trim()).filter(Boolean)
+      : ["Laravel", "React"];
+
     if (editingProject.id) {
       // Edit existing
-      const updated = projects.map((p) => (p.id === editingProject.id ? ({ ...p, ...editingProject } as AdminProject) : p));
+      const updated = projects.map((p) =>
+        p.id === editingProject.id
+          ? ({
+              ...p,
+              ...editingProject,
+              stack: stackArray,
+              image: editingProject.image || p.image || "/work/akiba-erp-dashboard.png",
+              liveDemoUrl: editingProject.liveDemoUrl !== undefined ? editingProject.liveDemoUrl : p.liveDemoUrl,
+            } as AdminProject)
+          : p
+      );
       setProjects(updated);
       saveProjects(updated);
       showToast("Case study updated");
@@ -262,17 +278,15 @@ export default function AdminPage() {
         slug: editingProject.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
         title: editingProject.title,
         client: editingProject.client,
-        category: (editingProject.category || "Enterprise ERP") as AdminProject["category"],
+        category: (editingProject.category || "Web Development") as AdminProject["category"],
         year: editingProject.year || new Date().getFullYear().toString(),
         summary: editingProject.summary || "",
-        metricValue: editingProject.metricValue || "Verified",
-        metricLabel: editingProject.metricLabel || "System impact",
-        stack: Array.isArray(editingProject.stack)
-          ? editingProject.stack
-          : typeof editingProject.stack === "string"
-          ? (editingProject.stack as string).split(",").map((s) => s.trim()).filter(Boolean)
-          : ["Next.js", "TypeScript"],
+        metricValue: editingProject.metricValue || "Full Suite",
+        metricLabel: editingProject.metricLabel || "verified platform impact",
+        stack: stackArray,
         status: editingProject.status || "published",
+        image: editingProject.image || "/work/akiba-erp-dashboard.png",
+        liveDemoUrl: editingProject.liveDemoUrl || "",
       };
       const updated = [newProj, ...projects];
       setProjects(updated);
@@ -820,13 +834,15 @@ export default function AdminPage() {
                   setEditingProject({
                     title: "",
                     client: "",
-                    category: "Enterprise ERP",
+                    category: "Web Development",
                     year: new Date().getFullYear().toString(),
                     summary: "",
-                    metricValue: "99.9%",
-                    metricLabel: "System reliability",
-                    stack: ["TypeScript", "Next.js", "PostgreSQL"],
+                    metricValue: "Full Suite",
+                    metricLabel: "verified platform impact",
+                    stack: ["Laravel", "React", "REST API"],
                     status: "published",
+                    image: "/work/akiba-erp-dashboard.png",
+                    liveDemoUrl: "",
                   });
                   setIsEditingProject(true);
                 }}
@@ -1209,7 +1225,7 @@ export default function AdminPage() {
               </div>
 
               <div className="admin-filter-tabs">
-                {["all", "Enterprise ERP", "AI & ML", "Web Development"].map((cat) => (
+                {["all", "Web Development", "AI & ML", "Enterprise ERP", "Mobile App", "IoT"].map((cat) => (
                   <button
                     key={cat}
                     type="button"
@@ -1226,6 +1242,13 @@ export default function AdminPage() {
             <div className="admin-projects-grid">
               {filteredProjects.map((p) => (
                 <div key={p.id} className="admin-card admin-project-card">
+                  {p.image && (
+                    <div className="admin-proj-card-thumb">
+                      <img src={p.image} alt={p.title} />
+                      <span className={`admin-proj-status-badge ${p.status}`}>{p.status}</span>
+                    </div>
+                  )}
+
                   <div className="admin-proj-top">
                     <span className="admin-chip-category">{p.category}</span>
                     <button
@@ -1242,6 +1265,24 @@ export default function AdminPage() {
                   <p className="admin-proj-client">{p.client} &bull; {p.year}</p>
 
                   <p className="admin-proj-summary">{p.summary}</p>
+
+                  {p.liveDemoUrl && (
+                    <div className="admin-proj-demo-row">
+                      <a
+                        href={p.liveDemoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="admin-proj-demo-link"
+                      >
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                        <span>Demo: {p.liveDemoUrl}</span>
+                      </a>
+                    </div>
+                  )}
 
                   <div className="admin-proj-metric">
                     <span className="val">{p.metricValue}</span>
@@ -2277,13 +2318,38 @@ export default function AdminPage() {
                   <input
                     type="text"
                     className="admin-input"
-                    placeholder="TypeScript, Next.js, PostgreSQL, Docker"
+                    placeholder="Laravel, React, REST API, MySQL"
                     value={
                       Array.isArray(editingProject.stack)
                         ? editingProject.stack.join(", ")
                         : editingProject.stack || ""
                     }
                     onChange={(e) => setEditingProject({ ...editingProject, stack: e.target.value as unknown as string[] })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Live Demo URL (Client Website / Production App)</label>
+                  <input
+                    type="url"
+                    className="admin-input"
+                    placeholder="https://client-portal.app"
+                    value={editingProject.liveDemoUrl || ""}
+                    onChange={(e) => setEditingProject({ ...editingProject, liveDemoUrl: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Project Showcase Image / Screenshot</label>
+                  <AdminImageCard
+                    id="project-edit-image"
+                    slotTitle="Case Study Image"
+                    value={editingProject.image || ""}
+                    placeholder="Select or upload screenshot..."
+                    presets={AVAILABLE_WORK_IMAGES}
+                    onChange={(val) => setEditingProject({ ...editingProject, image: val })}
+                    onFileUpload={handleImageFileUpload}
+                    previewHeight={170}
                   />
                 </div>
               </div>

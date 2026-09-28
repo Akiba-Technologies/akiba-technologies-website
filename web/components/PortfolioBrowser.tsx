@@ -2,16 +2,74 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Reveal } from "./Reveal";
-import { CASE_FILTERS, CASE_STUDIES, type CaseCategory } from "@/lib/case-studies";
+import { CASE_FILTERS, CASE_STUDIES, type CaseCategory, type CaseStudy } from "@/lib/case-studies";
+import { getStoredProjects, type AdminProject } from "@/lib/admin-store";
+
+function mapAdminProjectToCaseStudy(p: AdminProject): CaseStudy {
+  const orig = CASE_STUDIES.find(
+    (c) => c.slug === p.slug || c.title.toLowerCase() === p.title.toLowerCase()
+  );
+
+  let categories: CaseCategory[] = orig ? [...orig.categories] : [];
+  if (categories.length === 0) {
+    const catLower = (p.category || "").toLowerCase();
+    if (catLower.includes("ai") || catLower.includes("ml")) categories = ["ai-ml"];
+    else if (catLower.includes("mobile")) categories = ["mobile"];
+    else if (catLower.includes("iot")) categories = ["iot"];
+    else categories = ["web"];
+  }
+
+  const imageSrc = p.image || orig?.image?.src || "/work/akiba-erp-dashboard.png";
+
+  return {
+    slug: p.slug || orig?.slug || p.id,
+    badge: p.category || orig?.badge || "Web Development",
+    categoryLabel: p.category || orig?.categoryLabel || "Web Development",
+    year: p.year || orig?.year || "2025",
+    title: p.title,
+    summary: p.summary,
+    metricValue: p.metricValue || orig?.metricValue || "Full Suite",
+    metricLabel: p.metricLabel || orig?.metricLabel || "verified platform impact",
+    stack: p.stack && p.stack.length > 0 ? p.stack : orig?.stack || ["Laravel", "React"],
+    categories,
+    liveDemoUrl: p.liveDemoUrl || orig?.liveDemoUrl || "#",
+    image: {
+      src: imageSrc,
+      alt: orig?.image?.alt || `${p.title} showcase screenshot`,
+      width: orig?.image?.width || 1200,
+      height: orig?.image?.height || 675,
+    },
+  };
+}
 
 export function PortfolioBrowser() {
   const [filter, setFilter] = useState<CaseCategory | "all">("all");
+  const [studies, setStudies] = useState<CaseStudy[]>(CASE_STUDIES);
+
+  useEffect(() => {
+    const load = () => {
+      const stored = getStoredProjects();
+      if (stored && stored.length > 0) {
+        const published = stored.filter((p) => p.status !== "draft");
+        setStudies(published.map(mapAdminProjectToCaseStudy));
+      }
+    };
+    load();
+
+    const handleUpdate = () => load();
+    window.addEventListener("akiba_projects_change", handleUpdate);
+    window.addEventListener("storage", handleUpdate);
+    return () => {
+      window.removeEventListener("akiba_projects_change", handleUpdate);
+      window.removeEventListener("storage", handleUpdate);
+    };
+  }, []);
 
   const visible = useMemo(
-    () => (filter === "all" ? CASE_STUDIES : CASE_STUDIES.filter((c) => c.categories.includes(filter))),
-    [filter]
+    () => (filter === "all" ? studies : studies.filter((c) => c.categories.includes(filter))),
+    [filter, studies]
   );
 
   return (
@@ -65,6 +123,7 @@ export function PortfolioBrowser() {
                     fill
                     sizes="(max-width: 680px) 100vw, (max-width: 1060px) 50vw, 33vw"
                     style={{ objectFit: "cover" }}
+                    unoptimized
                   />
                   <div className="case-shot-overlay" aria-hidden="true" />
                 </div>
@@ -146,3 +205,4 @@ export function PortfolioBrowser() {
     </div>
   );
 }
+

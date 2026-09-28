@@ -24,6 +24,8 @@ export type AdminProject = {
   metricLabel: string;
   stack: string[];
   status: "published" | "draft";
+  image?: string;
+  liveDemoUrl?: string;
 };
 
 export const INITIAL_INQUIRIES: AdminInquiry[] = [
@@ -90,78 +92,99 @@ export const INITIAL_INQUIRIES: AdminInquiry[] = [
 export const INITIAL_PROJECTS: AdminProject[] = [
   {
     id: "proj-1",
-    slug: "tway-real-estate",
-    title: "Tway Real Estate ERP",
-    client: "Tway Real Estate PLC",
-    category: "Enterprise ERP",
-    year: "2025",
-    summary:
-      "Multi-branch property management, automated tenant billing, and offline-first leasing workflows tailored to the Ethiopian commercial market.",
-    metricValue: "100%",
-    metricLabel: "lease audit accuracy & zero data loss",
-    stack: ["TypeScript", "Next.js", "PostgreSQL", "Node.js"],
-    status: "published",
-  },
-  {
-    id: "proj-2",
     slug: "digifarm-ai",
     title: "DigiFarm AI",
     client: "East Africa AgriTech Consortium",
     category: "AI & ML",
     year: "2025",
-    summary:
-      "AI-driven platform for managing agricultural field operations, crop disease detection, and yield prediction directly to farmers' mobile devices.",
+    summary: "AI-powered crop health monitoring, disease detection, and yield prediction for farmers.",
     metricValue: "AI Driven",
     metricLabel: "disease detection & agricultural forecasting",
     stack: ["Python", "Scikit-learn", "FastAPI", "Redis"],
     status: "published",
+    image: "/work/hero-agrifarm-app.webp",
+    liveDemoUrl: "https://akibatech.com/portfolio#",
+  },
+  {
+    id: "proj-2",
+    slug: "gym-management",
+    title: "GYM Management System",
+    client: "Amigos Gym & Fitness",
+    category: "Web Development",
+    year: "2025",
+    summary: "All-in-one gym operations with member tracking, class scheduling, and automated billing.",
+    metricValue: "Full Suite",
+    metricLabel: "members, workout tracking & payment processing",
+    stack: ["Laravel", "React.js", "REST API"],
+    status: "published",
+    image: "/work/powerfit-gym.webp",
+    liveDemoUrl: "https://www.amigosgym.app/login",
   },
   {
     id: "proj-3",
-    slug: "gym-management",
-    title: "Gym & Fitness Management System",
-    client: "FitLife Addis Network",
-    category: "Web Development",
+    slug: "akiba-erp",
+    title: "Akiba ERP",
+    client: "Qudwa Enterprise Solutions",
+    category: "Enterprise ERP",
     year: "2025",
-    summary:
-      "Comprehensive fitness club management platform with member check-in QR codes, automated billing renewals, trainer scheduling, and analytics.",
-    metricValue: "4.8/5",
-    metricLabel: "member retention rating across 6 locations",
-    stack: ["React", "Tailwind CSS", "Node.js", "PostgreSQL"],
+    summary: "Multi-location inventory tracking, automated reorder alerts, and real-time ledger audits.",
+    metricValue: "Multi-Hub",
+    metricLabel: "real-time stock tracking & barcode reorder alerts",
+    stack: ["Laravel", "React", "MySQL", "REST API"],
     status: "published",
+    image: "/work/akiba-erp-dashboard.png",
+    liveDemoUrl: "https://test2.qudwaerp.com/",
   },
   {
     id: "proj-4",
-    slug: "awash-fleet-os",
-    title: "Awash Logistics Fleet OS",
-    client: "Awash Cargo & Transit",
-    category: "Enterprise ERP",
-    year: "2024",
-    summary:
-      "High-throughput GPS telematics, cargo weight sensor integration, and offline-tolerant manifest synchronization across freight transit corridors.",
-    metricValue: "3.8x",
-    metricLabel: "faster dispatch turnaround & route tracking",
-    stack: ["Go", "MQTT", "Docker", "PostgreSQL"],
+    slug: "royal-candy",
+    title: "Royal Candy & Chocolate",
+    client: "Royal Candy & Chocolate PLC",
+    category: "Web Development",
+    year: "2025",
+    summary: "Modern confectionery showcase with dynamic catalog management and SEO optimization.",
+    metricValue: "High Performance",
+    metricLabel: "modern product showcase with admin CMS & SEO",
+    stack: ["Laravel", "React", "MySQL", "Bootstrap"],
     status: "published",
+    image: "/work/royal-candy.jpg",
+    liveDemoUrl: "https://www.royalcandyandchocolate.com/",
   },
   {
     id: "proj-5",
-    slug: "ethiofin-switch",
-    title: "EthioFin Micro-Switch",
-    client: "Regional Banking Pod",
+    slug: "hailemariam-export",
+    title: "Hailemariam Melese Import & Export",
+    client: "Hailemariam Melese Trading",
     category: "Web Development",
     year: "2024",
-    summary:
-      "High-availability ISO 8583 settlement gateway processing retail transactions with sub-40ms response times and zero failover downtime.",
-    metricValue: "4,200",
-    metricLabel: "transactions per second at peak load",
-    stack: ["Rust", "Redis", "Kafka", "Linux"],
-    status: "draft",
+    summary: "Global commodity trading platform connecting Ethiopian agricultural exports to world markets.",
+    metricValue: "Global Reach",
+    metricLabel: "international commodity catalogs & inquiry pipelines",
+    stack: ["React", "Laravel", "MySQL", "Tailwind CSS"],
+    status: "published",
+    image: "/work/hailemariam-export.jpg",
+    liveDemoUrl: "https://hm.addisvision.com/hm-importexport",
+  },
+  {
+    id: "proj-6",
+    slug: "tway-realestate",
+    title: "Tway Realestate",
+    client: "Tway Real Estate PLC",
+    category: "Web Development",
+    year: "2024",
+    summary: "Modern property listing platform with virtual property showcases and inquiry workflows.",
+    metricValue: "Conversion Focused",
+    metricLabel: "optimized property listings & architectural inquiry platform",
+    stack: ["React", "Laravel", "MySQL", "Tailwind CSS"],
+    status: "published",
+    image: "/work/tway-realestate.jpg",
+    liveDemoUrl: "https://www.twayrealestateplc.com/",
   },
 ];
 
 const INQUIRIES_KEY = "akiba_admin_inquiries";
 const PROJECTS_KEY = "akiba_admin_projects";
+const PROJECTS_EVENT_KEY = "akiba_projects_change";
 const AUTH_KEY = "akiba_admin_auth";
 
 export function getStoredInquiries(): AdminInquiry[] {
@@ -208,7 +231,17 @@ export function getStoredProjects(): AdminProject[] {
       localStorage.setItem(PROJECTS_KEY, JSON.stringify(INITIAL_PROJECTS));
       return INITIAL_PROJECTS;
     }
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    // If stored array is using the old placeholder data, upgrade to the real 6 current projects!
+    if (
+      Array.isArray(parsed) &&
+      (parsed.some((p: AdminProject) => p.slug === "ethiofin-switch" || p.slug === "awash-fleet-os") ||
+        parsed.length === 0)
+    ) {
+      localStorage.setItem(PROJECTS_KEY, JSON.stringify(INITIAL_PROJECTS));
+      return INITIAL_PROJECTS;
+    }
+    return parsed;
   } catch {
     return INITIAL_PROJECTS;
   }
@@ -218,6 +251,7 @@ export function saveProjects(projects: AdminProject[]): void {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
+    window.dispatchEvent(new Event(PROJECTS_EVENT_KEY));
   } catch {
     // ignore
   }
