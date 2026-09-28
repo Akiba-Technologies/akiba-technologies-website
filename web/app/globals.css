@@ -7757,4 +7757,120 @@ select.field option {
   background: #ffffff;
   color: #0f172a;
 }
+
+/* --- Admin File Chooser & Upload Controls --- */
+.admin-file-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-file-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: var(--mint);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.admin-file-upload-btn:hover {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: rgba(16, 185, 129, 0.6);
+  transform: translateY(-1px);
+}
+
+.admin-file-upload-btn svg {
+  flex-shrink: 0;
+}
+
+.admin-file-input-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.admin-file-source-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(16, 185, 129, 0.9);
+  color: #06090e;
+  font-family: var(--font-m);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.admin-sub-label {
+  font-size: 0.74rem;
+  font-family: var(--font-m);
+  color: var(--slate);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.admin-url-details {
+  margin-top: 6px;
+  font-size: 0.76rem;
+}
+
+.admin-url-details summary {
+  cursor: pointer;
+  color: var(--slate);
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  user-select: none;
+  transition: color 0.15s ease;
+}
+
+.admin-url-details summary:hover {
+  color: var(--ink);
+}
+
+.admin-url-details[open] summary {
+  margin-bottom: 6px;
+  color: var(--mint);
+}
+
+.admin-input-sm {
+  padding: 6px 10px;
+  font-size: 0.78rem;
+}
+
+.admin-btn-xs {
+  padding: 4px 8px;
+  font-size: 0.72rem;
+}
+
+[data-theme="light"] .admin-file-upload-btn {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #059669;
+}
+
+[data-theme="light"] .admin-file-upload-btn:hover {
+  background: rgba(16, 185, 129, 0.18);
+}
+
 

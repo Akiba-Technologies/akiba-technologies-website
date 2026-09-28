@@ -23,6 +23,117 @@ import {
   resetHomeConfig,
 } from "@/lib/home-store";
 
+interface AdminImageCardProps {
+  id: string;
+  slotTitle: string;
+  value: string;
+  placeholder?: string;
+  onChange: (val: string) => void;
+  onFileUpload: (file: File, callback: (url: string) => void, label?: string) => void;
+  presets: { label: string; value: string }[];
+  previewHeight?: number;
+}
+
+function AdminImageCard({
+  id,
+  slotTitle,
+  value,
+  placeholder = "No image selected",
+  onChange,
+  onFileUpload,
+  presets,
+  previewHeight = 160,
+}: AdminImageCardProps) {
+  const isUploaded = Boolean(value && value.startsWith("data:"));
+  const isPreset = Boolean(value && presets.some((p) => p.value === value));
+
+  return (
+    <div className="admin-image-picker-card">
+      <div className="admin-img-preview-box" style={{ height: previewHeight }}>
+        {value ? (
+          <>
+            <img src={value} alt={slotTitle} />
+            <span className="admin-file-source-badge">
+              {isUploaded ? "Device File" : isPreset ? "Preset" : "Custom URL"}
+            </span>
+          </>
+        ) : (
+          <span className="admin-img-preview-placeholder">{placeholder}</span>
+        )}
+      </div>
+
+      <h4 className="admin-img-slot-label">{slotTitle}</h4>
+
+      {/* Primary Action: Choose File from Computer */}
+      <div className="admin-file-picker-row">
+        <label htmlFor={`file-${id}`} className="admin-file-upload-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          <span>Choose File</span>
+        </label>
+        <input
+          id={`file-${id}`}
+          type="file"
+          accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif,image/avif"
+          className="admin-file-input-hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) {
+              onFileUpload(f, onChange, slotTitle);
+              e.target.value = "";
+            }
+          }}
+        />
+
+        {value && (
+          <button
+            type="button"
+            className="admin-btn admin-btn-ghost admin-btn-xs"
+            onClick={() => onChange("")}
+            title="Clear image"
+          >
+            Clear
+          </button>
+        )}
+      </div>
+
+      {/* Secondary Action: Select Preset */}
+      <div className="admin-fgroup" style={{ marginTop: 4 }}>
+        <label className="admin-sub-label">Or Choose Preset Image</label>
+        <select
+          className="admin-preset-select"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          <option value="">-- Choose a Preset --</option>
+          {presets.map((img) => (
+            <option key={img.value} value={img.value}>
+              {img.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Fallback Option: Direct URL */}
+      <details className="admin-url-details">
+        <summary>Or paste direct URL / static path</summary>
+        <div style={{ marginTop: 6 }}>
+          <input
+            type="text"
+            className="admin-input admin-input-sm"
+            placeholder="e.g. /work/photo.webp or https://..."
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+          />
+        </div>
+      </details>
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [mounted, setMounted] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
@@ -236,6 +347,98 @@ export default function AdminPage() {
       ...homeConfig,
       hero: { ...homeConfig.hero, stats: updated },
     });
+  };
+
+  // Image File Upload Processor (Canvas compression to keep state light)
+  const handleImageFileUpload = (
+    file: File,
+    onDone: (dataUrl: string) => void,
+    slotName = "Image"
+  ) => {
+    if (!file || !file.type) return;
+
+    if (!file.type.startsWith("image/")) {
+      showToast("Please choose a valid image file (.png, .jpg, .webp, .svg)");
+      return;
+    }
+
+    // Handle vector SVG directly
+    if (file.type === "image/svg+xml") {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const res = e.target?.result;
+        if (typeof res === "string") {
+          onDone(res);
+          showToast(`${slotName} loaded from SVG`);
+        }
+      };
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    // Handle raster images (PNG, JPEG, WebP, etc.)
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const rawDataUrl = e.target?.result;
+      if (typeof rawDataUrl !== "string") return;
+
+      const img = new window.Image();
+      img.onload = () => {
+        try {
+          const maxDim = 1400;
+          let { width, height } = img;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+
+          if (!ctx) {
+            onDone(rawDataUrl);
+            showToast(`${slotName} updated from device`);
+            return;
+          }
+
+          ctx.drawImage(img, 0, 0, width, height);
+
+          let finalDataUrl = "";
+          try {
+            finalDataUrl = canvas.toDataURL("image/webp", 0.84);
+          } catch {
+            finalDataUrl = canvas.toDataURL("image/jpeg", 0.84);
+          }
+
+          const kb = Math.round(finalDataUrl.length / 1024);
+          onDone(finalDataUrl);
+          showToast(`${slotName} updated from device (${kb} KB optimized)`);
+        } catch {
+          onDone(rawDataUrl);
+          showToast(`${slotName} loaded from device`);
+        }
+      };
+
+      img.onerror = () => {
+        onDone(rawDataUrl);
+        showToast(`${slotName} loaded from device`);
+      };
+
+      img.src = rawDataUrl;
+    };
+
+    reader.onerror = () => {
+      showToast("Error reading file from device");
+    };
+
+    reader.readAsDataURL(file);
   };
 
   // Auth Submit
@@ -1190,184 +1393,64 @@ export default function AdminPage() {
 
               <div className="admin-image-picker-grid">
                 {/* Photo 1 */}
-                <div className="admin-image-picker-card">
-                  <div className="admin-img-preview-box">
-                    {homeConfig.mosaic.photo1 ? (
-                      <img src={homeConfig.mosaic.photo1} alt="Preview 1" />
-                    ) : (
-                      <span className="admin-img-preview-placeholder">No image selected</span>
-                    )}
-                  </div>
-                  <h4 className="admin-img-slot-label">Photo 1 &bull; Mid-Left (Mobile / AgriFarm)</h4>
-                  <div className="admin-fgroup">
-                    <label>Choose Preset</label>
-                    <select
-                      className="admin-preset-select"
-                      value={homeConfig.mosaic.photo1}
-                      onChange={(e) =>
-                        setHomeConfig({
-                          ...homeConfig,
-                          mosaic: { ...homeConfig.mosaic, photo1: e.target.value },
-                        })
-                      }
-                    >
-                      {AVAILABLE_WORK_IMAGES.map((img) => (
-                        <option key={img.value} value={img.value}>
-                          {img.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="admin-fgroup">
-                    <label>Or Custom Image Path / URL</label>
-                    <input
-                      type="text"
-                      className="admin-input"
-                      value={homeConfig.mosaic.photo1}
-                      onChange={(e) =>
-                        setHomeConfig({
-                          ...homeConfig,
-                          mosaic: { ...homeConfig.mosaic, photo1: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                </div>
+                <AdminImageCard
+                  id="mosaic-p1"
+                  slotTitle="Photo 1 • Mid-Left (Mobile / AgriFarm)"
+                  value={homeConfig.mosaic.photo1}
+                  presets={AVAILABLE_WORK_IMAGES}
+                  onChange={(val) =>
+                    setHomeConfig({
+                      ...homeConfig,
+                      mosaic: { ...homeConfig.mosaic, photo1: val },
+                    })
+                  }
+                  onFileUpload={handleImageFileUpload}
+                />
 
                 {/* Photo 2 */}
-                <div className="admin-image-picker-card">
-                  <div className="admin-img-preview-box">
-                    {homeConfig.mosaic.photo2 ? (
-                      <img src={homeConfig.mosaic.photo2} alt="Preview 2" />
-                    ) : (
-                      <span className="admin-img-preview-placeholder">No image selected</span>
-                    )}
-                  </div>
-                  <h4 className="admin-img-slot-label">Photo 2 &bull; Bottom-Left (SaaS / Web Platform)</h4>
-                  <div className="admin-fgroup">
-                    <label>Choose Preset</label>
-                    <select
-                      className="admin-preset-select"
-                      value={homeConfig.mosaic.photo2}
-                      onChange={(e) =>
-                        setHomeConfig({
-                          ...homeConfig,
-                          mosaic: { ...homeConfig.mosaic, photo2: e.target.value },
-                        })
-                      }
-                    >
-                      {AVAILABLE_WORK_IMAGES.map((img) => (
-                        <option key={img.value} value={img.value}>
-                          {img.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="admin-fgroup">
-                    <label>Or Custom Image Path / URL</label>
-                    <input
-                      type="text"
-                      className="admin-input"
-                      value={homeConfig.mosaic.photo2}
-                      onChange={(e) =>
-                        setHomeConfig({
-                          ...homeConfig,
-                          mosaic: { ...homeConfig.mosaic, photo2: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                </div>
+                <AdminImageCard
+                  id="mosaic-p2"
+                  slotTitle="Photo 2 • Bottom-Left (SaaS / Web Platform)"
+                  value={homeConfig.mosaic.photo2}
+                  presets={AVAILABLE_WORK_IMAGES}
+                  onChange={(val) =>
+                    setHomeConfig({
+                      ...homeConfig,
+                      mosaic: { ...homeConfig.mosaic, photo2: val },
+                    })
+                  }
+                  onFileUpload={handleImageFileUpload}
+                />
 
                 {/* Photo 3 */}
-                <div className="admin-image-picker-card">
-                  <div className="admin-img-preview-box">
-                    {homeConfig.mosaic.photo3 ? (
-                      <img src={homeConfig.mosaic.photo3} alt="Preview 3" />
-                    ) : (
-                      <span className="admin-img-preview-placeholder">No image selected</span>
-                    )}
-                  </div>
-                  <h4 className="admin-img-slot-label">Photo 3 &bull; Top-Right (Flagship Financial)</h4>
-                  <div className="admin-fgroup">
-                    <label>Choose Preset</label>
-                    <select
-                      className="admin-preset-select"
-                      value={homeConfig.mosaic.photo3}
-                      onChange={(e) =>
-                        setHomeConfig({
-                          ...homeConfig,
-                          mosaic: { ...homeConfig.mosaic, photo3: e.target.value },
-                        })
-                      }
-                    >
-                      {AVAILABLE_WORK_IMAGES.map((img) => (
-                        <option key={img.value} value={img.value}>
-                          {img.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="admin-fgroup">
-                    <label>Or Custom Image Path / URL</label>
-                    <input
-                      type="text"
-                      className="admin-input"
-                      value={homeConfig.mosaic.photo3}
-                      onChange={(e) =>
-                        setHomeConfig({
-                          ...homeConfig,
-                          mosaic: { ...homeConfig.mosaic, photo3: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                </div>
+                <AdminImageCard
+                  id="mosaic-p3"
+                  slotTitle="Photo 3 • Top-Right (Flagship Financial)"
+                  value={homeConfig.mosaic.photo3}
+                  presets={AVAILABLE_WORK_IMAGES}
+                  onChange={(val) =>
+                    setHomeConfig({
+                      ...homeConfig,
+                      mosaic: { ...homeConfig.mosaic, photo3: val },
+                    })
+                  }
+                  onFileUpload={handleImageFileUpload}
+                />
 
                 {/* Photo 4 */}
-                <div className="admin-image-picker-card">
-                  <div className="admin-img-preview-box">
-                    {homeConfig.mosaic.photo4 ? (
-                      <img src={homeConfig.mosaic.photo4} alt="Preview 4" />
-                    ) : (
-                      <span className="admin-img-preview-placeholder">No image selected</span>
-                    )}
-                  </div>
-                  <h4 className="admin-img-slot-label">Photo 4 &bull; Bottom-Right (Engineering Team)</h4>
-                  <div className="admin-fgroup">
-                    <label>Choose Preset</label>
-                    <select
-                      className="admin-preset-select"
-                      value={homeConfig.mosaic.photo4}
-                      onChange={(e) =>
-                        setHomeConfig({
-                          ...homeConfig,
-                          mosaic: { ...homeConfig.mosaic, photo4: e.target.value },
-                        })
-                      }
-                    >
-                      {AVAILABLE_WORK_IMAGES.map((img) => (
-                        <option key={img.value} value={img.value}>
-                          {img.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="admin-fgroup">
-                    <label>Or Custom Image Path / URL</label>
-                    <input
-                      type="text"
-                      className="admin-input"
-                      value={homeConfig.mosaic.photo4}
-                      onChange={(e) =>
-                        setHomeConfig({
-                          ...homeConfig,
-                          mosaic: { ...homeConfig.mosaic, photo4: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                </div>
+                <AdminImageCard
+                  id="mosaic-p4"
+                  slotTitle="Photo 4 • Bottom-Right (Engineering Team)"
+                  value={homeConfig.mosaic.photo4}
+                  presets={AVAILABLE_WORK_IMAGES}
+                  onChange={(val) =>
+                    setHomeConfig({
+                      ...homeConfig,
+                      mosaic: { ...homeConfig.mosaic, photo4: val },
+                    })
+                  }
+                  onFileUpload={handleImageFileUpload}
+                />
               </div>
             </div>
 
@@ -1389,42 +1472,20 @@ export default function AdminPage() {
 
               <div className="admin-grid-2">
                 <div>
-                  <div className="admin-img-preview-box" style={{ height: 200, marginBottom: 12 }}>
-                    <img src={homeConfig.erpSpotlight.image || "/work/akiba-erp-dashboard.png"} alt="ERP preview" />
-                  </div>
-                  <div className="admin-fgroup">
-                    <label>ERP Dashboard Screenshot Preset</label>
-                    <select
-                      className="admin-preset-select"
-                      value={homeConfig.erpSpotlight.image}
-                      onChange={(e) =>
-                        setHomeConfig({
-                          ...homeConfig,
-                          erpSpotlight: { ...homeConfig.erpSpotlight, image: e.target.value },
-                        })
-                      }
-                    >
-                      {AVAILABLE_WORK_IMAGES.map((img) => (
-                        <option key={img.value} value={img.value}>
-                          {img.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="admin-fgroup" style={{ marginTop: 8 }}>
-                    <label>Or Custom Screenshot URL</label>
-                    <input
-                      type="text"
-                      className="admin-input"
-                      value={homeConfig.erpSpotlight.image}
-                      onChange={(e) =>
-                        setHomeConfig({
-                          ...homeConfig,
-                          erpSpotlight: { ...homeConfig.erpSpotlight, image: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
+                  <AdminImageCard
+                    id="erp-spotlight-img"
+                    slotTitle="ERP Dashboard Screenshot"
+                    value={homeConfig.erpSpotlight.image || "/work/akiba-erp-dashboard.png"}
+                    presets={AVAILABLE_WORK_IMAGES}
+                    previewHeight={200}
+                    onChange={(val) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        erpSpotlight: { ...homeConfig.erpSpotlight, image: val },
+                      })
+                    }
+                    onFileUpload={handleImageFileUpload}
+                  />
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>

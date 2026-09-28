@@ -12,9 +12,16 @@ import { useHomeConfig } from "@/lib/home-store";
  * - Clean rounded corners (20px)
  * - Authentic, subtle shadows without artificial AI badges
  */
+const isUnoptimized = (src: string) => src.startsWith("data:") || src.startsWith("http");
+
 export function HeroMosaic() {
   const { config } = useHomeConfig();
   const { mosaic } = config;
+
+  const photo1Src = mosaic.photo1 || "/work/hero-agrifarm-app.webp";
+  const photo2Src = mosaic.photo2 || "/work/hero-powerfit-gym.webp";
+  const photo3Src = mosaic.photo3 || "/work/hero-akiba-erp.webp";
+  const photo4Src = mosaic.photo4 || "/work/hero-engineering-team.webp";
 
   return (
     <div className="mention-mosaic-wrap" aria-label="Akiba Technologies projects and engineering">
@@ -29,12 +36,13 @@ export function HeroMosaic() {
           >
             <div className="mention-img-frame">
               <Image
-                src={mosaic.photo1 || "/work/hero-agrifarm-app.webp"}
+                src={photo1Src}
                 alt={mosaic.photo1Alt || "AgriFARM smart farming mobile application interface"}
                 width={900}
                 height={1200}
                 sizes="(max-width: 768px) 150px, 220px"
                 priority
+                unoptimized={isUnoptimized(photo1Src)}
                 className="mention-photo"
               />
             </div>
@@ -48,11 +56,12 @@ export function HeroMosaic() {
           >
             <div className="mention-img-frame">
               <Image
-                src={mosaic.photo2 || "/work/hero-powerfit-gym.webp"}
+                src={photo2Src}
                 alt={mosaic.photo2Alt || "PowerFit Gym management SaaS platform dashboard"}
                 width={1500}
                 height={850}
                 sizes="(max-width: 768px) 150px, 220px"
+                unoptimized={isUnoptimized(photo2Src)}
                 className="mention-photo"
               />
             </div>
@@ -69,12 +78,13 @@ export function HeroMosaic() {
           >
             <div className="mention-img-frame">
               <Image
-                src={mosaic.photo3 || "/work/hero-akiba-erp.webp"}
+                src={photo3Src}
                 alt={mosaic.photo3Alt || "Akiba ERP Financial Analytics Dashboard showing revenue growth"}
                 width={1600}
                 height={900}
                 sizes="(max-width: 768px) 100vw, 380px"
                 priority
+                unoptimized={isUnoptimized(photo3Src)}
                 className="mention-photo"
               />
             </div>
@@ -88,11 +98,12 @@ export function HeroMosaic() {
           >
             <div className="mention-img-frame">
               <Image
-                src={mosaic.photo4 || "/work/hero-engineering-team.webp"}
+                src={photo4Src}
                 alt={mosaic.photo4Alt || "Senior Akiba Technologies software engineers collaborating over system architecture"}
                 width={1400}
                 height={788}
                 sizes="(max-width: 768px) 100vw, 350px"
+                unoptimized={isUnoptimized(photo4Src)}
                 className="mention-photo"
               />
             </div>

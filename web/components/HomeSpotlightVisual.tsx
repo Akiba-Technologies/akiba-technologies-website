@@ -34,6 +34,10 @@ export function HomeSpotlightVisual() {
             sizes="(max-width: 1000px) 100vw, 60vw"
             style={{ width: "100%", height: "auto", display: "block" }}
             priority
+            unoptimized={Boolean(
+              erpSpotlight.image &&
+                (erpSpotlight.image.startsWith("data:") || erpSpotlight.image.startsWith("http"))
+            )}
           />
         </div>
 
