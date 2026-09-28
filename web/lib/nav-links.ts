@@ -26,6 +26,7 @@ export const FOOTER_COMPANY: NavLink[] = [
   { href: "/about#team", label: "Engineering pods" },
   { href: "https://hub.akibatech.com/login", label: "AkibaTech Academy (Hub)" },
   { href: "/contact", label: "Contact" },
+  { href: "/admin", label: "Admin Portal" },
 ];
 
 export const CONTACT_EMAIL = "contact@akibatech.com";

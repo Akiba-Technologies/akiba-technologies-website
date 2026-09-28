@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { CONTACT_EMAIL } from "@/lib/nav-links";
+import { addInquiry } from "@/lib/admin-store";
 
 const FORM_ENDPOINT = "";
 
@@ -29,6 +30,18 @@ export function ContactForm() {
     if (!e.currentTarget.reportValidity()) return;
 
     setSending(true);
+
+    try {
+      addInquiry({
+        name: data.name,
+        email: data.email,
+        subject: data.subject || "General Inquiry",
+        message: data.message,
+        source: "Website Contact Page",
+      });
+    } catch {
+      // ignore
+    }
 
     if (FORM_ENDPOINT) {
       try {
