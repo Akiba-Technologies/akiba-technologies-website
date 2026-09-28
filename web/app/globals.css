@@ -4573,7 +4573,7 @@ select.field option {
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.015em;
-  color: #fff;
+  color: var(--mint);
   line-height: 1.3;
 }
 
@@ -5065,7 +5065,7 @@ select.field option {
 }
 
 [data-theme="light"] .shipped-card-title {
-  color: var(--ink);
+  color: #047857;
 }
 
 [data-theme="light"] .shipped-card-summary {

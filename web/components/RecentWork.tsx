@@ -6,11 +6,7 @@ import Link from "next/link";
 import { Reveal } from "./Reveal";
 import { CASE_STUDIES } from "@/lib/case-studies";
 
-const FEATURED_SLUGS = ["akiba-erp", "gym-management", "digifarm-ai"];
-
-const FEATURED_CASES = FEATURED_SLUGS.map((slug) =>
-  CASE_STUDIES.find((c) => c.slug === slug)
-).filter((c): c is (typeof CASE_STUDIES)[number] => Boolean(c));
+const FEATURED_CASES = CASE_STUDIES;
 
 export function RecentWork() {
   const cases = FEATURED_CASES;
@@ -214,13 +210,6 @@ export function RecentWork() {
 
                   <h3 className="shipped-card-title">{c.title}</h3>
                   <p className="shipped-card-summary">{c.summary}</p>
-
-                  {c.metricValue && (
-                    <div className="case-metric">
-                      <div className="v">{c.metricValue}</div>
-                      <div className="l">{c.metricLabel}</div>
-                    </div>
-                  )}
 
                   {c.stack.length > 0 && (
                     <div className="b-stack">

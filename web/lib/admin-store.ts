@@ -232,11 +232,19 @@ export function getStoredProjects(): AdminProject[] {
       return INITIAL_PROJECTS;
     }
     const parsed = JSON.parse(raw);
-    // If stored array is using the old placeholder data, upgrade to the real 6 current projects!
+    const requiredSlugs = [
+      "digifarm-ai",
+      "gym-management",
+      "akiba-erp",
+      "royal-candy",
+      "hailemariam-export",
+      "tway-realestate",
+    ];
+    // If stored array is using the old placeholder data or has fewer than 6 projects, reset to the real 6!
     if (
-      Array.isArray(parsed) &&
-      (parsed.some((p: AdminProject) => p.slug === "ethiofin-switch" || p.slug === "awash-fleet-os") ||
-        parsed.length === 0)
+      !Array.isArray(parsed) ||
+      parsed.length < 6 ||
+      requiredSlugs.some((slug) => !parsed.some((p: AdminProject) => p.slug === slug))
     ) {
       localStorage.setItem(PROJECTS_KEY, JSON.stringify(INITIAL_PROJECTS));
       return INITIAL_PROJECTS;

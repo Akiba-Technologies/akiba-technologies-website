@@ -51,10 +51,14 @@ export function PortfolioBrowser() {
   useEffect(() => {
     const load = () => {
       const stored = getStoredProjects();
-      if (stored && stored.length > 0) {
+      if (stored && stored.length >= 6) {
         const published = stored.filter((p) => p.status !== "draft");
-        setStudies(published.map(mapAdminProjectToCaseStudy));
+        if (published.length >= 6) {
+          setStudies(published.map(mapAdminProjectToCaseStudy));
+          return;
+        }
       }
+      setStudies(CASE_STUDIES);
     };
     load();
 
