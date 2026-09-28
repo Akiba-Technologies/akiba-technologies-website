@@ -137,13 +137,6 @@ export function PortfolioBrowser() {
               <h3>{c.title}</h3>
               <p>{c.summary}</p>
 
-              {c.metricValue && (
-                <div className="case-metric">
-                  <div className="v">{c.metricValue}</div>
-                  <div className="l">{c.metricLabel}</div>
-                </div>
-              )}
-
               {c.stack.length > 0 && (
                 <div className="b-stack">
                   {c.stack.map((s) => (
