@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/Reveal";
 import { PortfolioBrowser } from "@/components/PortfolioBrowser";
+import { PortfolioTestimonials } from "@/components/PortfolioTestimonials";
 import { Band } from "@/components/Band";
-import { TESTIMONIALS } from "@/lib/case-studies";
 
 export const metadata: Metadata = {
   title: "Our Portfolio | Akiba Technologies",
@@ -45,38 +45,8 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* ===================== TESTIMONIALS ===================== */}
-      <section className="sec sec-tint" aria-labelledby="say-h">
-        <div className="wrap">
-          <Reveal className="sec-head">
-            <p className="kicker">Verified engagements</p>
-            <h2 id="say-h">What the people who own the system say</h2>
-            <p className="lede">
-              Real feedback from technical leaders and operational managers running software engineered by Akiba.
-            </p>
-          </Reveal>
-
-          <div className="quotes">
-            {TESTIMONIALS.map((t, i) => (
-              <Reveal as="figure" className="card quote" delay={i * 60} key={t.name}>
-                <span className="mark" aria-hidden="true">
-                  &ldquo;
-                </span>
-                <blockquote>{t.quote}</blockquote>
-                <figcaption>
-                  <span className="avatar" aria-hidden="true">
-                    {t.initials}
-                  </span>
-                  <span>
-                    <span className="who">{t.name}</span>
-                    <span className="role">{t.role}</span>
-                  </span>
-                </figcaption>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ===================== DYNAMIC TESTIMONIALS ===================== */}
+      <PortfolioTestimonials />
 
       <Band
         heading="Your system could be the next one on this page."

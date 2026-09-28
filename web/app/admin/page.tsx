@@ -5,11 +5,15 @@ import Link from "next/link";
 import {
   type AdminInquiry,
   type AdminProject,
+  type AdminTestimonial,
   type InquiryStatus,
   getStoredInquiries,
   saveInquiries,
   getStoredProjects,
   saveProjects,
+  getStoredTestimonials,
+  saveTestimonials,
+  resetTestimonials,
   getStoredAuth,
   setStoredAuth,
 } from "@/lib/admin-store";
@@ -151,7 +155,7 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState("");
 
   // Navigation
-  const [activeTab, setActiveTab] = useState<"overview" | "inquiries" | "projects" | "home-cms" | "contact-cms">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "inquiries" | "projects" | "testimonials" | "home-cms" | "contact-cms">("overview");
 
   // Inquiries State
   const [inquiries, setInquiries] = useState<AdminInquiry[]>([]);
@@ -166,6 +170,13 @@ export default function AdminPage() {
   const [projectCategory, setProjectCategory] = useState<string>("all");
   const [isEditingProject, setIsEditingProject] = useState(false);
   const [editingProject, setEditingProject] = useState<Partial<AdminProject> | null>(null);
+
+  // Testimonials State
+  const [testimonials, setTestimonials] = useState<AdminTestimonial[]>([]);
+  const [testimonialSearch, setTestimonialSearch] = useState("");
+  const [testimonialFilter, setTestimonialFilter] = useState<"all" | "published" | "draft">("all");
+  const [isEditingTestimonial, setIsEditingTestimonial] = useState(false);
+  const [editingTestimonial, setEditingTestimonial] = useState<Partial<AdminTestimonial> | null>(null);
 
   // Home CMS State
   const [homeConfig, setHomeConfig] = useState<HomePageConfig>(DEFAULT_HOME_CONFIG);
@@ -187,6 +198,7 @@ export default function AdminPage() {
     setAuthenticated(isAuth);
     setInquiries(getStoredInquiries());
     setProjects(getStoredProjects());
+    setTestimonials(getStoredTestimonials());
     setHomeConfig(getStoredHomeConfig());
     setContactConfig(getStoredContactConfig());
   }, []);
@@ -296,6 +308,92 @@ export default function AdminPage() {
 
     setIsEditingProject(false);
     setEditingProject(null);
+  };
+
+  // Update Testimonials helpers
+  const handleToggleTestimonialStatus = (id: string) => {
+    const updated = testimonials.map((t) =>
+      t.id === id
+        ? {
+            ...t,
+            status: (t.status === "published" ? "draft" : "published") as "published" | "draft",
+          }
+        : t
+    );
+    setTestimonials(updated);
+    saveTestimonials(updated);
+    showToast("Testimonial visibility updated");
+  };
+
+  const handleDeleteTestimonial = (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this customer testimonial?")) return;
+    const updated = testimonials.filter((t) => t.id !== id);
+    setTestimonials(updated);
+    saveTestimonials(updated);
+    showToast("Testimonial removed");
+  };
+
+  const handleResetTestimonialsList = () => {
+    if (!window.confirm("Reset testimonials back to the verified default client reviews?")) return;
+    const def = resetTestimonials();
+    setTestimonials(def);
+    showToast("Reset to default client testimonials");
+  };
+
+  const handleSaveTestimonial = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingTestimonial?.name || !editingTestimonial?.quote) {
+      showToast("Please provide client name and quote text");
+      return;
+    }
+
+    const initials =
+      editingTestimonial.initials && editingTestimonial.initials.trim()
+        ? editingTestimonial.initials.trim().toUpperCase()
+        : editingTestimonial.name
+            .split(" ")
+            .map((w) => w[0])
+            .filter(Boolean)
+            .slice(0, 2)
+            .join("")
+            .toUpperCase() || "CL";
+
+    if (editingTestimonial.id) {
+      // Edit existing
+      const updated = testimonials.map((t) =>
+        t.id === editingTestimonial.id
+          ? ({
+              ...t,
+              ...editingTestimonial,
+              initials,
+              status: editingTestimonial.status || "published",
+              rating: editingTestimonial.rating || 5,
+            } as AdminTestimonial)
+          : t
+      );
+      setTestimonials(updated);
+      saveTestimonials(updated);
+      showToast("Testimonial updated");
+    } else {
+      // Create new
+      const newTest: AdminTestimonial = {
+        id: "test-" + Date.now(),
+        name: editingTestimonial.name,
+        role: editingTestimonial.role || "Verified Client",
+        company: editingTestimonial.company || "",
+        quote: editingTestimonial.quote,
+        initials,
+        status: editingTestimonial.status || "published",
+        rating: editingTestimonial.rating || 5,
+      };
+      const updated = [newTest, ...testimonials];
+      setTestimonials(updated);
+      saveTestimonials(updated);
+      showToast("New testimonial added to portfolio");
+    }
+
+    setIsEditingTestimonial(false);
+    setEditingTestimonial(null);
   };
 
   // Export CSV helper
@@ -532,6 +630,19 @@ export default function AdminPage() {
     });
   }, [projects, projectSearch, projectCategory]);
 
+  // Filtered testimonials
+  const filteredTestimonials = useMemo(() => {
+    return testimonials.filter((t) => {
+      const matchesSearch =
+        t.name.toLowerCase().includes(testimonialSearch.toLowerCase()) ||
+        t.role.toLowerCase().includes(testimonialSearch.toLowerCase()) ||
+        (t.company && t.company.toLowerCase().includes(testimonialSearch.toLowerCase())) ||
+        t.quote.toLowerCase().includes(testimonialSearch.toLowerCase());
+      const matchesFilter = testimonialFilter === "all" || t.status === testimonialFilter;
+      return matchesSearch && matchesFilter;
+    });
+  }, [testimonials, testimonialSearch, testimonialFilter]);
+
   // Analytics Metrics
   const stats = useMemo(() => {
     const total = inquiries.length;
@@ -540,8 +651,9 @@ export default function AdminPage() {
     const contacted = inquiries.filter((i) => i.status === "contacted").length;
     const converted = inquiries.filter((i) => i.status === "converted").length;
     const publishedProjects = projects.filter((p) => p.status === "published").length;
-    return { total, newCount, inReview, contacted, converted, publishedProjects };
-  }, [inquiries, projects]);
+    const publishedTestimonials = testimonials.filter((t) => t.status === "published").length;
+    return { total, newCount, inReview, contacted, converted, publishedProjects, publishedTestimonials };
+  }, [inquiries, projects, testimonials]);
 
   if (!mounted) {
     return (
@@ -728,6 +840,18 @@ export default function AdminPage() {
 
             <button
               type="button"
+              className={`admin-tab-btn ${activeTab === "testimonials" ? "active" : ""}`}
+              onClick={() => setActiveTab("testimonials")}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+              <span>Client Testimonials</span>
+              <span className="admin-tab-count">{testimonials.length}</span>
+            </button>
+
+            <button
+              type="button"
               className={`admin-tab-btn ${activeTab === "home-cms" ? "active" : ""}`}
               onClick={() => setActiveTab("home-cms")}
             >
@@ -854,6 +978,53 @@ export default function AdminPage() {
                 </svg>
                 <span>Add Case Study</span>
               </button>
+            )}
+
+            {activeTab === "testimonials" && (
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <button
+                  type="button"
+                  onClick={handleResetTestimonialsList}
+                  className="admin-btn admin-btn-ghost admin-btn-sm"
+                  title="Reset to default testimonials"
+                >
+                  Reset Defaults
+                </button>
+                <Link
+                  href="/portfolio"
+                  target="_blank"
+                  className="admin-btn admin-btn-outline admin-btn-sm"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                  <span>Preview Portfolio</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingTestimonial({
+                      name: "",
+                      role: "",
+                      company: "",
+                      quote: "",
+                      initials: "",
+                      status: "published",
+                      rating: 5,
+                    });
+                    setIsEditingTestimonial(true);
+                  }}
+                  className="admin-btn admin-btn-primary admin-btn-sm"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  <span>Add Testimonial</span>
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -1311,6 +1482,105 @@ export default function AdminPage() {
                     <button
                       type="button"
                       onClick={() => handleDeleteProject(p.id)}
+                      className="admin-btn admin-btn-danger admin-btn-sm"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB: CUSTOMER TESTIMONIALS (PORTFOLIO FEEDBACK)           */}
+        {/* ========================================================= */}
+        {activeTab === "testimonials" && (
+          <div className="admin-tab-panel">
+            {/* Controls Bar */}
+            <div className="admin-panel-controls">
+              <div className="admin-search-box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search testimonials by client, role, company, or quote text..."
+                  className="admin-search-input"
+                  value={testimonialSearch}
+                  onChange={(e) => setTestimonialSearch(e.target.value)}
+                />
+              </div>
+
+              <div className="admin-filter-tabs">
+                {(["all", "published", "draft"] as const).map((filterKey) => (
+                  <button
+                    key={filterKey}
+                    type="button"
+                    className={`admin-filter-btn ${testimonialFilter === filterKey ? "active" : ""}`}
+                    onClick={() => setTestimonialFilter(filterKey)}
+                  >
+                    {filterKey === "all" ? "All Reviews" : filterKey === "published" ? "Published" : "Drafts"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Testimonials Grid */}
+            <div className="admin-testimonials-grid">
+              {filteredTestimonials.map((t) => (
+                <div key={t.id} className="admin-card admin-test-card">
+                  <div className="admin-test-head">
+                    <div className="admin-test-client-info">
+                      <div className="admin-test-avatar" aria-hidden="true">
+                        {t.initials || t.name.slice(0, 2).toUpperCase()}
+                      </div>
+                      <div>
+                        <h3 className="admin-test-name">{t.name}</h3>
+                        <p className="admin-test-role">{t.role}</p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleToggleTestimonialStatus(t.id)}
+                      className={`admin-pill-toggle ${t.status}`}
+                      title="Click to toggle visibility"
+                    >
+                      {t.status === "published" ? "● Published" : "○ Draft"}
+                    </button>
+                  </div>
+
+                  <div className="admin-test-stars" aria-label={`${t.rating || 5} out of 5 stars`}>
+                    {Array.from({ length: t.rating || 5 }).map((_, idx) => (
+                      <span key={idx}>★</span>
+                    ))}
+                  </div>
+
+                  <blockquote className="admin-test-quote">&ldquo;{t.quote}&rdquo;</blockquote>
+
+                  {t.company && (
+                    <div className="admin-test-company">
+                      <span className="lbl">Verified Client:</span> {t.company}
+                    </div>
+                  )}
+
+                  <div className="admin-test-actions">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingTestimonial(t);
+                        setIsEditingTestimonial(true);
+                      }}
+                      className="admin-btn admin-btn-ghost admin-btn-sm"
+                    >
+                      Edit Review
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteTestimonial(t.id)}
                       className="admin-btn admin-btn-danger admin-btn-sm"
                     >
                       Delete
@@ -2364,6 +2634,142 @@ export default function AdminPage() {
                 </button>
                 <button type="submit" className="admin-btn admin-btn-primary admin-btn-sm">
                   Save Case Study
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* ADD / EDIT TESTIMONIAL MODAL                              */}
+      {/* ========================================================= */}
+      {isEditingTestimonial && editingTestimonial && (
+        <div className="admin-modal-backdrop" onClick={() => setIsEditingTestimonial(false)}>
+          <div className="admin-modal-card admin-modal-wide" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-modal-head">
+              <h2>{editingTestimonial.id ? "Edit Customer Testimonial" : "Add Customer Testimonial"}</h2>
+              <button
+                type="button"
+                className="admin-modal-close"
+                onClick={() => setIsEditingTestimonial(false)}
+                aria-label="Close modal"
+              >
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveTestimonial}>
+              <div className="admin-modal-body">
+                <div className="admin-grid-2">
+                  <div className="admin-fgroup">
+                    <label>Client / Executive Name *</label>
+                    <input
+                      type="text"
+                      required
+                      className="admin-input"
+                      placeholder="e.g. A. Mengistu or Tway Real Estate"
+                      value={editingTestimonial.name || ""}
+                      onChange={(e) => setEditingTestimonial({ ...editingTestimonial, name: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="admin-fgroup">
+                    <label>Role &amp; Organization *</label>
+                    <input
+                      type="text"
+                      required
+                      className="admin-input"
+                      placeholder="e.g. General Manager • Amigos Gym"
+                      value={editingTestimonial.role || ""}
+                      onChange={(e) => setEditingTestimonial({ ...editingTestimonial, role: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="admin-grid-3">
+                  <div className="admin-fgroup">
+                    <label>Company / Organization</label>
+                    <input
+                      type="text"
+                      className="admin-input"
+                      placeholder="e.g. Amigos Gym PLC"
+                      value={editingTestimonial.company || ""}
+                      onChange={(e) => setEditingTestimonial({ ...editingTestimonial, company: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="admin-fgroup">
+                    <label>Avatar Initials (2 letters)</label>
+                    <input
+                      type="text"
+                      maxLength={3}
+                      className="admin-input"
+                      placeholder="e.g. AM"
+                      value={editingTestimonial.initials || ""}
+                      onChange={(e) => setEditingTestimonial({ ...editingTestimonial, initials: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="admin-fgroup">
+                    <label>Visibility Status</label>
+                    <select
+                      className="admin-input"
+                      value={editingTestimonial.status || "published"}
+                      onChange={(e) =>
+                        setEditingTestimonial({
+                          ...editingTestimonial,
+                          status: e.target.value as "published" | "draft",
+                        })
+                      }
+                    >
+                      <option value="published">Published</option>
+                      <option value="draft">Draft</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Star Rating (1 to 5 Stars)</label>
+                  <select
+                    className="admin-input"
+                    value={editingTestimonial.rating || 5}
+                    onChange={(e) =>
+                      setEditingTestimonial({
+                        ...editingTestimonial,
+                        rating: Number(e.target.value),
+                      })
+                    }
+                  >
+                    <option value={5}>★★★★★ (5 Stars - Exceptional)</option>
+                    <option value={4}>★★★★☆ (4 Stars - Great)</option>
+                    <option value={3}>★★★☆☆ (3 Stars - Good)</option>
+                  </select>
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Client Testimonial Quote *</label>
+                  <textarea
+                    rows={4}
+                    required
+                    className="admin-textarea"
+                    placeholder="Enter what the client said about Akiba Technologies..."
+                    value={editingTestimonial.quote || ""}
+                    onChange={(e) => setEditingTestimonial({ ...editingTestimonial, quote: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="admin-modal-foot">
+                <button
+                  type="button"
+                  onClick={() => setIsEditingTestimonial(false)}
+                  className="admin-btn admin-btn-ghost admin-btn-sm"
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="admin-btn admin-btn-primary admin-btn-sm">
+                  Save Testimonial
                 </button>
               </div>
             </form>

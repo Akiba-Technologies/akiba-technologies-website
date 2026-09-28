@@ -28,6 +28,17 @@ export type AdminProject = {
   liveDemoUrl?: string;
 };
 
+export type AdminTestimonial = {
+  id: string;
+  name: string;
+  role: string;
+  company?: string;
+  quote: string;
+  initials: string;
+  status: "published" | "draft";
+  rating?: number;
+};
+
 export const INITIAL_INQUIRIES: AdminInquiry[] = [
   {
     id: "inq-1",
@@ -286,3 +297,83 @@ export function setStoredAuth(val: boolean): void {
     // ignore
   }
 }
+
+export const INITIAL_TESTIMONIALS: AdminTestimonial[] = [
+  {
+    id: "test-1",
+    name: "Tway Real Estate",
+    role: "Management • Tway Real Estate PLC",
+    company: "Tway Real Estate PLC",
+    quote:
+      "The Tway Realestate platform transformed how our clients explore properties in Addis Ababa. The responsive design and instant inquiry workflow significantly boosted our verified buyer leads.",
+    initials: "TR",
+    status: "published",
+    rating: 5,
+  },
+  {
+    id: "test-2",
+    name: "A. Mengistu",
+    role: "General Manager • Amigos Gym",
+    company: "Amigos Gym",
+    quote:
+      "The GYM Management System streamlined our memberships, check-ins, and trainer schedules completely. Our front desk operations are now fast and error-free.",
+    initials: "AM",
+    status: "published",
+    rating: 5,
+  },
+  {
+    id: "test-3",
+    name: "A. Okonkwo",
+    role: "Head of Operations • Akiba ERP deployment",
+    company: "Akiba ERP deployment",
+    quote:
+      "Akiba ERP reconciled our warehouse counts across branches automatically. Month-end audits now happen in minutes instead of taking days of manual entry.",
+    initials: "AO",
+    status: "published",
+    rating: 5,
+  },
+];
+
+const TESTIMONIALS_KEY = "akiba_admin_testimonials";
+const TESTIMONIALS_EVENT_KEY = "akiba_testimonials_change";
+
+export function getStoredTestimonials(): AdminTestimonial[] {
+  if (typeof window === "undefined") return INITIAL_TESTIMONIALS;
+  try {
+    const raw = localStorage.getItem(TESTIMONIALS_KEY);
+    if (!raw) {
+      localStorage.setItem(TESTIMONIALS_KEY, JSON.stringify(INITIAL_TESTIMONIALS));
+      return INITIAL_TESTIMONIALS;
+    }
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      localStorage.setItem(TESTIMONIALS_KEY, JSON.stringify(INITIAL_TESTIMONIALS));
+      return INITIAL_TESTIMONIALS;
+    }
+    return parsed;
+  } catch {
+    return INITIAL_TESTIMONIALS;
+  }
+}
+
+export function saveTestimonials(testimonials: AdminTestimonial[]): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(TESTIMONIALS_KEY, JSON.stringify(testimonials));
+    window.dispatchEvent(new Event(TESTIMONIALS_EVENT_KEY));
+  } catch {
+    // ignore
+  }
+}
+
+export function resetTestimonials(): AdminTestimonial[] {
+  if (typeof window === "undefined") return INITIAL_TESTIMONIALS;
+  try {
+    localStorage.setItem(TESTIMONIALS_KEY, JSON.stringify(INITIAL_TESTIMONIALS));
+    window.dispatchEvent(new Event(TESTIMONIALS_EVENT_KEY));
+  } catch {
+    // ignore
+  }
+  return INITIAL_TESTIMONIALS;
+}
+

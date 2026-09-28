@@ -7444,6 +7444,95 @@ select.field option {
   padding-top: 14px;
 }
 
+/* --- Admin Testimonials Grid --- */
+.admin-testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.admin-test-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-test-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-test-client-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-test-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: var(--mint);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-family: var(--font-m);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.admin-test-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.admin-test-role {
+  font-size: 0.78rem;
+  color: var(--slate);
+  margin: 0;
+}
+
+.admin-test-stars {
+  color: #f59e0b;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.admin-test-quote {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--slate);
+  font-style: italic;
+  margin: 0 0 16px;
+  flex: 1;
+}
+
+.admin-test-company {
+  font-size: 0.76rem;
+  color: var(--slate);
+  margin-bottom: 14px;
+}
+
+.admin-test-company .lbl {
+  color: var(--mint);
+  font-family: var(--font-m);
+  margin-right: 4px;
+}
+
+.admin-test-actions {
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
 /* --- Modals --- */
 .admin-modal-backdrop {
   position: fixed;
