@@ -3,12 +3,12 @@ import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 
 export const metadata: Metadata = {
-  title: "Our Services | Akiba Technologies",
+  title: "Our Services | Akiba Tech",
   description:
-    "Comprehensive technical solutions tailored to meet your unique business challenges. From concept to deployment, we handle it all.",
+    "Explore Akiba Tech's core engineering offerings: Custom Software & Web Development, Cloud & Infrastructure Solutions, AI & Automation Systems, and Akiba ERP platforms.",
   openGraph: {
-    title: "Our Services | Akiba Technologies",
-    description: "Comprehensive technical solutions tailored to meet your unique business challenges.",
+    title: "Our Services | Akiba Tech",
+    description: "Building modern technology solutions: custom software, cloud systems, and intelligent digital products.",
   },
 };
 
@@ -26,38 +26,17 @@ type ServiceItem = {
 
 const SERVICES: ServiceItem[] = [
   {
-    id: "erp",
-    badge: "Enterprise",
-    title: "ERP Systems",
-    description: "Complete enterprise resource planning solutions to streamline business processes.",
-    features: [
-      "Custom ERP Development",
-      "Inventory Management Systems",
-      "Financial Management Integration",
-      "Supply Chain Optimization",
-      "Business Intelligence & Reporting",
-      "Multi-location Support",
-    ],
-    icon: ({ className }) => (
-      <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-        <line x1="8" y1="21" x2="16" y2="21" />
-        <line x1="12" y1="17" x2="12" y2="21" />
-      </svg>
-    ),
-  },
-  {
     id: "web",
-    badge: "Full-Stack",
-    title: "Custom Web Development",
-    description: "We build fast, responsive, and SEO-friendly websites using the latest technologies.",
+    badge: "Full-Stack & APIs",
+    title: "Custom Software & Web Development",
+    description: "Full-stack development, modern APIs, responsive web applications, and UI/UX design with clean code and fast delivery.",
     features: [
-      "React, Next.js, & Vue.js Development",
-      "Progressive Web Apps (PWA)",
-      "E-commerce Solutions (Shopify, WooCommerce)",
-      "CMS Integration (Sanity, Contentful)",
-      "API Design & Integration",
-      "Performance Optimization",
+      "Modern React & Next.js Web Platforms",
+      "Robust REST & GraphQL API Design",
+      "Intuitive Responsive UI/UX Engineering",
+      "Clean Architecture & Modular Code",
+      "Progressive Web Apps (PWA) & Offline Sync",
+      "Fast, Reliable, & Continuous Delivery",
     ],
     icon: ({ className }) => (
       <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -68,17 +47,36 @@ const SERVICES: ServiceItem[] = [
     ),
   },
   {
-    id: "ai",
-    badge: "Intelligence",
-    title: "AI & Machine Learning",
-    description: "Leverage the power of AI to automate tasks and gain valuable insights.",
+    id: "cloud",
+    badge: "Cloud & DevOps",
+    title: "Cloud & Infrastructure Solutions",
+    description: "DevOps automation, database design, Docker containerization, and cloud deployment emphasizing security, high uptime, and enterprise scalability.",
     features: [
-      "Custom LLM Integration (GPT-4, Claude)",
-      "Chatbots & Virtual Assistants",
-      "Predictive Analytics Models",
+      "DevOps Automation & CI/CD Pipelines",
+      "High-Performance Database Architecture",
+      "Docker Containerization & Orchestration",
+      "Multi-Cloud Deployment (AWS, GCP, Azure)",
+      "Zero-Downtime Infrastructure & Backups",
+      "Enterprise Scalability & 99.9% SLA Uptime",
+    ],
+    icon: ({ className }) => (
+      <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+      </svg>
+    ),
+  },
+  {
+    id: "ai",
+    badge: "Intelligence & Automation",
+    title: "AI & Automation Systems",
+    description: "Intelligent workflow automation, AI integration, and data pipelines engineered for business efficiency and cost reduction.",
+    features: [
+      "Intelligent Workflow Automation (RPA)",
+      "Custom LLM Integration & AI Agents",
+      "Automated Business Data Pipelines & ETL",
+      "Predictive Analytics & Decision Models",
       "Natural Language Processing (NLP)",
-      "Computer Vision Solutions",
-      "Process Automation (RPA)",
+      "Secure On-Prem & Private Cloud Inference",
     ],
     icon: ({ className }) => (
       <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -88,22 +86,48 @@ const SERVICES: ServiceItem[] = [
     ),
   },
   {
-    id: "learning",
-    badge: "EdTech",
-    title: "Learning Solutions",
-    description: "Educational platforms and LMS tailored to your training needs.",
+    id: "erp",
+    badge: "Enterprise Flagship",
+    title: "Akiba ERP Platforms",
+    description: "Unified enterprise resource planning for multi-location inventory, warehouse management, purchasing, and real-time financial ledgers.",
     features: [
-      "Custom Learning Management Systems",
-      "Interactive Course Content",
-      "Student Progress Tracking",
-      "Gamification & Engagement",
-      "Certification & Badge Systems",
-      "Video Streaming Integration",
+      "Custom Enterprise ERP Architecture",
+      "Multi-Warehouse Real-Time Inventory",
+      "Reconciled Accounting & Tax Ledgers",
+      "Supply Chain & Automated Reordering",
+      "Barcode & Hardware Scanner Support",
+      "Executive Analytics & Multi-Branch Auditing",
     ],
     icon: ({ className }) => (
       <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+        <line x1="8" y1="21" x2="16" y2="21" />
+        <line x1="12" y1="17" x2="12" y2="21" />
+      </svg>
+    ),
+  },
+  {
+    id: "academy",
+    badge: "Education & Talent",
+    title: "Education Services (AkibaTech Academy)",
+    description: "We don't just consume modern tech — we teach it with engineering rigor across Africa.",
+    features: [
+      "Backend Architecture & System Design",
+      "Data Structures & Algorithmic Problem Solving",
+      "Clean Code & Production Quality Rigor",
+      "200+ Engineers Trained in Addis Ababa",
+      "Enterprise Apprenticeship Pods",
+      "Akiba Hub Admissions Portal",
+    ],
+    linkUrl: "https://hub.akibatech.com/login",
+    linkLabel: "Register on Akiba Hub",
+    isExternal: true,
+    icon: ({ className }) => (
+      <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+        <path d="M6 6h10" />
+        <path d="M6 10h10" />
+        <path d="M6 14h6" />
       </svg>
     ),
   },
@@ -117,38 +141,13 @@ const SERVICES: ServiceItem[] = [
       "iOS & Android Native Apps",
       "App Store Optimization (ASO)",
       "Mobile UI/UX Design",
-      "Push Notifications",
-      "Offline Functionality",
+      "Push Notifications & Telemetry",
+      "Offline-First Data Synchronization",
     ],
     icon: ({ className }) => (
       <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
         <line x1="12" y1="18" x2="12.01" y2="18" />
-      </svg>
-    ),
-  },
-  {
-    id: "academy",
-    badge: "Education",
-    title: "Education Services (AkibaTech Academy)",
-    description: "We don't just consume modern tech — we teach it with engineering rigor.",
-    features: [
-      "Backend Architecture",
-      "System Design & Scalability",
-      "Data Structures & Algorithms",
-      "Clean Code & Engineering Rigor",
-      "200+ Hand-Selected Engineers",
-      "Akiba Hub Admissions Portal",
-    ],
-    linkUrl: "https://hub.akibatech.com/login",
-    linkLabel: "Register on Akiba Hub",
-    isExternal: true,
-    icon: ({ className }) => (
-      <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
-        <path d="M6 6h10" />
-        <path d="M6 10h10" />
-        <path d="M6 14h6" />
       </svg>
     ),
   },

@@ -27,12 +27,12 @@ export function WhyChooseKnocker() {
           }}
         >
           <div>
-            <p className="kicker">Why Choose Us</p>
+            <p className="kicker">Why Akiba Tech</p>
             <h2 id="why-knocker-h" className="why-title">
-              Why Choose <span className="grad">Knocker AI</span>?
+              Why Choose <span className="grad">Akiba Tech</span>?
             </h2>
             <p className="lede why-lede">
-              We combine technical expertise with creative innovation to deliver exceptional results that drive real business value.
+              Empowering digital transformation through scalable, high-performance technology. We build modern, reliable, and high-impact software solutions with clean architecture and cutting-edge engineering.
             </p>
           </div>
           <Link className="btn btn-ghost btn-sm" href="/services">
@@ -45,7 +45,7 @@ export function WhyChooseKnocker() {
 
         {/* Creative Bento Grid */}
         <div className="why-bento-grid">
-          {/* Card 1: AI Solutions (Featured Wide Card) */}
+          {/* Card 1: AI & Automation Systems (Featured Wide Card) */}
           <Reveal className="why-card why-card-ai" delay={50}>
             <div className="why-card-top">
               <div className="why-icon-wrap">
@@ -58,9 +58,9 @@ export function WhyChooseKnocker() {
             </div>
 
             <div className="why-card-body">
-              <h3 className="why-card-title">AI Solutions</h3>
+              <h3 className="why-card-title">AI &amp; Automation Systems</h3>
               <p className="why-card-desc">
-                Intelligent automation, predictive analytics, and custom LLM integrations to optimize your operations.
+                Intelligent workflow automation, AI integration, and data pipelines engineered for efficiency, cost reduction, and automated business processes.
               </p>
 
               {/* Telemetry Visual Widget */}
@@ -100,7 +100,7 @@ export function WhyChooseKnocker() {
             </div>
           </Reveal>
 
-          {/* Card 2: Web Development */}
+          {/* Card 2: Custom Software & Web Development */}
           <Reveal className="why-card why-card-web" delay={100}>
             <div className="why-card-top">
               <div className="why-icon-wrap">
@@ -114,9 +114,9 @@ export function WhyChooseKnocker() {
             </div>
 
             <div className="why-card-body">
-              <h3 className="why-card-title">Web Development</h3>
+              <h3 className="why-card-title">Custom Software &amp; Web Development</h3>
               <p className="why-card-desc">
-                Custom, responsive, and high-performance websites tailored to your brand using modern frameworks like React and Next.js.
+                Full-stack development, modern APIs, responsive web applications, and UI/UX design built for reliability, clean code, and fast delivery.
               </p>
 
               {/* Visual Performance Gauge */}
@@ -133,12 +133,12 @@ export function WhyChooseKnocker() {
               <div className="why-chips">
                 <span className="why-chip">React &amp; Next.js 14</span>
                 <span className="why-chip">Progressive Web Apps</span>
-                <span className="why-chip">Headless CMS</span>
+                <span className="why-chip">Headless Architecture</span>
               </div>
             </div>
           </Reveal>
 
-          {/* Card 3: Cloud Systems */}
+          {/* Card 3: Cloud & Infrastructure Solutions */}
           <Reveal className="why-card why-card-cloud" delay={150}>
             <div className="why-card-top">
               <div className="why-icon-wrap">
@@ -150,9 +150,9 @@ export function WhyChooseKnocker() {
             </div>
 
             <div className="why-card-body">
-              <h3 className="why-card-title">Cloud Systems</h3>
+              <h3 className="why-card-title">Cloud &amp; Infrastructure Solutions</h3>
               <p className="why-card-desc">
-                Scalable, secure, and cost-effective cloud infrastructure design and management on AWS, Azure, or GCP.
+                DevOps automation, database design, Docker containerization, and cloud deployment emphasizing security, high uptime, and enterprise scalability.
               </p>
 
               {/* Visual Cloud Nodes Status */}

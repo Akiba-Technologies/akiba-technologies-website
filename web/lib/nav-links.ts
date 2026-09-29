@@ -29,4 +29,16 @@ export const FOOTER_COMPANY: NavLink[] = [
   { href: "/admin", label: "Admin Portal" },
 ];
 
-export const CONTACT_EMAIL = "contact@akibatech.com";
+export const CONTACT_EMAIL = "akiba.tech.official@gmail.com";
+export const SUPPORT_PHONE = "+251 960 352 222";
+export const SUPPORT_WHATSAPP = "https://wa.me/251960352222";
+
+export const SOCIAL_LINKS = {
+  linkedin: "https://linkedin.com/company/akibatech",
+  twitter: "https://x.com/akibatech",
+  facebook: "https://facebook.com/akibatech",
+  instagram: "https://instagram.com/akibatech",
+  github: "https://github.com/akibatech",
+  youtube: "https://youtube.com/@akibatech",
+  whatsapp: "https://wa.me/251960352222",
+};

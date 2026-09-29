@@ -2056,20 +2056,20 @@ export default function AdminPage() {
                 <div className="admin-preview-contact-item">
                   <span className="lbl">Email Address</span>
                   <span className="val" style={{ color: "var(--mint)" }}>
-                    {contactConfig.email || "contact@akibatech.com"}
+                    {contactConfig.email || "akiba.tech.official@gmail.com"}
                   </span>
                 </div>
 
                 <div className="admin-preview-contact-item">
-                  <span className="lbl">Direct Phone</span>
-                  <span className="val">{contactConfig.phone || "+251 911 648 816"}</span>
+                  <span className="lbl">Direct Phone / WhatsApp</span>
+                  <span className="val">{contactConfig.phone || "+251 960 352 222"}</span>
                 </div>
 
                 <div className="admin-preview-contact-item">
                   <span className="lbl">Office Location</span>
                   <span className="val">
                     {[contactConfig.address, contactConfig.cityCountry].filter(Boolean).join(", ") ||
-                      "Bethel, Addis Ababa, Ethiopia"}
+                      "Addis Ababa, Ethiopia"}
                   </span>
                 </div>
 
@@ -2313,6 +2313,72 @@ export default function AdminPage() {
                     className="admin-input"
                     value={contactConfig.linkedin}
                     onChange={(e) => setContactConfig({ ...contactConfig, linkedin: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>GitHub Organization URL</label>
+                  <input
+                    type="url"
+                    className="admin-input"
+                    placeholder="https://github.com/akibatech"
+                    value={contactConfig.github || ""}
+                    onChange={(e) => setContactConfig({ ...contactConfig, github: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>X (Twitter) URL</label>
+                  <input
+                    type="url"
+                    className="admin-input"
+                    placeholder="https://x.com/akibatech"
+                    value={contactConfig.twitter || ""}
+                    onChange={(e) => setContactConfig({ ...contactConfig, twitter: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Facebook Page URL</label>
+                  <input
+                    type="url"
+                    className="admin-input"
+                    placeholder="https://facebook.com/akibatech"
+                    value={contactConfig.facebook || ""}
+                    onChange={(e) => setContactConfig({ ...contactConfig, facebook: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Instagram Account URL</label>
+                  <input
+                    type="url"
+                    className="admin-input"
+                    placeholder="https://instagram.com/akibatech"
+                    value={contactConfig.instagram || ""}
+                    onChange={(e) => setContactConfig({ ...contactConfig, instagram: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>YouTube Channel URL</label>
+                  <input
+                    type="url"
+                    className="admin-input"
+                    placeholder="https://youtube.com/@akibatech"
+                    value={contactConfig.youtube || ""}
+                    onChange={(e) => setContactConfig({ ...contactConfig, youtube: e.target.value })}
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Support / WhatsApp Contact URL</label>
+                  <input
+                    type="url"
+                    className="admin-input"
+                    placeholder="https://wa.me/251960352222"
+                    value={contactConfig.whatsapp || ""}
+                    onChange={(e) => setContactConfig({ ...contactConfig, whatsapp: e.target.value })}
                   />
                 </div>
 

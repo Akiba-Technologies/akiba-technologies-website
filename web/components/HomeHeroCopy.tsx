@@ -12,17 +12,17 @@ export function HomeHeroCopy() {
     <div className="hero-copy">
       <Reveal as="div" className="pill pill-brand">
         <span className="dot dot-pulse" aria-hidden="true" />
-        <span>{hero.badge || "Software Engineering • Enterprise Services • Tech Academy"}</span>
+        <span>{hero.badge || "Building Modern Technology Solutions"}</span>
       </Reveal>
 
       <Reveal as="h1" delay={60}>
-        {hero.titlePrefix || "Building scalable software and"}{" "}
-        <span className="grad">{hero.titleHighlight || "digital solutions"}</span>
+        {hero.titlePrefix || "Empowering digital transformation through"}{" "}
+        <span className="grad">{hero.titleHighlight || "scalable technology"}</span>
       </Reveal>
 
       <Reveal as="p" className="lede" delay={120}>
         {hero.lede ||
-          "We design, engineer, and deploy high-performance custom software, ERP platforms, and cloud systems for growing enterprises."}
+          "Akiba Tech builds modern, reliable, and high-impact software solutions. From full-stack web and cloud systems to custom enterprise platforms, we help modern businesses scale efficiently with clean architecture and cutting-edge engineering."}
       </Reveal>
 
       <Reveal className="hero-cta" delay={180}>

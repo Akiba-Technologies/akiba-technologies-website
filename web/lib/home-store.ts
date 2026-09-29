@@ -45,10 +45,10 @@ export type HomePageConfig = {
 
 export const DEFAULT_HOME_CONFIG: HomePageConfig = {
   hero: {
-    badge: "Software Engineering • Enterprise Services • Tech Academy",
-    titlePrefix: "Building scalable software and",
-    titleHighlight: "digital solutions",
-    lede: "We design, engineer, and deploy high-performance custom software, ERP platforms, and cloud systems for growing enterprises.",
+    badge: "Building Modern Technology Solutions",
+    titlePrefix: "Empowering digital transformation through",
+    titleHighlight: "scalable technology",
+    lede: "Akiba Tech builds modern, reliable, and high-impact software solutions. From full-stack web and cloud systems to custom enterprise platforms, we help modern businesses scale efficiently with clean architecture and cutting-edge engineering.",
     stats: [
       { id: "stat-1", value: "50+", label: "Enterprise Deployments" },
       { id: "stat-2", value: "99.9%", label: "System Uptime SLA" },

@@ -4,7 +4,7 @@ import logo from "@/public/brand/logo.png";
 
 export function Logo({ priority = false }: { priority?: boolean }) {
   return (
-    <Link className="brand" href="/" aria-label="Akiba Technologies, home">
+    <Link className="brand" href="/" aria-label="Akiba Tech, home">
       <Image
         className="brand-mark"
         src={logo}
@@ -15,7 +15,7 @@ export function Logo({ priority = false }: { priority?: boolean }) {
       />
       <span className="brand-txt">
         <span className="brand-name">Akiba</span>
-        <span className="brand-sub">TECHNOLOGIES</span>
+        <span className="brand-sub">TECH</span>
       </span>
     </Link>
   );

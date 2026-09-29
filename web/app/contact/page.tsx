@@ -4,12 +4,12 @@ import { ContactForm } from "@/components/ContactForm";
 import { ContactDetailsSection } from "@/components/ContactDetailsSection";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Akiba Technologies",
+  title: "Contact Us | Akiba Tech",
   description:
-    "Reach out to us directly at contact@akibatech.com, call +251 911 648 816, or visit our office in Bethel, Addis Ababa, Ethiopia.",
+    "Reach out to Akiba Tech directly at akiba.tech.official@gmail.com, WhatsApp/call +251 960 352 222, or connect with our team in Addis Ababa, Ethiopia.",
   openGraph: {
-    title: "Contact Us | Akiba Technologies",
-    description: "Reach out to us directly. We are ready to help your business grow.",
+    title: "Contact Us | Akiba Tech",
+    description: "Reach out to us directly. We are ready to help your business grow with modern technology solutions.",
   },
 };
 

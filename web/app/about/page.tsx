@@ -3,12 +3,12 @@ import { Reveal } from "@/components/Reveal";
 import { Band } from "@/components/Band";
 
 export const metadata: Metadata = {
-  title: "About Us | Akiba Technologies",
+  title: "About Us | Akiba Tech",
   description:
-    "Akiba Technologies is an Ethiopian software engineering company and tech academy based in Addis Ababa. We build custom ERPs, scalable web platforms, and AI solutions.",
+    "Akiba Tech builds modern, reliable, and high-impact software solutions. From full-stack web and cloud systems to custom enterprise platforms, we help modern businesses scale efficiently.",
   openGraph: {
-    title: "About Us | Akiba Technologies",
-    description: "Engineering Ethiopia's digital future with world-class technical rigor.",
+    title: "About Us | Akiba Tech",
+    description: "Empowering digital transformation through scalable, high-performance technology.",
   },
 };
 
@@ -69,19 +69,17 @@ export default function AboutPage() {
       <section className="phead" aria-labelledby="about-h">
         <div className="wrap">
           <Reveal as="p" className="kicker">
-            About Akiba Technologies
+            About Akiba Tech
           </Reveal>
           <Reveal as="h1" delay={60} id="about-h">
-            Engineering Ethiopia&rsquo;s Digital Future With World-Class Rigor
+            Building Modern Technology Solutions
           </Reveal>
           <Reveal as="p" className="lede" delay={120}>
-            We are a team of software engineers, architects, and product builders rooted in Addis Ababa.
-            We build custom ERP systems, modern web platforms, and intelligent AI tools designed to solve real
-            operational challenges for Ethiopian businesses and growing enterprises.
+            Akiba Tech builds modern, reliable, and high-impact software solutions. From full-stack web and cloud systems to custom enterprise platforms, we help modern businesses scale efficiently with clean architecture and cutting-edge engineering.
           </Reveal>
           <Reveal as="div" className="phead-meta" delay={180}>
             <span><b>50+</b> Enterprise Deployments</span>
-            <span><b>200+</b> Ethiopian Engineers Trained</span>
+            <span><b>200+</b> African Engineers Trained</span>
             <span><b>99.9%</b> System SLA Uptime</span>
           </Reveal>
         </div>
@@ -91,10 +89,10 @@ export default function AboutPage() {
       <section className="sec" aria-labelledby="story-h">
         <div className="wrap">
           <Reveal className="sec-head">
-            <p className="kicker">Our Story</p>
-            <h2 id="story-h">Why We Founded Akiba in Addis Ababa</h2>
+            <p className="kicker">Our Purpose</p>
+            <h2 id="story-h">Engineering Excellence Rooted in Africa, Built for the World</h2>
             <p className="lede">
-              Building software that understands local reality while meeting international engineering benchmarks.
+              Empowering digital transformation through scalable, high-performance technology.
             </p>
           </Reveal>
 
@@ -130,14 +128,12 @@ export default function AboutPage() {
                 <h3 style={{ margin: 0, fontSize: "1.28rem" }}>Our Mission</h3>
               </div>
               <p style={{ color: "var(--slate)", lineHeight: 1.65, fontSize: "0.95rem", margin: "0 0 20px" }}>
-                To empower businesses across Ethiopia and East Africa with robust, custom software that saves time,
-                eliminates manual bottlenecks, and accelerates growth — while actively training the next generation
-                of African engineering talent through our tech academy.
+                To deliver robust, scalable software and digital solutions that empower businesses and communities to thrive in the modern economy.
               </p>
               <div className="b-stack">
-                <span className="chip">Addis Ababa Headquartered</span>
-                <span className="chip">Custom Business Software</span>
-                <span className="chip">Practical Impact</span>
+                <span className="chip">Robust Systems</span>
+                <span className="chip">Scalable Architecture</span>
+                <span className="chip">Community Empowerment</span>
               </div>
             </Reveal>
 
@@ -165,13 +161,12 @@ export default function AboutPage() {
                 <h3 style={{ margin: 0, fontSize: "1.28rem" }}>Our Vision</h3>
               </div>
               <p style={{ color: "var(--slate)", lineHeight: 1.65, fontSize: "0.95rem", margin: "0 0 20px" }}>
-                To make Ethiopia a premier hub for software engineering and AI innovation, proving that world-class
-                digital platforms can be built locally to transform regional industries and compete globally.
+                To be a leading technology hub delivering world-class engineering, digital infrastructure, and innovative products across Africa and globally.
               </p>
               <div className="b-stack">
-                <span className="chip">Regional Tech Hub</span>
-                <span className="chip">AI &amp; ERP Leadership</span>
-                <span className="chip">Global Quality Standards</span>
+                <span className="chip">Leading Tech Hub</span>
+                <span className="chip">Digital Infrastructure</span>
+                <span className="chip">Global Delivery</span>
               </div>
             </Reveal>
           </div>

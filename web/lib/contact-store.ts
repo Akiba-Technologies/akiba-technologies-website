@@ -16,6 +16,12 @@ export type ContactPageConfig = {
   weekendHours?: string;
   responseSLA: string;
   linkedin: string;
+  twitter?: string;
+  facebook?: string;
+  instagram?: string;
+  github?: string;
+  youtube?: string;
+  whatsapp?: string;
   telegram?: string;
 };
 
@@ -23,16 +29,22 @@ export const DEFAULT_CONTACT_CONFIG: ContactPageConfig = {
   kicker: "Get In Touch",
   title: "Contact Information",
   lede: "Reach out to us directly. We are ready to help your business grow.",
-  email: "contact@akibatech.com",
+  email: "akiba.tech.official@gmail.com",
   secondaryEmail: "",
-  phone: "+251 911 648 816",
+  phone: "+251 960 352 222",
   secondaryPhone: "",
-  address: "Bethel",
-  cityCountry: "Addis Ababa, Ethiopia",
+  address: "Addis Ababa",
+  cityCountry: "Ethiopia",
   workingHours: "Monday – Friday: 8:30 AM – 5:30 PM (EAT)",
   weekendHours: "Saturday: 9:00 AM – 1:00 PM (EAT)",
   responseSLA: "Under 2 hours during active business hours",
-  linkedin: "https://www.linkedin.com/company/akiba-tech",
+  linkedin: "https://linkedin.com/company/akibatech",
+  twitter: "https://x.com/akibatech",
+  facebook: "https://facebook.com/akibatech",
+  instagram: "https://instagram.com/akibatech",
+  github: "https://github.com/akibatech",
+  youtube: "https://youtube.com/@akibatech",
+  whatsapp: "https://wa.me/251960352222",
   telegram: "",
 };
 

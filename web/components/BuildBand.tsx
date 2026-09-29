@@ -5,7 +5,7 @@ const POINTS = [
   "Fixed-timeline sprints",
   "Full IP transfer on delivery",
   "Senior engineers only",
-  "Reply within 24 hours",
+  "Response within 2 hours",
 ];
 
 export function BuildBand() {

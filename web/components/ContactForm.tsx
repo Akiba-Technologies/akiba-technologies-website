@@ -78,7 +78,7 @@ export function ContactForm() {
         </span>
         <h2>Message Received</h2>
         <p>
-          Thank you for reaching out! Your message has been sent to our team at <b>{CONTACT_EMAIL}</b>. We will get back to you within 24 hours.
+          Thank you for reaching out! Your message has been sent to our team at <b>{CONTACT_EMAIL}</b>. We will get back to you within 2 hours during business hours.
         </p>
         <button
           type="button"
