@@ -1,28 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { Env } from "@/components/Env";
 import { Rail } from "@/components/Rail";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import "./globals.css";
 
-// next/font self-hosts these and injects each family as the named CSS
-// variable, so globals.css just does font-family:var(--font-d) etc. with no
-// manual <link> or preconnect needed.
-const display = Space_Grotesk({
+// Plus Jakarta Sans configured across all display and body typography
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-d",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sans",
   display: "swap",
 });
-const body = IBM_Plex_Sans({
-  subsets: ["latin"],
-  // 600 added for the light-theme nav (see [data-theme="light"] .nav-link
-  // in globals.css) so it renders the real semibold cut, not a synthetic one.
-  weight: ["400", "500", "600"],
-  variable: "--font-b",
-  display: "swap",
-});
+
 const mono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -153,7 +144,7 @@ const structuredData = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${mono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script

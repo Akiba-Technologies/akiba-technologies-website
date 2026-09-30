@@ -10,8 +10,32 @@ const FEATURED_CASES = CASE_STUDIES;
 
 export function RecentWork() {
   const cases = FEATURED_CASES;
-  const [activeSlug, setActiveSlug] = useState<string>("akiba-erp");
+  const [activeSlug, setActiveSlug] = useState<string>(cases[0]?.slug ?? "digifarm-ai");
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const [headerHeight, setHeaderHeight] = useState<number>(128);
+
+  // Measure sticky header height dynamically for exact alignment
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+
+    const updateH = () => {
+      if (el) {
+        setHeaderHeight(el.offsetHeight);
+      }
+    };
+
+    updateH();
+    const ro = new ResizeObserver(updateH);
+    ro.observe(el);
+    window.addEventListener("resize", updateH, { passive: true });
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", updateH);
+    };
+  }, []);
 
   // Active case for meta display
   const activeIndex = Math.max(
@@ -88,39 +112,38 @@ export function RecentWork() {
   return (
     <section className="sec sec-recent-work" aria-labelledby="work-h">
       <div className="pattern-carbon" aria-hidden="true" />
-      <div className="wrap">
-        <Reveal
-          className="sec-head"
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            gap: 20,
-            maxWidth: "none",
-            flexWrap: "wrap",
-            marginBottom: 36,
-          }}
-        >
-          <div>
-            <p className="kicker">Shipped Work &amp; Deployments</p>
-            <h2 id="work-h">Proven software in daily production</h2>
-            <p className="lede">
-              Real deployments engineered with our clients: from multi-location ERPs to high-concurrency SaaS and
-              agritech mobile platforms.
-            </p>
-          </div>
-          <Link className="btn btn-ghost btn-sm" href="/portfolio">
-            View full portfolio
-            <svg className="btn-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
-        </Reveal>
+      {/* Full-width Sticky Header Bar across the entire section */}
+      <header ref={headerRef} className="shipped-sticky-header-bar">
+        <div className="wrap">
+          <Reveal className="shipped-header-content">
+            <div className="shipped-header-info">
+              <p className="kicker">Shipped Work &amp; Deployments</p>
+              <h2 id="work-h" className="shipped-header-title">Proven software in daily production</h2>
+              <p className="lede shipped-header-lede">
+                Real deployments engineered with our clients: from multi-location ERPs to high-concurrency SaaS and
+                agritech mobile platforms.
+              </p>
+            </div>
+            <div className="shipped-header-action">
+              <Link className="btn btn-ghost btn-sm" href="/portfolio">
+                View full portfolio
+                <svg className="btn-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </header>
 
-        {/* Sticky Split Showcase Layout */}
+      {/* Split Showcase Layout: Left Sticky Preview, Right Scrollable Cards (Horizontally Aligned) */}
+      <div className="wrap shipped-showcase-container">
         <div className="shipped-showcase-split">
-          {/* Left Column: Sticky Visual Browser Preview */}
-          <div className="shipped-visual-sticky-col">
+          {/* Left Column: Sticky Visual Browser Preview (Aligned with Card 01) */}
+          <div
+            className="shipped-visual-sticky-col"
+            style={{ "--shipped-hdr-h": `${headerHeight}px` } as React.CSSProperties}
+          >
             <div className="shipped-preview-window">
               {/* Window Header Bar with interactive tabs */}
               <div className="shipped-preview-bar">

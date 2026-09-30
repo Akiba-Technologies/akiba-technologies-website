@@ -59,15 +59,10 @@ export function AcademySection() {
       <div className="wrap">
         {/* Section Header */}
         <Reveal className="sec-head academy-head">
-          <div className="academy-pill-wrap">
-            <span className="pill pill-brand academy-pill">
-              <span className="dot dot-pulse" aria-hidden="true" />
-              <span>Engineering Rigor &bull; AkibaTech Academy</span>
-            </span>
-          </div>
+          <p className="kicker">Engineering Rigor &bull; AkibaTech Academy</p>
 
           <h2 id="academy-h" className="academy-title">
-            We don&rsquo;t just consume modern tech &mdash; <span className="grad">we teach it.</span>
+            We don&rsquo;t just consume modern tech &mdash; <span className="title-accent">we teach it.</span>
           </h2>
 
           <p className="lede academy-lede">

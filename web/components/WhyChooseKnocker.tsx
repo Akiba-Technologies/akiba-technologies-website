@@ -29,7 +29,7 @@ export function WhyChooseKnocker() {
           <div>
             <p className="kicker">Why Akiba Tech</p>
             <h2 id="why-knocker-h" className="why-title">
-              Why Choose <span className="grad">Akiba Tech</span>?
+              Why Choose <span className="title-accent">Akiba Tech</span>?
             </h2>
             <p className="lede why-lede">
               Empowering digital transformation through scalable, high-performance technology. We build modern, reliable, and high-impact software solutions with clean architecture and cutting-edge engineering.
