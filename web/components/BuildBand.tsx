@@ -12,10 +12,16 @@ export function BuildBand() {
   return (
     <section className="build-band-sec" aria-label="Call to Action">
       <div className="wrap">
-        <Reveal as="div" className="build-band-card">
+        <Reveal
+          as="div"
+          className="build-band-card"
+          style={{
+            background: "linear-gradient(135deg, #10B981 0%, #059669 45%, #047857 100%)",
+          }}
+        >
           <div className="build-band-copy">
             <h2 className="build-band-title">
-              Let’s build something that saves you time, money and resources.
+              Let’s build something that saves you <span className="title-accent">time, money and resources.</span>
             </h2>
             <div className="build-band-points">
               {POINTS.map((point, index) => (

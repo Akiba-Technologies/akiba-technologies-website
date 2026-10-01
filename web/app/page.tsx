@@ -10,6 +10,7 @@ import { WhyChooseKnocker } from "@/components/WhyChooseKnocker";
 import { AcademySection } from "@/components/AcademySection";
 import { BuildBand } from "@/components/BuildBand";
 import { TrustedBy } from "@/components/TrustedBy";
+import { ByTheNumbers } from "@/components/ByTheNumbers";
 import { HomeHeroCopy } from "@/components/HomeHeroCopy";
 import { HomeSpotlightVisual } from "@/components/HomeSpotlightVisual";
 
@@ -63,7 +64,7 @@ export default function HomePage() {
                   <span>Flagship Production System</span>
                 </div>
                 <h2 id="erp-h" className="spot-title">
-                  Akiba ERP Platform
+                  Akiba <span className="title-accent">ERP Platform</span>
                 </h2>
                 <p className="lede spot-lede">
                   One unified system for inventory, purchasing, and financial ledgers. Built for high-volume operations running across multiple warehouses with sub-second accuracy.
@@ -130,6 +131,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ===================== AKIBA BY THE NUMBERS ===================== */}
+      <ByTheNumbers />
 
       {/* ===================== SHIPPED REAL WORK SHOWCASE ===================== */}
       <RecentWork />

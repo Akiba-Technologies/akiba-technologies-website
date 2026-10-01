@@ -118,7 +118,7 @@ export function RecentWork() {
           <Reveal className="shipped-header-content">
             <div className="shipped-header-info">
               <p className="kicker">Shipped Work &amp; Deployments</p>
-              <h2 id="work-h" className="shipped-header-title">Proven software in daily production</h2>
+              <h2 id="work-h" className="shipped-header-title">Proven software in <span className="title-accent">daily production</span></h2>
               <p className="lede shipped-header-lede">
                 Real deployments engineered with our clients: from multi-location ERPs to high-concurrency SaaS and
                 agritech mobile platforms.

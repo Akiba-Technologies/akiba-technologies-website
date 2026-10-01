@@ -88,14 +88,22 @@ const PROCESS_STAGES: ProcessStage[] = [
 
 export function DevelopmentProcess() {
   return (
-    <section className="sec sec-process" aria-labelledby="process-h">
+    <section
+      className="sec sec-process"
+      aria-labelledby="process-h"
+      style={{
+        background: "linear-gradient(180deg, rgb(8, 17, 30) 0%, rgb(7, 14, 22) 100%)",
+      }}
+    >
       {/* Background circuit dots ambient pattern */}
       <div className="sec-pattern pattern-dots-circuit" aria-hidden="true" />
 
       <div className="wrap">
         <Reveal className="sec-head">
           <p className="kicker">DEVELOPMENT PROCESS</p>
-          <h2 id="process-h">Agile software development methodology that delivers high-quality solutions</h2>
+          <h2 id="process-h">
+            Agile software development methodology that delivers <span className="title-accent">high-quality solutions</span>
+          </h2>
           <p className="lede">
             Structured engineering cycles designed for predictability, transparent milestones, and zero-defect production releases.
           </p>
@@ -103,11 +111,6 @@ export function DevelopmentProcess() {
 
         {/* Process Pipeline Grid */}
         <div className="process-pipeline-wrap">
-          {/* Visual connected pipeline rail on desktop */}
-          <div className="process-rail-line" aria-hidden="true">
-            <span className="process-rail-pulse" />
-          </div>
-
           <div className="process-pipeline-grid">
             {PROCESS_STAGES.map((stage, idx) => {
               const Icon = stage.icon;
@@ -117,7 +120,7 @@ export function DevelopmentProcess() {
                   delay={idx * 80}
                   className="process-card-wrap"
                 >
-                  <article className="card process-card">
+                  <article className="process-card">
                     {/* Top Status & Telemetry Header */}
                     <div className="process-card-top">
                       <div className="process-hex-badge">

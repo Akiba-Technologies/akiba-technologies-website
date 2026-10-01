@@ -1,51 +1,100 @@
 import Image from "next/image";
 
-const CLIENTS = [
+interface ClientLogo {
+  name: string;
+  logo?: string;
+  logoDark?: string;
+  logoLight?: string;
+  width: number;
+  height: number;
+}
+
+const CLIENTS: ClientLogo[] = [
+  {
+    name: "Ethiopian Artificial Intelligence Institute",
+    logo: "/clients/ethiopian-ai-institute.png",
+    width: 200,
+    height: 200,
+  },
+  {
+    name: "TWAY Real Estate",
+    logoDark: "/clients/tway-real-estate-dark.png",
+    logoLight: "/clients/tway-real-estate.png",
+    width: 240,
+    height: 144,
+  },
   {
     name: "Qudwa Business PLC",
     logo: "/clients/qudwa-business.png",
-    width: 150,
-    height: 150,
-  },
-  {
-    name: "Amigos Gym",
-    logo: "/clients/amigos-gym.png",
-    width: 182,
-    height: 110,
-  },
-  {
-    name: "Royal Candy & Chocolate Factory",
-    logo: "/clients/royal-candy.png",
     width: 160,
     height: 160,
   },
   {
-    name: "NM",
+    name: "Amigos Gym",
+    logo: "/clients/amigos-gym.png",
+    width: 190,
+    height: 115,
+  },
+  {
+    name: "Royal Candy & Chocolate Factory",
+    logo: "/clients/royal-candy.png",
+    width: 170,
+    height: 170,
+  },
+  {
+    name: "NM Company",
     logo: "/clients/nm-company.png",
-    width: 267,
-    height: 225,
+    width: 220,
+    height: 185,
   },
 ];
 
 export function TrustedBy() {
   return (
     <section className="trusted-by-strip" aria-label="Trusted by">
-      <div className="wrap">
-        <div className="trusted-by-top">
-          <p className="trusted-by-label">Trusted by</p>
-        </div>
-        <div className="trusted-by-grid">
-          {CLIENTS.map((client) => (
-            <div key={client.name} className="trusted-logo-col">
-              <div className="trusted-logo-item">
-                <Image
-                  src={client.logo}
-                  alt={client.name}
-                  width={client.width}
-                  height={client.height}
-                  className="trusted-logo-img"
-                />
-              </div>
+      <div className="trusted-by-top">
+        <p className="trusted-by-label">Trusted by</p>
+      </div>
+
+      <div className="trusted-marquee-viewport">
+        <div className="trusted-marquee-track">
+          {/* Repeating groups for perfectly seamless infinite continuous scroll */}
+          {[0, 1, 2, 3].map((groupIndex) => (
+            <div
+              key={groupIndex}
+              className="trusted-marquee-group"
+              aria-hidden={groupIndex > 0 ? "true" : undefined}
+            >
+              {CLIENTS.map((client) => (
+                <div key={`${client.name}-${groupIndex}`} className="trusted-logo-item" title={client.name}>
+                  {client.logoDark && client.logoLight ? (
+                    <>
+                      <Image
+                        src={client.logoDark}
+                        alt={client.name}
+                        width={client.width}
+                        height={client.height}
+                        className="trusted-logo-img trusted-logo-dark"
+                      />
+                      <Image
+                        src={client.logoLight}
+                        alt={client.name}
+                        width={client.width}
+                        height={client.height}
+                        className="trusted-logo-img trusted-logo-light"
+                      />
+                    </>
+                  ) : (
+                    <Image
+                      src={client.logo!}
+                      alt={client.name}
+                      width={client.width}
+                      height={client.height}
+                      className="trusted-logo-img"
+                    />
+                  )}
+                </div>
+              ))}
             </div>
           ))}
         </div>

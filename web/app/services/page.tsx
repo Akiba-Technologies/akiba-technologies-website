@@ -253,7 +253,7 @@ export default function ServicesPage() {
         <div className="wrap">
           <Reveal className="sec-head">
             <p className="kicker">Capabilities &amp; Specializations</p>
-            <h2 id="serv-grid-h">Engineering disciplines built for scale</h2>
+            <h2 id="serv-grid-h">Engineering disciplines <span className="title-accent">built for scale</span></h2>
             <p className="lede">
               Explore our core technical offerings. Every project receives dedicated senior engineering leadership,
               transparent sprints, and continuous integration.
@@ -329,7 +329,7 @@ export default function ServicesPage() {
         <div className="wrap">
           <Reveal className="sec-head">
             <p className="kicker">Industries We Serve</p>
-            <h2 id="ind-h">Delivering excellence across diverse sectors with specialized expertise</h2>
+            <h2 id="ind-h">Delivering excellence across diverse sectors with <span className="title-accent">specialized expertise</span></h2>
             <p className="lede">
               We design software around the exact compliance frameworks, transaction velocities, and operational realities of your vertical.
             </p>
@@ -365,7 +365,7 @@ export default function ServicesPage() {
             </span>
 
             <h2 id="not-sure-h" className="not-sure-title">
-              Not sure what you need?
+              Not sure what you need? <span className="title-accent">Let’s talk.</span>
             </h2>
             <p className="not-sure-desc">
               Schedule a free consultation with our experts. We&rsquo;ll analyze your requirements and propose the best solution for your budget.

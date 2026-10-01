@@ -90,7 +90,7 @@ export default function AboutPage() {
         <div className="wrap">
           <Reveal className="sec-head">
             <p className="kicker">Our Purpose</p>
-            <h2 id="story-h">Engineering Excellence Rooted in Africa, Built for the World</h2>
+            <h2 id="story-h">Engineering Excellence Rooted in Africa, <span className="title-accent">Built for the World</span></h2>
             <p className="lede">
               Empowering digital transformation through scalable, high-performance technology.
             </p>
@@ -178,7 +178,7 @@ export default function AboutPage() {
         <div className="wrap">
           <Reveal className="sec-head">
             <p className="kicker">Engineering Ethos</p>
-            <h2 id="values-h">How We Build Software</h2>
+            <h2 id="values-h">How We <span className="title-accent">Build Software</span></h2>
             <p className="lede">
               Practical values shaped by solving real problems on the ground in Ethiopia.
             </p>
@@ -227,7 +227,7 @@ export default function AboutPage() {
         <div className="wrap">
           <Reveal className="sec-head">
             <p className="kicker">Leadership Team</p>
-            <h2 id="team-h">Meet Our Leadership</h2>
+            <h2 id="team-h">Meet Our <span className="title-accent">Leadership</span></h2>
             <p className="lede">
               Passionate Ethiopian technologists committed to delivering outstanding digital solutions.
             </p>

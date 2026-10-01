@@ -10,8 +10,7 @@ export function HomeHeroCopy() {
 
   return (
     <div className="hero-copy">
-      <Reveal as="div" className="pill pill-brand">
-        <span className="dot dot-pulse" aria-hidden="true" />
+      <Reveal as="div" className="hero-badge">
         <span>{hero.badge || "Building Modern Technology Solutions"}</span>
       </Reveal>
 
@@ -47,18 +46,6 @@ export function HomeHeroCopy() {
         <Link href="/services#academy">AkibaTech Academy</Link>
       </Reveal>
 
-      {/* Mini-telemetry stats ribbon */}
-      <Reveal as="div" className="hero-quick-stats" delay={300}>
-        {hero.stats.map((st, idx) => (
-          <div key={st.id || idx} style={{ display: "contents" }}>
-            {idx > 0 && <div className="quick-stat-divider" />}
-            <div className="quick-stat">
-              <div className="quick-stat-val">{st.value}</div>
-              <div className="quick-stat-lbl">{st.label}</div>
-            </div>
-          </div>
-        ))}
-      </Reveal>
     </div>
   );
 }

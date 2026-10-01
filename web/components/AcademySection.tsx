@@ -62,7 +62,7 @@ export function AcademySection() {
           <p className="kicker">Engineering Rigor &bull; AkibaTech Academy</p>
 
           <h2 id="academy-h" className="academy-title">
-            We don&rsquo;t just consume modern tech &mdash; <span className="title-accent">we teach it.</span>
+            We don&rsquo;t just consume modern tech <span className="title-accent">we teach it.</span>
           </h2>
 
           <p className="lede academy-lede">

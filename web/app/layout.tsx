@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { Env } from "@/components/Env";
-import { Rail } from "@/components/Rail";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import "./globals.css";
@@ -158,7 +157,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
 
         <Env />
-        <Rail />
         <Nav />
 
         <main id="main" tabIndex={-1}>

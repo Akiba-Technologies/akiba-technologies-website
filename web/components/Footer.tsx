@@ -71,7 +71,12 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="foot">
+    <footer
+      className="foot"
+      style={{
+        background: "linear-gradient(180deg, rgb(8, 17, 30) 0%, rgb(7, 14, 22) 100%)",
+      }}
+    >
       <div className="wrap">
         <div className="foot-grid">
           <div className="foot-about">
