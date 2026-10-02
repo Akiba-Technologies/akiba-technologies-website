@@ -219,17 +219,14 @@ export function TechnologiesWeUse() {
           {/* Left Column: Fixed / Sticky with Connected Timeline Stepper */}
           <aside className="tech-stack-left-sticky">
             <Reveal>
-              <div className="tech-badge-dna">
-                <span className="tech-badge-dna-dot" />
-                <span>Battle-Tested Systems</span>
-              </div>
+              <p className="kicker">Battle-Tested Systems</p>
 
               <h2 id="tech-stack-h" className="tech-stack-title">
-                ENGINEERED FOR SCALE, <br />
-                <span className="tech-title-highlight">BUILT FOR PRODUCTION.</span>
+                Engineered for Scale, <br />
+                <span className="title-accent">Built for Production.</span>
               </h2>
 
-              <p className="tech-stack-lede">
+              <p className="lede tech-stack-lede">
                 Our technology stack is drawn strictly from our live production platforms. Every tool is
                 battle-tested in real-world systems, from enterprise ERP ledgers to agricultural AI and
                 GovTech platforms.
@@ -314,12 +311,9 @@ export function TechnologiesWeUse() {
                     {/* Card Header Information */}
                     <div className="tech-card-header">
                       {cat.deployedIn && (
-                        <div className="tech-card-meta-bar">
-                          <span className="tech-deployed-badge">
-                            <span className="tech-deployed-dot" />
-                            {cat.deployedIn}
-                          </span>
-                        </div>
+                        <p className="tech-card-deployed-text">
+                          {cat.deployedIn}
+                        </p>
                       )}
 
                       <h3 className="tech-card-title">

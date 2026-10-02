@@ -9137,40 +9137,22 @@ select.field option {
   align-self: start;
 }
 
-.tech-badge-dna {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 14px;
-  border-radius: 999px;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #10b981;
+.sec-tech-stack .kicker {
   margin-bottom: 16px;
 }
 
-[data-theme="light"] .tech-badge-dna {
-  background: rgba(16, 185, 129, 0.08);
-  border-color: rgba(16, 185, 129, 0.22);
-  color: #059669;
+[data-theme="light"] .sec-tech-stack .kicker {
+  color: #047857;
 }
 
-.tech-badge-dna-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+[data-theme="light"] .sec-tech-stack .kicker::before {
+  background: #047857;
 }
 
 .tech-stack-title {
-  font-size: clamp(2rem, 3.1vw, 2.7rem);
-  font-weight: 850;
-  line-height: 1.14;
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
   letter-spacing: -0.03em;
   color: #f8fafc;
   margin-bottom: 16px;
@@ -9180,8 +9162,12 @@ select.field option {
   color: #051242;
 }
 
-.tech-title-highlight {
+.sec-tech-stack .title-accent {
   color: #10b981;
+}
+
+[data-theme="light"] .sec-tech-stack .title-accent {
+  color: #059669;
 }
 
 .tech-stack-lede {
@@ -9443,31 +9429,17 @@ select.field option {
   margin-bottom: 8px;
 }
 
-.tech-card-meta-bar {
-  margin-bottom: 14px;
-}
-
-.tech-deployed-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(16, 185, 129, 0.09);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  font-size: 0.78rem;
-  font-weight: 750;
+.tech-card-deployed-text {
+  font-size: 0.84rem;
+  font-weight: 400; /* text only without bold */
   color: #059669;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  margin: 0 0 10px;
+  line-height: 1.45;
 }
 
-.tech-deployed-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
-  flex-shrink: 0;
+[data-theme="dark"] .tech-card-deployed-text {
+  color: #10b981;
 }
 
 .tech-card-title {

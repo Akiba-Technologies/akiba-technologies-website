@@ -57,7 +57,7 @@ export function TrustedBy() {
   return (
     <div className="hero-trusted-dock" aria-label="Trusted by">
       <div className="trusted-by-top">
-        <p className="trusted-by-label">Trusted by industry leaders &amp; growing teams</p>
+        <p className="trusted-by-label">Trusted by </p>
       </div>
 
       <div className="trusted-marquee-viewport">
