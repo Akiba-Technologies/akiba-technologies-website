@@ -7,6 +7,7 @@ interface ClientLogo {
   logoLight?: string;
   width: number;
   height: number;
+  className?: string;
 }
 
 const CLIENTS: ClientLogo[] = [
@@ -34,26 +35,29 @@ const CLIENTS: ClientLogo[] = [
     logo: "/clients/amigos-gym.png",
     width: 190,
     height: 115,
+    className: "trusted-logo-amigos",
   },
   {
     name: "Royal Candy & Chocolate Factory",
     logo: "/clients/royal-candy.png",
     width: 170,
     height: 170,
+    className: "trusted-logo-gold",
   },
   {
     name: "NM Company",
     logo: "/clients/nm-company.png",
     width: 220,
     height: 185,
+    className: "trusted-logo-nm",
   },
 ];
 
 export function TrustedBy() {
   return (
-    <section className="trusted-by-strip" aria-label="Trusted by">
+    <div className="hero-trusted-dock" aria-label="Trusted by">
       <div className="trusted-by-top">
-        <p className="trusted-by-label">Trusted by</p>
+        <p className="trusted-by-label">Trusted by industry leaders &amp; growing teams</p>
       </div>
 
       <div className="trusted-marquee-viewport">
@@ -74,14 +78,14 @@ export function TrustedBy() {
                         alt={client.name}
                         width={client.width}
                         height={client.height}
-                        className="trusted-logo-img trusted-logo-dark"
+                        className={`trusted-logo-img trusted-logo-dark ${client.className || ""}`}
                       />
                       <Image
                         src={client.logoLight}
                         alt={client.name}
                         width={client.width}
                         height={client.height}
-                        className="trusted-logo-img trusted-logo-light"
+                        className={`trusted-logo-img trusted-logo-light ${client.className || ""}`}
                       />
                     </>
                   ) : (
@@ -90,7 +94,7 @@ export function TrustedBy() {
                       alt={client.name}
                       width={client.width}
                       height={client.height}
-                      className="trusted-logo-img"
+                      className={`trusted-logo-img ${client.className || ""}`}
                     />
                   )}
                 </div>
@@ -99,6 +103,6 @@ export function TrustedBy() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

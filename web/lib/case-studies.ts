@@ -32,6 +32,26 @@ export const CASE_FILTERS: { key: CaseCategory | "all"; label: string }[] = [
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
+    slug: "autobridge-systems",
+    badge: "GovTech, AI / Automation",
+    categoryLabel: "GovTech, AI / Automation",
+    year: "2025",
+    title: "AutoBridge Systems",
+    summary:
+      "AI-powered platforms for government service automation, citizen communication, and automated contracting using Azure OpenAI.",
+    metricValue: "AI-Powered",
+    metricLabel: "government workflow & automated contracting",
+    stack: ["Python", "FastAPI", "Azure OpenAI"],
+    categories: ["ai-ml", "web"],
+    liveDemoUrl: "/portfolio#autobridge-systems",
+    image: {
+      src: "/work/autobridge-dashboard.jpg",
+      alt: "AutoBridge Systems AI-powered government workflow and automated contracting dashboard",
+      width: 1920,
+      height: 1080,
+    },
+  },
+  {
     slug: "digifarm-ai",
     badge: "AI & ML",
     categoryLabel: "AI & ML",

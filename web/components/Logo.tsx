@@ -9,8 +9,8 @@ export function Logo({ priority = false }: { priority?: boolean }) {
         className="brand-mark"
         src={logo}
         alt="Akiba Technologies logo"
-        width={32}
-        height={32}
+        width={36}
+        height={36}
         priority={priority}
       />
       <span className="brand-txt">

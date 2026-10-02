@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
+import { FlagshipErpSection } from "@/components/FlagshipErpSection";
+import { Band } from "@/components/Band";
 
 export const metadata: Metadata = {
   title: "Our Services | Akiba Tech",
@@ -322,6 +324,9 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+ 
+       {/* ===================== FLAGSHIP PRODUCTION SYSTEM (AKIBA ERP SPOTLIGHT) ===================== */}
+       <FlagshipErpSection />
 
       {/* ===================== INDUSTRIES WE SERVE ===================== */}
       <section className="sec sec-industries" aria-labelledby="ind-h">
@@ -354,37 +359,14 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ===================== NOT SURE WHAT YOU NEED? CONSULTATION CALLOUT ===================== */}
-      <section className="sec sec-not-sure" aria-labelledby="not-sure-h">
-        <div className="wrap">
-          <Reveal as="div" className="not-sure-card">
-            <div className="not-sure-glow" aria-hidden="true" />
-            <span className="pill pill-brand not-sure-pill">
-              <span className="dot dot-pulse" aria-hidden="true" />
-              <span>Tailored Technical Discovery</span>
-            </span>
-
-            <h2 id="not-sure-h" className="not-sure-title">
-              Not sure what you need? <span className="title-accent">Let’s talk.</span>
-            </h2>
-            <p className="not-sure-desc">
-              Schedule a free consultation with our experts. We&rsquo;ll analyze your requirements and propose the best solution for your budget.
-            </p>
-
-            <div className="not-sure-actions">
-              <Link className="btn btn-em btn-lg" href="/contact">
-                Schedule a Free Consultation
-                <svg className="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </Link>
-              <Link className="btn btn-ghost" href="/portfolio">
-                Explore Shipped Work
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* ===================== CALL TO ACTION (PORTFOLIO BAND STYLE) ===================== */}
+      <Band
+        heading="Not sure what you need? Let’s talk architecture."
+        body="Schedule a consultation with our architects. We will analyze your workflow and propose a fixed-timeline engineering roadmap."
+        ctaHref="/contact"
+        ctaLabel="Start a project"
+        showSlogan
+      />
     </>
   );
 }

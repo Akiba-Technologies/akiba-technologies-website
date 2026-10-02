@@ -1,268 +1,280 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "./Reveal";
-import { CASE_STUDIES } from "@/lib/case-studies";
+import { CASE_STUDIES, type CaseStudy } from "@/lib/case-studies";
 
-const FEATURED_CASES = CASE_STUDIES;
+const CAROUSEL_PROJECTS: CaseStudy[] = CASE_STUDIES.slice(0, 5);
 
 export function RecentWork() {
-  const cases = FEATURED_CASES;
-  const [activeSlug, setActiveSlug] = useState<string>(cases[0]?.slug ?? "digifarm-ai");
-  const cardRefs = useRef<(HTMLElement | null)[]>([]);
-  const headerRef = useRef<HTMLDivElement | null>(null);
-  const [headerHeight, setHeaderHeight] = useState<number>(128);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Measure sticky header height dynamically for exact alignment
+  const total = CAROUSEL_PROJECTS.length;
+
+  const handlePrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev === 0 ? total - 1 : prev - 1));
+  }, [total]);
+
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev === total - 1 ? 0 : prev + 1));
+  }, [total]);
+
+  // 15-second auto-scroll with pause-on-hover and reset on manual slide change
   useEffect(() => {
-    const el = headerRef.current;
+    if (isHovered) return;
+
+    const timer = setInterval(() => {
+      handleNext();
+    }, 15000);
+
+    return () => clearInterval(timer);
+  }, [handleNext, isHovered, currentIndex]);
+
+  // Keyboard navigation when user is in the carousel section
+  useEffect(() => {
+    const el = containerRef.current;
     if (!el) return;
 
-    const updateH = () => {
-      if (el) {
-        setHeaderHeight(el.offsetHeight);
+    const onKeyDown = (e: KeyboardEvent) => {
+      const rect = el.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inView) return;
+
+      if (document.activeElement?.tagName === "INPUT" || document.activeElement?.tagName === "TEXTAREA") {
+        return;
+      }
+      if (e.key === "ArrowLeft") {
+        handlePrev();
+      } else if (e.key === "ArrowRight") {
+        handleNext();
       }
     };
 
-    updateH();
-    const ro = new ResizeObserver(updateH);
-    ro.observe(el);
-    window.addEventListener("resize", updateH, { passive: true });
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [handlePrev, handleNext]);
 
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", updateH);
-    };
-  }, []);
+  // Touch swipe support
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    if (e.targetTouches && e.targetTouches[0]) {
+      setTouchStart(e.targetTouches[0].clientX);
+    }
+  };
 
-  // Active case for meta display
-  const activeIndex = Math.max(
-    0,
-    cases.findIndex((c) => c.slug === activeSlug)
-  );
-  const activeCase = (cases[activeIndex] ?? cases[0] ?? CASE_STUDIES[0])!;
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.targetTouches && e.targetTouches[0]) {
+      setTouchEnd(e.targetTouches[0].clientX);
+    }
+  };
 
-  // Full-page scroll spy: evaluates which project card is centered at the reading focal line
-  useEffect(() => {
-    let ticking = false;
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
 
-    const evaluateActiveCard = () => {
-      // Natural reading focal line: 46% down the viewport
-      const focalLine = window.innerHeight * 0.46;
-      let bestSlug = "";
-      let minDistance = Infinity;
-
-      cardRefs.current.forEach((el) => {
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-
-        // If card brackets the focal line, it is definitively the active one
-        if (rect.top <= focalLine && rect.bottom >= focalLine) {
-          bestSlug = el.getAttribute("data-slug") || "";
-          minDistance = 0;
-        } else if (minDistance !== 0) {
-          const cardCenter = rect.top + rect.height * 0.5;
-          const dist = Math.abs(cardCenter - focalLine);
-          if (dist < minDistance) {
-            minDistance = dist;
-            bestSlug = el.getAttribute("data-slug") || "";
-          }
-        }
-      });
-
-      if (bestSlug) {
-        setActiveSlug((prev) => (prev === bestSlug ? prev : bestSlug));
-      }
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          evaluateActiveCard();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    evaluateActiveCard();
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  // Click card or preview tab to smoothly scroll that card to the focal line
-  const handleCardSelect = (slug: string, index: number) => {
-    setActiveSlug(slug);
-    const targetEl = cardRefs.current[index];
-    if (targetEl) {
-      const rect = targetEl.getBoundingClientRect();
-      const focalLine = window.innerHeight * 0.46;
-      const targetY = window.scrollY + rect.top - focalLine + rect.height * 0.35;
-      window.scrollTo({ top: targetY, behavior: "smooth" });
+    if (isLeftSwipe) {
+      handleNext();
+    } else if (isRightSwipe) {
+      handlePrev();
     }
   };
 
   return (
     <section className="sec sec-recent-work" aria-labelledby="work-h">
+      {/* Carbon pattern background */}
       <div className="pattern-carbon" aria-hidden="true" />
-      {/* Full-width Sticky Header Bar across the entire section */}
-      <header ref={headerRef} className="shipped-sticky-header-bar">
-        <div className="wrap">
-          <Reveal className="shipped-header-content">
-            <div className="shipped-header-info">
-              <p className="kicker">Shipped Work &amp; Deployments</p>
-              <h2 id="work-h" className="shipped-header-title">Proven software in <span className="title-accent">daily production</span></h2>
-              <p className="lede shipped-header-lede">
-                Real deployments engineered with our clients: from multi-location ERPs to high-concurrency SaaS and
-                agritech mobile platforms.
-              </p>
-            </div>
-            <div className="shipped-header-action">
-              <Link className="btn btn-ghost btn-sm" href="/portfolio">
-                View full portfolio
-                <svg className="btn-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </header>
 
-      {/* Split Showcase Layout: Left Sticky Preview, Right Scrollable Cards (Horizontally Aligned) */}
-      <div className="wrap shipped-showcase-container">
-        <div className="shipped-showcase-split">
-          {/* Left Column: Sticky Visual Browser Preview (Aligned with Card 01) */}
-          <div
-            className="shipped-visual-sticky-col"
-            style={{ "--shipped-hdr-h": `${headerHeight}px` } as React.CSSProperties}
-          >
-            <div className="shipped-preview-window">
-              {/* Window Header Bar with interactive tabs */}
-              <div className="shipped-preview-bar">
-                <div className="kavana-window-dots">
-                  <span className="dot dot-close" />
-                  <span className="dot dot-min" />
-                  <span className="dot dot-max" />
-                </div>
-                <div className="shipped-preview-tabs" role="tablist" aria-label="Project visual switcher">
-                  {cases.map((c, idx) => (
-                    <button
-                      key={c.slug}
-                      type="button"
-                      role="tab"
-                      aria-selected={c.slug === activeSlug}
-                      onClick={() => handleCardSelect(c.slug, idx)}
-                      className={`shipped-preview-tab ${c.slug === activeSlug ? "is-active" : ""}`}
-                    >
-                      <span className="tab-num">0{idx + 1}</span>
-                      <span className="tab-name">{c.badge}</span>
-                    </button>
-                  ))}
-                </div>
-                <div className="shipped-preview-live">
-                  <span className="live-dot" />
-                  <span>Live</span>
-                </div>
-              </div>
-
-              {/* Crossfading Preview Stage */}
-              <div className="shipped-preview-stage">
-                {cases.map((c) => (
-                  <div
-                    key={c.slug}
-                    className={`shipped-preview-screen ${c.slug === activeSlug ? "is-active" : ""}`}
-                    aria-hidden={c.slug !== activeSlug}
-                  >
-                    {c.image && (
-                      <div className={`shipped-img-wrap ${c.slug === "digifarm-ai" ? "is-phone" : ""}`}>
-                        <Image
-                          src={c.image.src}
-                          alt={c.image.alt}
-                          width={c.image.width}
-                          height={c.image.height}
-                          sizes="(max-width: 960px) 100vw, 55vw"
-                          className="shipped-img"
-                          priority
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              {/* Window Caption / Metric Ribbon */}
-              <div className="shipped-preview-footer">
-                <span className="shipped-footer-title">{activeCase.title}</span>
-                {activeCase.metricValue && (
-                  <span className="shipped-footer-metric">
-                    <b>{activeCase.metricValue}</b> &bull; {activeCase.metricLabel}
-                  </span>
-                )}
-              </div>
-            </div>
+      {/* Entire Section Content Contained in .wrap */}
+      <div className="wrap portfolio-section-container">
+        {/* Header Bar */}
+        <Reveal className="portfolio-section-header">
+          <div className="portfolio-header-text">
+            <p className="kicker">Shipped Deployments</p>
+            <h2 id="work-h" className="portfolio-section-title">
+              Akiba Technologies <span className="title-accent">Portfolio</span>
+            </h2>
+            <p className="lede portfolio-section-lede">
+              Proven software in daily production: from multi-location ERPs to high-concurrency SaaS and
+              agritech mobile platforms.
+            </p>
           </div>
+          <div className="portfolio-header-action">
+            <Link className="btn btn-ghost btn-sm" href="/portfolio">
+              View full portfolio
+              <svg className="btn-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </div>
+        </Reveal>
 
-          {/* Right Column: Full-Page Scrollable Project Cards */}
-          <div className="shipped-cards-col">
-            {cases.map((c, i) => {
-              const isActive = c.slug === activeSlug;
+        {/* 3D Circular Rotate Carousel Stage */}
+        <div
+          className="portfolio-carousel-wrapper"
+          ref={containerRef}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className="portfolio-carousel-stage">
+            {CAROUSEL_PROJECTS.map((project, idx) => {
+              let offset = idx - currentIndex;
+              // Shortest distance for circular wrapping
+              if (offset > total / 2) offset -= total;
+              if (offset < -total / 2) offset += total;
+
+              const isActive = offset === 0;
+              const isLeft = offset === -1;
+              const isRight = offset === 1;
+
+              let transformVal = "translateX(-50%) translateZ(0) rotateY(0deg) scale(1)";
+              let zIndexVal = 10;
+              let opacityVal = 1;
+
+              if (isActive) {
+                transformVal = "translateX(-50%) translateZ(0) rotateY(0deg) scale(1)";
+                zIndexVal = 10;
+                opacityVal = 1;
+              } else if (isLeft) {
+                // Peek card aligned precisely with section width boundary, layered behind active card
+                transformVal =
+                  "translateX(calc(-50% - var(--portfolio-peek-shift, 98px))) translateZ(-70px) rotateY(5deg) scale(0.96)";
+                zIndexVal = 2;
+                opacityVal = 0.22;
+              } else if (isRight) {
+                // Peek card aligned precisely with section width boundary, layered behind active card
+                transformVal =
+                  "translateX(calc(-50% + var(--portfolio-peek-shift, 98px))) translateZ(-70px) rotateY(-5deg) scale(0.96)";
+                zIndexVal = 2;
+                opacityVal = 0.22;
+              } else {
+                transformVal = `translateX(calc(-50% + ${offset * 180}px)) translateZ(-250px) rotateY(${offset > 0 ? -20 : 20}deg) scale(0.82)`;
+                zIndexVal = 1;
+                opacityVal = 0;
+              }
+
               return (
-                <article
-                  key={c.slug}
-                  data-slug={c.slug}
-                  ref={(el) => {
-                    cardRefs.current[i] = el;
+                <div
+                  key={project.slug}
+                  className={`portfolio-card-slide ${isActive ? "is-active" : ""} ${isLeft ? "is-left-peek" : ""} ${isRight ? "is-right-peek" : ""}`}
+                  style={{
+                    transform: transformVal,
+                    opacity: opacityVal,
+                    zIndex: zIndexVal,
+                    pointerEvents: isActive ? "auto" : "none",
+                    cursor: "default",
                   }}
-                  onClick={() => handleCardSelect(c.slug, i)}
-                  className={`card shipped-project-card ${isActive ? "is-active" : ""}`}
+                  aria-hidden={!isActive}
                 >
-                  <div className="case-top">
-                    <span className="shipped-index-badge">0{i + 1}</span>
-                    <span className="badge">{c.badge}</span>
-                    <span className="tag">{c.year}</span>
-                    {isActive && (
-                      <span className="shipped-active-pill">
-                        <span className="shipped-pulse-dot" /> Active Preview
-                      </span>
-                    )}
-                  </div>
+                  <div className="portfolio-card-inner">
+                    {/* Left Column: Project Copy & Metadata with Fixed Equal Height */}
+                    <div className="portfolio-card-copy">
+                      <div className="portfolio-card-copy-top">
+                        <div className="portfolio-pill-badge">
+                          {project.badge.toUpperCase()}
+                        </div>
 
-                  <h3 className="shipped-card-title">{c.title}</h3>
-                  <p className="shipped-card-summary">{c.summary}</p>
+                        <h3 className="portfolio-card-title">{project.title}</h3>
+                        <p className="portfolio-card-desc">{project.summary}</p>
+                      </div>
 
-                  {c.stack.length > 0 && (
-                    <div className="b-stack">
-                      {c.stack.map((s) => (
-                        <span className="chip" key={s}>
-                          {s}
-                        </span>
-                      ))}
+                      <div className="portfolio-card-copy-bottom">
+                        <div className="portfolio-core-tech">
+                          <div className="portfolio-tech-indicator" aria-hidden="true" />
+                          <div className="portfolio-tech-info">
+                            <span className="portfolio-tech-label">CORE TECHNOLOGY</span>
+                            <span className="portfolio-tech-values">{project.stack.join(", ")}</span>
+                          </div>
+                        </div>
+
+                        <div className="portfolio-card-cta">
+                          <Link
+                            href={project.liveDemoUrl}
+                            className="portfolio-details-link"
+                          >
+                            <span>View details</span>
+                            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                              <path d="M4.167 10h11.666m-5-5l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </Link>
+                        </div>
+                      </div>
                     </div>
-                  )}
 
-                  <div className="shipped-card-action">
-                    <Link
-                      href={`/portfolio#${c.slug}`}
-                      className="btn btn-ghost btn-sm"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      Explore Case Study
-                      <svg className="btn-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                        <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </Link>
+                    {/* Right Column: High-Res Dashboard / Visual Mockup */}
+                    <div className="portfolio-card-visual">
+                      {project.image && (
+                        <div className="portfolio-img-container">
+                          <Image
+                            src={project.image.src}
+                            alt={project.image.alt}
+                            fill
+                            sizes="(max-width: 960px) 92vw, 540px"
+                            className="portfolio-dashboard-img"
+                            priority={idx === 0}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </article>
+                </div>
               );
             })}
+          </div>
+        </div>
+
+        {/* Bottom Controls: Elongated Active Dot Pagination & Arrow Navigation Buttons */}
+        <div className="portfolio-carousel-controls">
+          {/* Pagination Dots */}
+          <div className="portfolio-pagination-dots" role="tablist" aria-label="Portfolio carousel slides">
+            {CAROUSEL_PROJECTS.map((p, idx) => {
+              const isActive = idx === currentIndex;
+              return (
+                <button
+                  key={p.slug}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-label={`Go to slide ${idx + 1}: ${p.title}`}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`portfolio-dot-btn ${isActive ? "is-active" : ""}`}
+                />
+              );
+            })}
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="portfolio-nav-arrows">
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Previous project slide"
+              className="portfolio-nav-arrow-btn is-prev"
+            >
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M12.5 15l-5-5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next project slide"
+              className="portfolio-nav-arrow-btn is-next"
+            >
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M7.5 5l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>

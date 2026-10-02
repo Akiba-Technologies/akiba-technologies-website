@@ -2,18 +2,28 @@
 
 import Link from "next/link";
 import { Reveal } from "./Reveal";
-import { useHomeConfig } from "@/lib/home-store";
 
 export function WhyChooseKnocker() {
-  const { config } = useHomeConfig();
-  const { telemetry } = config;
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    e.currentTarget.style.setProperty("--mouse-x", `${x}px`);
+    e.currentTarget.style.setProperty("--mouse-y", `${y}px`);
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
+    e.currentTarget.style.removeProperty("--mouse-x");
+    e.currentTarget.style.removeProperty("--mouse-y");
+  };
+
   return (
     <section className="sec sec-why-knocker" id="why-choose" aria-labelledby="why-knocker-h">
       {/* Background ambient lighting */}
       <div className="why-knocker-glow" aria-hidden="true" />
 
       <div className="wrap">
-        {/* Section Header (left-aligned with kicker & action link, consistent with other sections) */}
+        {/* Section Header */}
         <Reveal
           className="sec-head"
           style={{
@@ -43,181 +53,298 @@ export function WhyChooseKnocker() {
           </Link>
         </Reveal>
 
-        {/* Creative Bento Grid */}
+        {/* Clean, Creative Bento Grid with Interactive Cursor Spotlight */}
         <div className="why-bento-grid">
-          {/* Card 1: AI & Automation Systems (Featured Wide Card) */}
-          <Reveal className="why-card why-card-ai" delay={50}>
+          {/* Card 1: Enterprise AI & Intelligent Automation (Span 7) */}
+          <Reveal
+            className="why-card why-card-ai"
+            delay={50}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
             <div className="why-card-top">
-              <div className="why-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93l-.75.14V14h3a3 3 0 0 1 3 3v1a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-1a3 3 0 0 1 3-3h3v-3.93l-.75-.14A4.002 4.002 0 0 1 8 6a4 4 0 0 1 4-4Z" />
-                  <circle cx="12" cy="6" r="1" />
+              <div className="why-icon-wrap" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                  <circle cx="12" cy="12" r="4" />
                 </svg>
               </div>
               <span className="why-tag">Flagship Capability</span>
             </div>
 
             <div className="why-card-body">
-              <h3 className="why-card-title">AI &amp; Automation Systems</h3>
+              <h3 className="why-card-title">Enterprise AI &amp; Automation</h3>
               <p className="why-card-desc">
-                Intelligent workflow automation, AI integration, and data pipelines engineered for efficiency, cost reduction, and automated business processes.
+                Autonomous agents, intelligent workflows, and private LLM pipelines engineered to automate operations with zero data leakage.
               </p>
 
-              {/* Telemetry Visual Widget */}
-              <div className="why-telemetry-box">
-                <div className="why-telemetry-header">
-                  <div className="why-telemetry-indicator">
-                    <span className="telemetry-live-dot" />
-                    <span>Neural Pipeline Active</span>
-                  </div>
-                  <span className="telemetry-speed">Latency: {telemetry.aiLatency || "82ms"}</span>
+              {/* Punchy Client Value Points */}
+              <div className="why-feature-list">
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Autonomous multi-step agent workflows &amp; orchestration</span>
                 </div>
-                <div className="why-telemetry-meter">
-                  <div className="why-telemetry-bar" style={{ width: "94%" }} />
+
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Private &amp; secure RAG architectures with proprietary vector search</span>
                 </div>
-                <div className="why-telemetry-metrics">
-                  <div className="metric-pill">
-                    <span className="metric-val">{telemetry.aiAccuracy || "99.4%"}</span>
-                    <span className="metric-lbl">Accuracy</span>
-                  </div>
-                  <div className="metric-pill">
-                    <span className="metric-val">{telemetry.aiThroughput || "+4.8x"}</span>
-                    <span className="metric-lbl">Throughput</span>
-                  </div>
-                  <div className="metric-pill">
-                    <span className="metric-val">Zero</span>
-                    <span className="metric-lbl">Data Leakage</span>
-                  </div>
+
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Deterministic human-in-the-loop guardrails &amp; compliance audits</span>
                 </div>
               </div>
 
-              {/* Visual feature pills */}
-              <div className="why-chips">
-                <span className="why-chip">Custom LLMs &amp; Agents</span>
-                <span className="why-chip">RAG &amp; Vector Embeddings</span>
-                <span className="why-chip">Automated RPA Pipelines</span>
+              {/* Card Footer */}
+              <div className="why-card-footer">
+                <div className="why-chips">
+                  <span className="why-chip">Custom Agents</span>
+                  <span className="why-chip">Private RAG</span>
+                  <span className="why-chip">Workflow AI</span>
+                </div>
+                <Link href="/services/ai" className="why-card-link">
+                  Learn more
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2 6h8m-3-3l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
               </div>
             </div>
           </Reveal>
 
-          {/* Card 2: Custom Software & Web Development */}
-          <Reveal className="why-card why-card-web" delay={100}>
+          {/* Card 2: Custom Software & Modern Web Platforms (Span 5) */}
+          <Reveal
+            className="why-card why-card-web"
+            delay={100}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
             <div className="why-card-top">
-              <div className="why-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <polyline points="16 18 22 12 16 6" />
-                  <polyline points="8 6 2 12 8 18" />
-                  <line x1="14" y1="4" x2="10" y2="20" />
+              <div className="why-icon-wrap" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
                 </svg>
               </div>
               <span className="why-tag">Full-Stack Modern</span>
             </div>
 
             <div className="why-card-body">
-              <h3 className="why-card-title">Custom Software &amp; Web Development</h3>
+              <h3 className="why-card-title">Custom Software &amp; Web Platforms</h3>
               <p className="why-card-desc">
-                Full-stack development, modern APIs, responsive web applications, and UI/UX design built for reliability, clean code, and fast delivery.
+                High-concurrency web platforms engineered with strict type safety, sub-second speeds, and scalable architecture.
               </p>
 
-              {/* Visual Performance Gauge */}
-              <div className="why-web-visual">
-                <div className="lighthouse-badge">
-                  <div className="lighthouse-circle">{telemetry.lighthouseScore || "100"}</div>
-                  <div className="lighthouse-text">
-                    <span className="lh-title">Lighthouse Score</span>
-                    <span className="lh-sub">Sub-second First Contentful Paint</span>
-                  </div>
+              {/* Punchy Client Value Points */}
+              <div className="why-feature-list">
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Server-rendered Next.js performance &amp; instant navigation</span>
+                </div>
+
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Strict TypeScript standards &amp; maintainable clean code</span>
+                </div>
+
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Conversion-driven responsive UX &amp; mobile accessibility</span>
                 </div>
               </div>
 
-              <div className="why-chips">
-                <span className="why-chip">React &amp; Next.js 14</span>
-                <span className="why-chip">Progressive Web Apps</span>
-                <span className="why-chip">Headless Architecture</span>
+              {/* Card Footer */}
+              <div className="why-card-footer">
+                <div className="why-chips">
+                  <span className="why-chip">Next.js</span>
+                  <span className="why-chip">TypeScript</span>
+                  <span className="why-chip">Modern UI</span>
+                </div>
+                <Link href="/services/web" className="why-card-link">
+                  Learn more
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2 6h8m-3-3l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
               </div>
             </div>
           </Reveal>
 
-          {/* Card 3: Cloud & Infrastructure Solutions */}
-          <Reveal className="why-card why-card-cloud" delay={150}>
+          {/* Card 3: Cloud & Infrastructure Solutions (Span 4) */}
+          <Reveal
+            className="why-card why-card-cloud"
+            delay={150}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
             <div className="why-card-top">
-              <div className="why-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <div className="why-icon-wrap" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
                 </svg>
               </div>
-              <span className="why-tag">Multi-Cloud IaC</span>
+              <span className="why-tag">Infrastructure</span>
             </div>
 
             <div className="why-card-body">
-              <h3 className="why-card-title">Cloud &amp; Infrastructure Solutions</h3>
+              <h3 className="why-card-title">Cloud &amp; DevOps Engineering</h3>
               <p className="why-card-desc">
-                DevOps automation, database design, Docker containerization, and cloud deployment emphasizing security, high uptime, and enterprise scalability.
+                High-availability topology, automated container clusters, and resilient DevOps pipelines for continuous uptime.
               </p>
 
-              {/* Visual Cloud Nodes Status */}
-              <div className="why-cloud-nodes">
-                <div className="cloud-node-item">
-                  <span className="cloud-dot active" />
-                  <span>AWS &bull; Azure &bull; GCP</span>
+              {/* Punchy Client Value Points */}
+              <div className="why-feature-list">
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">99.9% uptime SLA with automated multi-zone failover</span>
                 </div>
-                <div className="cloud-node-badge">
-                  <span>99.9% Uptime SLA</span>
+
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Zero-downtime CI/CD automated deployment rollouts</span>
+                </div>
+
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Reproducible Infrastructure-as-Code across AWS &amp; Azure</span>
                 </div>
               </div>
 
-              <div className="why-chips">
-                <span className="why-chip">Docker &amp; Kubernetes</span>
-                <span className="why-chip">CI/CD Automation</span>
-                <span className="why-chip">Zero-Downtime Deploy</span>
+              {/* Card Footer */}
+              <div className="why-card-footer">
+                <div className="why-chips">
+                  <span className="why-chip">Docker</span>
+                  <span className="why-chip">Kubernetes</span>
+                  <span className="why-chip">CI/CD</span>
+                </div>
+                <Link href="/services/cloud" className="why-card-link">
+                  Learn more
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2 6h8m-3-3l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
               </div>
             </div>
           </Reveal>
 
-          {/* Card 4: Digital Growth */}
-          <Reveal className="why-card why-card-growth" delay={200}>
+          {/* Card 4: Digital Strategy & Product Transformation (Span 4) */}
+          <Reveal
+            className="why-card why-card-growth"
+            delay={200}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
             <div className="why-card-top">
-              <div className="why-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <div className="why-icon-wrap" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
                   <polyline points="17 6 23 6 23 12" />
                 </svg>
               </div>
-              <span className="why-tag">Measurable ROI</span>
+              <span className="why-tag">Strategic Impact</span>
             </div>
 
             <div className="why-card-body">
-              <h3 className="why-card-title">Digital Growth</h3>
+              <h3 className="why-card-title">Digital Strategy &amp; Growth</h3>
               <p className="why-card-desc">
-                Strategic SEO, performance marketing, and conversion rate optimization to accelerate your market presence.
+                Aligning technical architecture directly with commercial outcomes, lower friction, and accelerated time-to-market.
               </p>
 
-              {/* Visual Growth Sparkline Widget */}
-              <div className="why-growth-stats">
-                <div className="growth-stat-col">
-                  <span className="growth-val">+240%</span>
-                  <span className="growth-lbl">Search Velocity</span>
+              {/* Punchy Client Value Points */}
+              <div className="why-feature-list">
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Technical discovery scoping to de-risk complex roadmaps</span>
                 </div>
-                <div className="growth-stat-divider" />
-                <div className="growth-stat-col">
-                  <span className="growth-val">3.2x</span>
-                  <span className="growth-lbl">Conversion Lift</span>
+
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Rapid two-week agile sprint delivery cycles</span>
+                </div>
+
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Measurable commercial ROI &amp; conversion optimization</span>
                 </div>
               </div>
 
-              <div className="why-chips">
-                <span className="why-chip">Technical SEO</span>
-                <span className="why-chip">Conversion Engineering</span>
-                <span className="why-chip">User Analytics</span>
+              {/* Card Footer */}
+              <div className="why-card-footer">
+                <div className="why-chips">
+                  <span className="why-chip">Discovery</span>
+                  <span className="why-chip">Agile</span>
+                  <span className="why-chip">Conversion</span>
+                </div>
+                <Link href="/services/strategy" className="why-card-link">
+                  Learn more
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2 6h8m-3-3l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
               </div>
             </div>
           </Reveal>
 
-          {/* Card 5: ERP Systems */}
-          <Reveal className="why-card why-card-erp" delay={250}>
+          {/* Card 5: Mission-Critical ERP & Core Systems (Span 4) */}
+          <Reveal
+            className="why-card why-card-erp"
+            delay={250}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
             <div className="why-card-top">
-              <div className="why-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <div className="why-icon-wrap" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
                   <line x1="8" y1="21" x2="16" y2="21" />
                   <line x1="12" y1="17" x2="12" y2="21" />
@@ -227,23 +354,54 @@ export function WhyChooseKnocker() {
             </div>
 
             <div className="why-card-body">
-              <h3 className="why-card-title">ERP Systems</h3>
+              <h3 className="why-card-title">Enterprise ERP &amp; Operations</h3>
               <p className="why-card-desc">
-                Complete enterprise resource planning solutions to streamline your business processes and improve operational efficiency.
+                Unified platforms that connect multi-branch inventory, audited ledgers, and automated procurement in real time.
               </p>
 
-              {/* Visual ERP Sync Indicator */}
-              <div className="why-erp-sync">
-                <div className="erp-sync-pill">
-                  <span className="erp-sync-dot" />
-                  <span>Real-Time Multi-Location Ledger Sync</span>
+              {/* Punchy Client Value Points */}
+              <div className="why-feature-list">
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Real-time multi-branch warehouse &amp; stock sync</span>
+                </div>
+
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Audit-proof double-entry GAAP financial ledgers</span>
+                </div>
+
+                <div className="why-feature-item">
+                  <span className="feature-check" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.5 6.2L4.8 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="feature-title">Hardware barcode scanner &amp; POS checkout integration</span>
                 </div>
               </div>
 
-              <div className="why-chips">
-                <span className="why-chip">Stock &amp; Warehouse</span>
-                <span className="why-chip">Financial Ledgers</span>
-                <span className="why-chip">Automated Audits</span>
+              {/* Card Footer */}
+              <div className="why-card-footer">
+                <div className="why-chips">
+                  <span className="why-chip">Multi-Branch</span>
+                  <span className="why-chip">Audited Ledgers</span>
+                  <span className="why-chip">POS Sync</span>
+                </div>
+                <Link href="/services/erp" className="why-card-link">
+                  Learn more
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2 6h8m-3-3l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </Link>
               </div>
             </div>
           </Reveal>

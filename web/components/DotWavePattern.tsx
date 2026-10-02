@@ -17,7 +17,7 @@ interface DotWavePatternProps {
  */
 export function DotWavePattern({
   className = "",
-  opacity = 0.08,
+  opacity = 0.05,
   width = 841.89,
   height = 408.89,
   ...props
