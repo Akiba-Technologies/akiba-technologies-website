@@ -58,7 +58,8 @@ export function Nav() {
             Start a Project
           </Link>
 
-          <ThemeToggle />
+          {/* Theme mode toggle hidden for now - light mode only */}
+          {/* <ThemeToggle /> */}
 
           <button
             className="nav-toggle"

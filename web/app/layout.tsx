@@ -84,13 +84,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#080B11",
+  themeColor: "#F4F6F8",
 };
 
-// Dark is the default for every first-time visitor, unchanged. This only
-// runs to restore a visitor's own earlier choice of light mode, and it runs
-// before paint so there's no flash of the wrong theme on repeat visits.
-const themeInitScript = `(function(){try{var t=localStorage.getItem('akiba-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();`;
+// Light mode is the default and standard view. This runs before paint
+// to ensure data-theme="light" is consistently applied.
+const themeInitScript = `(function(){try{document.documentElement.setAttribute('data-theme','light');localStorage.setItem('akiba-theme','light');}catch(e){}})();`;
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -143,7 +142,7 @@ const structuredData = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${mono.variable}`}>
+    <html lang="en" data-theme="light" className={`${plusJakartaSans.variable} ${mono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script

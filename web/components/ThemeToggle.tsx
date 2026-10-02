@@ -11,7 +11,7 @@ type Theme = "dark" | "light";
 // they ask for it — see the no-flash script in layout.tsx for how the
 // stored choice is applied before paint on repeat visits.
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
