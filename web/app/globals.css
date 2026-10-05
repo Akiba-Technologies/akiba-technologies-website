@@ -460,35 +460,60 @@ p {
 .brand {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
   flex: none;
+  text-decoration: none;
 }
 
-.brand-mark {
-  width: 36px;
-  height: 36px;
-  flex: none;
+.brand-logo-wrap {
+  display: inline-flex;
+  align-items: center;
 }
 
-.brand-txt {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
+.brand-logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
 }
 
-.brand-name {
+.brand-logo-dark {
+  display: none;
+}
+
+.brand-logo-light {
+  display: block;
+}
+
+/* On dark backgrounds (like the footer, or when data-theme is dark): show crisp white logo */
+.foot .brand-logo-light,
+[data-theme="dark"] .brand-logo-light {
+  display: none;
+}
+
+.foot .brand-logo-dark,
+[data-theme="dark"] .brand-logo-dark {
+  display: block;
+}
+
+/* Pure plain text only for Technologies, no badge */
+.brand-tech-text {
   font-family: var(--font-d);
-  font-weight: 850;
-  font-size: 1.16rem;
-  letter-spacing: -.03em;
-  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  color: #051242;
+  line-height: 1;
   white-space: nowrap;
+  display: inline-block;
 }
 
-.brand-tech {
-  font-weight: 850;
-  color: #cbd5e1;
-  margin-left: 3px;
+[data-theme="light"] .brand-tech-text {
+  color: #051242;
+}
+
+.foot .brand-tech-text,
+[data-theme="dark"] .brand-tech-text {
+  color: #ffffff;
 }
 
 .nav-links {
@@ -4230,21 +4255,26 @@ select.field option {
   margin-bottom: 18px;
 }
 
+.hero-kicker,
 .hero-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
+  background: none !important;
   border: none !important;
   box-shadow: none !important;
-  border-radius: 999px;
-  background: rgba(45, 202, 121, 0.12);
-  color: var(--mint);
-  font-family: var(--font-m);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  padding: 0 !important;
+  border-radius: 0 !important;
   margin-bottom: 18px;
+}
+
+.hero-kicker {
+  color: var(--mint);
+}
+
+[data-theme="light"] .hero-kicker {
+  color: #047857;
+}
+
+[data-theme="light"] .hero-kicker::before {
+  background: #047857;
 }
 
 .pill-brand {
@@ -5463,11 +5493,13 @@ select.field option {
   background: radial-gradient(ellipse 85% 55% at 50% -10%, rgba(4, 120, 87, 0.12) 0%, rgba(4, 120, 87, 0.03) 50%, transparent 80%);
 }
 
-[data-theme="light"] .hero-badge {
-  background: rgba(4, 120, 87, 0.08);
-  color: var(--em);
+[data-theme="light"] .hero-badge,
+[data-theme="light"] .hero-kicker {
+  background: none !important;
+  color: #047857;
   border: none !important;
   box-shadow: none !important;
+  padding: 0 !important;
 }
 
 [data-theme="light"] .pill-brand {

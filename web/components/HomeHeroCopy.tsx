@@ -10,8 +10,8 @@ export function HomeHeroCopy() {
 
   return (
     <div className="hero-copy">
-      <Reveal as="div" className="hero-badge">
-        <span>{hero.badge || "Building Modern Technology Solutions"}</span>
+      <Reveal as="p" className="kicker hero-kicker">
+        {hero.badge || "Building Modern Technology Solutions"}
       </Reveal>
 
       <Reveal as="h1" delay={60}>
