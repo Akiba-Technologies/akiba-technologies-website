@@ -62,6 +62,14 @@ export const metadata: Metadata = {
     title: "Akiba Tech | Building Modern Technology Solutions",
     description:
       "Akiba Tech builds modern, reliable, and high-impact software solutions. Empowering digital transformation through scalable, high-performance technology.",
+    images: [
+      {
+        url: `${siteUrl}/brand/akiba-logo.png`,
+        width: 806,
+        height: 212,
+        alt: "Akiba Technologies",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -69,6 +77,7 @@ export const metadata: Metadata = {
     description:
       "Akiba Tech is a modern technology company designing scalable software, cloud systems, and intelligent digital products.",
     creator: "@akibatech",
+    images: [`${siteUrl}/brand/akiba-logo.png`],
   },
   robots: {
     index: true,
@@ -100,7 +109,8 @@ const structuredData = {
       name: "Akiba Tech",
       alternateName: "Akiba Technologies",
       url: siteUrl,
-      logo: `${siteUrl}/icon.svg`,
+      logo: `${siteUrl}/brand/akiba-logo.png`,
+      image: `${siteUrl}/brand/akiba-logo.png`,
       description:
         "Akiba Tech is a modern technology company designing scalable software, cloud systems, and intelligent digital products.",
       email: "akiba.tech.official@gmail.com",

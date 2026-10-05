@@ -458,9 +458,8 @@ p {
 }
 
 .brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
   flex: none;
   text-decoration: none;
 }
@@ -471,7 +470,7 @@ p {
 }
 
 .brand-logo-img {
-  height: 28px;
+  height: 32px;
   width: auto;
   display: block;
 }
@@ -493,27 +492,6 @@ p {
 .foot .brand-logo-dark,
 [data-theme="dark"] .brand-logo-dark {
   display: block;
-}
-
-/* Pure plain text only for Technologies, no badge */
-.brand-tech-text {
-  font-family: var(--font-d);
-  font-size: 1.15rem;
-  font-weight: 750;
-  letter-spacing: -0.025em;
-  color: #051242;
-  line-height: 1;
-  white-space: nowrap;
-  display: inline-block;
-}
-
-[data-theme="light"] .brand-tech-text {
-  color: #051242;
-}
-
-.foot .brand-tech-text,
-[data-theme="dark"] .brand-tech-text {
-  color: #ffffff;
 }
 
 .nav-links {
