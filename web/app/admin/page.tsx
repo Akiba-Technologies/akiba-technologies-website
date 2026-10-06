@@ -63,7 +63,7 @@ function AdminImageCard({
       <div className="admin-img-preview-box" style={{ height: previewHeight }}>
         {value ? (
           <>
-            <img src={value} alt={slotTitle} />
+            <img src={value} alt={slotTitle} style={{ objectFit: "contain", width: "100%", height: "100%" }} />
             <span className="admin-file-source-badge">
               {isUploaded ? "Device File" : isPreset ? "Preset" : "Custom URL"}
             </span>
@@ -432,6 +432,25 @@ export default function AdminPage() {
     const def = resetHomeConfig();
     setHomeConfig(def);
     showToast("Reset to default home page content");
+  };
+
+  const handleLoadSvgPresetCards = () => {
+    const updated = {
+      ...homeConfig,
+      mosaic: {
+        photo1: "/work/hero-card-royal-candy.svg",
+        photo1Alt: "Royal Candy & Chocolate luxury confectionery digital catalog",
+        photo2: "/work/hero-card-amigos-gym.svg",
+        photo2Alt: "Amigos Gym management platform SaaS dashboard",
+        photo3: "/work/hero-card-akiba-erp.svg",
+        photo3Alt: "Akiba ERP multi-location inventory and real-time ledger audit",
+        photo4: "/work/hero-card-tway-realestate.svg",
+        photo4Alt: "Tway Real Estate modern property listings and buyer inquiry portal",
+      },
+    };
+    setHomeConfig(updated);
+    saveHomeConfig(updated);
+    showToast("Loaded & saved the 4 High-Resolution Vector SVG Project Cards!");
   };
 
   const handleUpdateHeroStat = (index: number, field: "value" | "label", val: string) => {
@@ -1415,7 +1434,7 @@ export default function AdminPage() {
                 <div key={p.id} className="admin-card admin-project-card">
                   {p.image && (
                     <div className="admin-proj-card-thumb">
-                      <img src={p.image} alt={p.title} />
+                      <img src={p.image} alt={p.title} style={{ objectFit: "contain", width: "100%", height: "100%" }} />
                       <span className={`admin-proj-status-badge ${p.status}`}>{p.status}</span>
                     </div>
                   )}
@@ -1755,7 +1774,7 @@ export default function AdminPage() {
 
             {/* Section 3: Hero Mosaic Photos (4 Showcase Images) */}
             <div className="admin-card admin-cms-section">
-              <div className="admin-cms-sec-head">
+              <div className="admin-cms-sec-head" style={{ flexWrap: "wrap", gap: 14 }}>
                 <div>
                   <h3>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
@@ -1765,7 +1784,46 @@ export default function AdminPage() {
                     </svg>
                     Hero Photo Mosaic (4 Visual Showcase Images)
                   </h3>
-                  <p>Choose from project image presets or enter custom URLs/paths to change the hero mosaic photos.</p>
+                  <p>Choose from project image presets, upload screenshots from your device, or enter image paths. Saved images update the live Hero Section immediately.</p>
+                </div>
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+                  <button
+                    type="button"
+                    onClick={handleLoadSvgPresetCards}
+                    className="admin-btn admin-btn-mint admin-btn-sm"
+                    title="Instantly switch to the 4 ultra-crisp vector project mockups (Royal Candy, Amigos Gym, Akiba ERP, Tway Real Estate)"
+                  >
+                    ⚡ Load 4 Real Vector SVG Cards
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveHomeConfig}
+                    className="admin-btn admin-btn-primary admin-btn-sm"
+                  >
+                    Save Hero Images
+                  </button>
+                </div>
+              </div>
+
+              {/* Layout Helper Info Banner */}
+              <div style={{
+                background: "rgba(45, 202, 121, 0.06)",
+                border: "1px solid rgba(45, 202, 121, 0.2)",
+                borderRadius: 12,
+                padding: "12px 16px",
+                marginBottom: 20,
+                fontSize: "0.82rem",
+                color: "var(--slate-light)",
+                lineHeight: 1.5
+              }}>
+                <strong style={{ color: "var(--mint)", display: "block", marginBottom: 4 }}>
+                  🗺️ How these 4 slots display in the Homepage Hero Section:
+                </strong>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 8, marginTop: 6 }}>
+                  <div><strong>Photo 1 (Mid-Left):</strong> Top card in left column (Royal Candy Luxury Catalog)</div>
+                  <div><strong>Photo 2 (Bottom-Left):</strong> Bottom card in left column (Amigos Gym SaaS Dashboard)</div>
+                  <div><strong>Photo 3 (Top-Right):</strong> Flagship card in right column (Akiba ERP System)</div>
+                  <div><strong>Photo 4 (Bottom-Right):</strong> Bottom card in right column (Tway Real Estate Portal)</div>
                 </div>
               </div>
 
@@ -1773,7 +1831,7 @@ export default function AdminPage() {
                 {/* Photo 1 */}
                 <AdminImageCard
                   id="mosaic-p1"
-                  slotTitle="Photo 1 • Mid-Left (Mobile / AgriFarm)"
+                  slotTitle="Photo 1 • Mid-Left (Royal Candy / Confectionery)"
                   value={homeConfig.mosaic.photo1}
                   presets={AVAILABLE_WORK_IMAGES}
                   onChange={(val) =>
@@ -1788,7 +1846,7 @@ export default function AdminPage() {
                 {/* Photo 2 */}
                 <AdminImageCard
                   id="mosaic-p2"
-                  slotTitle="Photo 2 • Bottom-Left (SaaS / Web Platform)"
+                  slotTitle="Photo 2 • Bottom-Left (Amigos Gym / SaaS Dashboard)"
                   value={homeConfig.mosaic.photo2}
                   presets={AVAILABLE_WORK_IMAGES}
                   onChange={(val) =>
@@ -1803,7 +1861,7 @@ export default function AdminPage() {
                 {/* Photo 3 */}
                 <AdminImageCard
                   id="mosaic-p3"
-                  slotTitle="Photo 3 • Top-Right (Flagship Financial)"
+                  slotTitle="Photo 3 • Top-Right (Akiba ERP / Flagship System)"
                   value={homeConfig.mosaic.photo3}
                   presets={AVAILABLE_WORK_IMAGES}
                   onChange={(val) =>
@@ -1818,7 +1876,7 @@ export default function AdminPage() {
                 {/* Photo 4 */}
                 <AdminImageCard
                   id="mosaic-p4"
-                  slotTitle="Photo 4 • Bottom-Right (Engineering Team)"
+                  slotTitle="Photo 4 • Bottom-Right (Tway Real Estate / Portal)"
                   value={homeConfig.mosaic.photo4}
                   presets={AVAILABLE_WORK_IMAGES}
                   onChange={(val) =>
@@ -1829,6 +1887,29 @@ export default function AdminPage() {
                   }
                   onFileUpload={handleImageFileUpload}
                 />
+              </div>
+
+              {/* Quick Save Action Bar */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 18, paddingTop: 14, borderTop: "1px solid rgba(255, 255, 255, 0.06)", flexWrap: "wrap", gap: 10 }}>
+                <span style={{ fontSize: "0.8rem", color: "var(--slate)" }}>
+                  Changes sync immediately to the homepage when saved.
+                </span>
+                <div style={{ display: "flex", gap: 10 }}>
+                  <button
+                    type="button"
+                    onClick={handleLoadSvgPresetCards}
+                    className="admin-btn admin-btn-ghost admin-btn-sm"
+                  >
+                    ⚡ Load 4 Real Vector Cards
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveHomeConfig}
+                    className="admin-btn admin-btn-primary admin-btn-sm"
+                  >
+                    Save Hero Images
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -2673,6 +2754,9 @@ export default function AdminPage() {
                     value={editingProject.liveDemoUrl || ""}
                     onChange={(e) => setEditingProject({ ...editingProject, liveDemoUrl: e.target.value })}
                   />
+                  <span style={{ fontSize: "0.76rem", color: "var(--slate-d)", marginTop: "4px", display: "block" }}>
+                    Optional. Leave blank if there is no live demo link — the &ldquo;Live Demo&rdquo; button will be hidden automatically on the portfolio card.
+                  </span>
                 </div>
 
                 <div className="admin-fgroup">

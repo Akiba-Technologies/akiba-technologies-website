@@ -114,7 +114,6 @@ export const INITIAL_PROJECTS: AdminProject[] = [
     stack: ["Python", "Scikit-learn", "FastAPI", "Redis"],
     status: "published",
     image: "/work/hero-agrifarm-app.webp",
-    liveDemoUrl: "https://akibatech.com/portfolio#",
   },
   {
     id: "proj-2",

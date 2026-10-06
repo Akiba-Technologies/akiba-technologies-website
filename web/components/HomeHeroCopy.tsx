@@ -9,19 +9,19 @@ export function HomeHeroCopy() {
   const { hero } = config;
 
   return (
-    <div className="hero-copy">
+    <div className="hero-center-box">
       <Reveal as="p" className="kicker hero-kicker">
         {hero.badge || "Building Modern Technology Solutions"}
       </Reveal>
 
-      <Reveal as="h1" delay={60}>
+      <Reveal as="h1" className="hero-stretched-h1" delay={60}>
         {hero.titlePrefix || "Empowering digital transformation through"}{" "}
         <span className="grad">{hero.titleHighlight || "scalable technology"}</span>
       </Reveal>
 
-      <Reveal as="p" className="lede" delay={120}>
+      <Reveal as="p" className="lede hero-stretched-lede" delay={120}>
         {hero.lede ||
-          "Akiba Tech builds modern, reliable, and high-impact software solutions. From full-stack web and cloud systems to custom enterprise platforms, we help modern businesses scale efficiently with clean architecture and cutting-edge engineering."}
+          "We build modern software and digital solutions that help businesses innovate and scale efficiently."}
       </Reveal>
 
       <Reveal className="hero-cta" delay={180}>
@@ -46,6 +46,16 @@ export function HomeHeroCopy() {
         <Link href="/services#academy">AkibaTech Academy</Link>
       </Reveal>
 
+      {hero.stats && hero.stats.length > 0 && (
+        <Reveal as="div" className="hero-center-stats" delay={300}>
+          {hero.stats.map((st) => (
+            <div key={st.id} className="hero-center-stat-item">
+              <span className="stat-val">{st.value}</span>
+              <span className="stat-lbl">{st.label}</span>
+            </div>
+          ))}
+        </Reveal>
+      )}
     </div>
   );
 }

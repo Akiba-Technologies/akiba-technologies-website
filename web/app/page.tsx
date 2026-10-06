@@ -1,5 +1,4 @@
 import { Reveal } from "@/components/Reveal";
-import { HeroMosaic } from "@/components/HeroMosaic";
 import { DotWavePattern } from "@/components/DotWavePattern";
 import { DevelopmentProcess } from "@/components/DevelopmentProcess";
 import { RecentWork } from "@/components/RecentWork";
@@ -15,26 +14,18 @@ export default function HomePage() {
   return (
     <>
       {/* ===================== HERO SECTION ===================== */}
-      <section className="hero hero-split-section" aria-label="Hero">
+      <section className="hero hero-center-section" aria-label="Hero">
         {/* Seamless 3D Halftone Spherical Dot Wave Pattern (from vector asset) */}
         <div className="dot-wave-container" aria-hidden="true">
-          <DotWavePattern opacity={0.05} className="hero-dot-wave" />
+          <DotWavePattern opacity={0.06} className="hero-dot-wave" />
         </div>
 
         {/* Ambient radial spotlight tailored to Akiba logo colors (Emerald #2DCA79 & Deep Navy #002259) */}
         <div className="hero-radial-spotlight" aria-hidden="true" />
 
         <div className="wrap">
-          <div className="hero-split-grid">
-            {/* Left Column: Typography, Value Proposition & CTAs */}
+          <div className="hero-center-wrap">
             <HomeHeroCopy />
-
-            {/* Right Column: Organic Floating Project Photo Mosaic (Mention-style layout with real project photos) */}
-            <div className="hero-visual">
-              <Reveal delay={150}>
-                <HeroMosaic />
-              </Reveal>
-            </div>
           </div>
         </div>
 

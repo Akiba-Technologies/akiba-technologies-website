@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState, useEffect } from "react";
 import { Reveal } from "./Reveal";
-import { CASE_FILTERS, CASE_STUDIES, type CaseCategory, type CaseStudy } from "@/lib/case-studies";
+import { CASE_FILTERS, CASE_STUDIES, isLiveDemoUrl, type CaseCategory, type CaseStudy } from "@/lib/case-studies";
 import { getStoredProjects, type AdminProject } from "@/lib/admin-store";
 
 function mapAdminProjectToCaseStudy(p: AdminProject): CaseStudy {
@@ -34,7 +34,7 @@ function mapAdminProjectToCaseStudy(p: AdminProject): CaseStudy {
     metricLabel: p.metricLabel || orig?.metricLabel || "verified platform impact",
     stack: p.stack && p.stack.length > 0 ? p.stack : orig?.stack || ["Laravel", "React"],
     categories,
-    liveDemoUrl: p.liveDemoUrl || orig?.liveDemoUrl || "#",
+    liveDemoUrl: p.liveDemoUrl || orig?.liveDemoUrl || "",
     image: {
       src: imageSrc,
       alt: orig?.image?.alt || `${p.title} showcase screenshot`,
@@ -126,10 +126,9 @@ export function PortfolioBrowser() {
                     alt={c.image.alt}
                     fill
                     sizes="(max-width: 680px) 100vw, (max-width: 1060px) 50vw, 33vw"
-                    style={{ objectFit: "cover" }}
+                    style={{ objectFit: "contain", objectPosition: "center" }}
                     unoptimized
                   />
-                  <div className="case-shot-overlay" aria-hidden="true" />
                 </div>
               )}
 
@@ -151,34 +150,36 @@ export function PortfolioBrowser() {
                 </div>
               )}
 
-              {/* Live Demo Action */}
-              <div className="case-action">
-                <a
-                  href={c.liveDemoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-ghost btn-sm case-demo-btn"
-                  aria-label={`View live demo for ${c.title} (opens in new tab)`}
-                >
-                  <span>Live Demo</span>
-                  <svg
-                    className="btn-arrow"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
+              {/* Live Demo Action - only shown if project has an active demo link */}
+              {isLiveDemoUrl(c.liveDemoUrl) && (
+                <div className="case-action">
+                  <a
+                    href={c.liveDemoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-ghost btn-sm case-demo-btn"
+                    aria-label={`View live demo for ${c.title} (opens in new tab)`}
                   >
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                    <polyline points="15 3 21 3 21 9" />
-                    <line x1="10" y1="14" x2="21" y2="3" />
-                  </svg>
-                </a>
-              </div>
+                    <span>Live Demo</span>
+                    <svg
+                      className="btn-arrow"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                      <polyline points="15 3 21 3 21 9" />
+                      <line x1="10" y1="14" x2="21" y2="3" />
+                    </svg>
+                  </a>
+                </div>
+              )}
             </Reveal>
           ))}
         </div>
