@@ -1,4 +1,7 @@
+"use client";
+
 import { Reveal } from "./Reveal";
+import { useHomeConfig, DEFAULT_HOME_CONFIG } from "@/lib/home-store";
 
 type ProcessStage = {
   hex: string;
@@ -87,6 +90,9 @@ const PROCESS_STAGES: ProcessStage[] = [
 ];
 
 export function DevelopmentProcess() {
+  const { config } = useHomeConfig();
+  const proc = config.process || DEFAULT_HOME_CONFIG.process;
+
   return (
     <section
       className="sec sec-process"
@@ -100,12 +106,13 @@ export function DevelopmentProcess() {
 
       <div className="wrap">
         <Reveal className="sec-head">
-          <p className="kicker">DEVELOPMENT PROCESS</p>
+          <p className="kicker">{proc.kicker || "DEVELOPMENT PROCESS"}</p>
           <h2 id="process-h">
-            Agile software development methodology that delivers <span className="title-accent">high-quality solutions</span>
+            {proc.title || "Agile software development methodology that delivers"}{" "}
+            <span className="title-accent">{proc.titleAccent || "high-quality solutions"}</span>
           </h2>
           <p className="lede">
-            Structured engineering cycles designed for predictability, transparent milestones, and zero-defect production releases.
+            {proc.lede || "Structured engineering cycles designed for predictability, transparent milestones, and zero-defect production releases."}
           </p>
         </Reveal>
 

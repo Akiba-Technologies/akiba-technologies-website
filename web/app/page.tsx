@@ -4,7 +4,7 @@ import { DevelopmentProcess } from "@/components/DevelopmentProcess";
 import { RecentWork } from "@/components/RecentWork";
 import { WhyChooseKnocker } from "@/components/WhyChooseKnocker";
 import { AcademySection } from "@/components/AcademySection";
-import { Band } from "@/components/Band";
+import { HomeBand } from "@/components/HomeBand";
 import { TrustedBy } from "@/components/TrustedBy";
 import { ByTheNumbers } from "@/components/ByTheNumbers";
 import { TechnologiesWeUse } from "@/components/TechnologiesWeUse";
@@ -52,12 +52,7 @@ export default function HomePage() {
       <AcademySection />
 
       {/* ===================== CALL TO ACTION (PORTFOLIO BAND STYLE) ===================== */}
-      <Band
-        heading="Let’s build something that saves you time, money and resources."
-        ctaHref="/contact"
-        ctaLabel="Start a project"
-        showSlogan
-      />
+      <HomeBand />
     </>
   );
 }

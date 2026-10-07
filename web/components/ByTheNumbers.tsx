@@ -2,34 +2,31 @@
 
 import { Counter } from "./Counter";
 import { Reveal } from "./Reveal";
-
-interface StatItem {
-  target: number;
-  decimals?: number;
-  suffix: string;
-  label: string;
-}
-
-const STATS: StatItem[] = [
-  {
-    target: 50,
-    suffix: "+",
-    label: "Enterprise Deployments",
-  },
-  {
-    target: 99.9,
-    decimals: 1,
-    suffix: "%",
-    label: "System Uptime SLA",
-  },
-  {
-    target: 200,
-    suffix: "+",
-    label: "Engineers Trained",
-  },
-];
+import { useHomeConfig, DEFAULT_HOME_CONFIG } from "@/lib/home-store";
 
 export function ByTheNumbers() {
+  const { config } = useHomeConfig();
+  const btn = config.byTheNumbers || DEFAULT_HOME_CONFIG.byTheNumbers;
+
+  const stats = [
+    {
+      target: Number(btn.stat1Target) || 50,
+      suffix: btn.stat1Suffix ?? "+",
+      label: btn.stat1Label || "Enterprise Deployments",
+    },
+    {
+      target: Number(btn.stat2Target) || 99.9,
+      decimals: 1,
+      suffix: btn.stat2Suffix ?? "%",
+      label: btn.stat2Label || "System Uptime SLA",
+    },
+    {
+      target: Number(btn.stat3Target) || 200,
+      suffix: btn.stat3Suffix ?? "+",
+      label: btn.stat3Label || "Engineers Trained",
+    },
+  ];
+
   return (
     <section
       className="sec sec-by-numbers"
@@ -51,23 +48,24 @@ export function ByTheNumbers() {
         <div className="numbers-head">
           <Reveal>
             <p className="kicker numbers-kicker">
-              Engineering Scale &bull; Proven Impact
+              {btn.kicker || "Engineering Scale • Proven Impact"}
             </p>
             <h2 id="numbers-heading" className="numbers-title">
-              Akiba Technologies by the <span className="numbers-highlight">numbers</span>
+              {btn.title || "Akiba Technologies by the"}{" "}
+              <span className="numbers-highlight">{btn.highlight || "numbers"}</span>
             </h2>
           </Reveal>
           <Reveal delay={100}>
             <p className="numbers-subtitle">
-              Delivering high-performance software with engineering rigor and scalable architecture.
+              {btn.subtitle || "Delivering high-performance software with engineering rigor and scalable architecture."}
             </p>
           </Reveal>
         </div>
 
         {/* Stats Grid */}
         <div className="numbers-grid">
-          {STATS.map((stat, idx) => (
-            <Reveal key={stat.label} delay={150 + idx * 80} className="numbers-col">
+          {stats.map((stat, idx) => (
+            <Reveal key={idx} delay={150 + idx * 80} className="numbers-col">
               <div className="numbers-card">
                 <div className="numbers-val">
                   <Counter to={stat.target} decimals={stat.decimals || 0} />
@@ -75,7 +73,7 @@ export function ByTheNumbers() {
                 </div>
                 <p className="numbers-lbl">{stat.label}</p>
               </div>
-              {idx < STATS.length - 1 && <div className="numbers-divider" aria-hidden="true" />}
+              {idx < stats.length - 1 && <div className="numbers-divider" aria-hidden="true" />}
             </Reveal>
           ))}
         </div>

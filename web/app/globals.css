@@ -4268,8 +4268,8 @@ select.field option {
   text-align: center !important;
   margin-inline: auto !important;
   width: 100% !important;
-  max-width: 1040px !important;
-  font-size: clamp(1.15rem, 1.55vw, 1.35rem) !important;
+  max-width: 920px !important;
+  font-size: clamp(0.95rem, 1.05vw, 1.02rem) !important;
   line-height: 1.65 !important;
   color: var(--slate-light) !important;
   text-wrap: balance !important;

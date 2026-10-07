@@ -14,7 +14,58 @@ export type HomePageConfig = {
     titlePrefix: string;
     titleHighlight: string;
     lede: string;
+    ctaPrimaryLabel?: string;
+    ctaPrimaryHref?: string;
+    ctaSecondaryLabel?: string;
+    ctaSecondaryHref?: string;
     stats: HomeStat[];
+  };
+  whyChoose: {
+    kicker: string;
+    title: string;
+    titleAccent: string;
+    lede: string;
+    btnLabel: string;
+    btnHref: string;
+  };
+  byTheNumbers: {
+    kicker: string;
+    title: string;
+    highlight: string;
+    subtitle?: string;
+    stat1Target: number;
+    stat1Suffix: string;
+    stat1Label: string;
+    stat2Target: number;
+    stat2Suffix: string;
+    stat2Label: string;
+    stat3Target: number;
+    stat3Suffix: string;
+    stat3Label: string;
+  };
+  process: {
+    kicker: string;
+    title: string;
+    titleAccent: string;
+    lede: string;
+  };
+  academy: {
+    kicker: string;
+    title: string;
+    titleAccent: string;
+    lede: string;
+    hubBtnLabel: string;
+    hubBtnHref: string;
+    servicesBtnLabel: string;
+    servicesBtnHref: string;
+  };
+  ctaBand: {
+    heading: string;
+    btnLabel: string;
+    btnHref: string;
+    sloganPart1: string;
+    sloganPart2: string;
+    sloganPart3: string;
   };
   mosaic: {
     photo1: string;
@@ -53,12 +104,63 @@ export const DEFAULT_HOME_CONFIG: HomePageConfig = {
     badge: "Building Modern Technology Solutions",
     titlePrefix: "Empowering digital transformation through",
     titleHighlight: "scalable technology",
-    lede: "We build modern software and digital solutions that help businesses innovate and scale efficiently.",
+    lede: "We engineer modern, reliable, and high-impact software solutions for ambitious enterprises. From web and cloud systems to custom platforms, we help modern businesses scale with cutting-edge technology.",
+    ctaPrimaryLabel: "Schedule Consultation",
+    ctaPrimaryHref: "/contact",
+    ctaSecondaryLabel: "Our Services",
+    ctaSecondaryHref: "/services",
     stats: [
       { id: "stat-1", value: "50+", label: "Enterprise Deployments" },
       { id: "stat-2", value: "99.9%", label: "System Uptime SLA" },
       { id: "stat-3", value: "200+", label: "Engineers Trained" },
     ],
+  },
+  whyChoose: {
+    kicker: "Why Akiba Tech",
+    title: "Why Choose",
+    titleAccent: "Akiba Tech",
+    lede: "Empowering digital transformation through scalable, high-performance technology. We build modern, reliable, and high-impact software solutions with clean architecture and cutting-edge engineering.",
+    btnLabel: "Explore Capabilities",
+    btnHref: "/services",
+  },
+  byTheNumbers: {
+    kicker: "Engineering Scale • Proven Impact",
+    title: "Akiba Technologies by the",
+    highlight: "numbers",
+    subtitle: "Delivering high-performance software with engineering rigor and scalable architecture.",
+    stat1Target: 50,
+    stat1Suffix: "+",
+    stat1Label: "Enterprise Deployments",
+    stat2Target: 99.9,
+    stat2Suffix: "%",
+    stat2Label: "System Uptime SLA",
+    stat3Target: 200,
+    stat3Suffix: "+",
+    stat3Label: "Engineers Trained",
+  },
+  process: {
+    kicker: "DEVELOPMENT PROCESS",
+    title: "Agile software development methodology that delivers",
+    titleAccent: "high-quality solutions",
+    lede: "Structured engineering cycles designed for predictability, transparent milestones, and zero-defect production releases.",
+  },
+  academy: {
+    kicker: "Engineering Rigor • AkibaTech Academy",
+    title: "We don’t just consume modern tech",
+    titleAccent: "we teach it.",
+    lede: "200+ hand-selected engineers trained in backend architecture, system design & algorithms — so our clients get a core team at the forefront of clean code.",
+    hubBtnLabel: "Akiba Hub • Register",
+    hubBtnHref: "https://hub.akibatech.com/login",
+    servicesBtnLabel: "Explore Our Services",
+    servicesBtnHref: "/services",
+  },
+  ctaBand: {
+    heading: "Let’s build something that saves you time, money and resources.",
+    btnLabel: "Start a project",
+    btnHref: "/contact",
+    sloganPart1: "Save time.",
+    sloganPart2: "Save money.",
+    sloganPart3: "Save resources.",
   },
   mosaic: {
     photo1: "/work/hero-card-royal-candy.svg",
@@ -122,11 +224,16 @@ export function getStoredHomeConfig(): HomePageConfig {
     if (!mosaic.photo3 || mosaic.photo3.endsWith(".webp")) mosaic.photo3 = DEFAULT_HOME_CONFIG.mosaic.photo3;
     if (!mosaic.photo4 || mosaic.photo4.endsWith(".webp")) mosaic.photo4 = DEFAULT_HOME_CONFIG.mosaic.photo4;
     const hero = { ...DEFAULT_HOME_CONFIG.hero, ...(parsed.hero || {}) };
-    if (!hero.lede || hero.lede.startsWith("Akiba Tech builds modern, reliable")) {
+    if (!hero.lede || hero.lede.startsWith("Akiba Tech builds") || hero.lede.startsWith("We build modern") || hero.lede.startsWith("We engineer modern, reliable, and high-impact software solutions. From full-stack")) {
       hero.lede = DEFAULT_HOME_CONFIG.hero.lede;
     }
     return {
       hero,
+      whyChoose: { ...DEFAULT_HOME_CONFIG.whyChoose, ...(parsed.whyChoose || {}) },
+      byTheNumbers: { ...DEFAULT_HOME_CONFIG.byTheNumbers, ...(parsed.byTheNumbers || {}) },
+      process: { ...DEFAULT_HOME_CONFIG.process, ...(parsed.process || {}) },
+      academy: { ...DEFAULT_HOME_CONFIG.academy, ...(parsed.academy || {}) },
+      ctaBand: { ...DEFAULT_HOME_CONFIG.ctaBand, ...(parsed.ctaBand || {}) },
       mosaic,
       erpSpotlight: { ...DEFAULT_HOME_CONFIG.erpSpotlight, ...(parsed.erpSpotlight || {}) },
       telemetry: { ...DEFAULT_HOME_CONFIG.telemetry, ...(parsed.telemetry || {}) },

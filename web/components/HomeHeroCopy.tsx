@@ -21,18 +21,18 @@ export function HomeHeroCopy() {
 
       <Reveal as="p" className="lede hero-stretched-lede" delay={120}>
         {hero.lede ||
-          "We build modern software and digital solutions that help businesses innovate and scale efficiently."}
+          "We engineer modern, reliable, and high-impact software solutions for ambitious enterprises. From web and cloud systems to custom platforms, we help modern businesses scale with cutting-edge technology."}
       </Reveal>
 
       <Reveal className="hero-cta" delay={180}>
-        <Link className="btn btn-em" href="/contact">
-          Schedule Consultation
+        <Link className="btn btn-em" href={hero.ctaPrimaryHref || "/contact"}>
+          {hero.ctaPrimaryLabel || "Schedule Consultation"}
           <svg className="btn-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </Link>
-        <Link className="btn btn-ghost" href="/services">
-          Our Services
+        <Link className="btn btn-ghost" href={hero.ctaSecondaryHref || "/services"}>
+          {hero.ctaSecondaryLabel || "Our Services"}
           <svg className="btn-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

@@ -1770,6 +1770,70 @@ export default function AdminPage() {
                   }
                 />
               </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Primary Button Label</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.hero.ctaPrimaryLabel ?? "Schedule Consultation"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        hero: { ...homeConfig.hero, ctaPrimaryLabel: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Primary Button Destination URL</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.hero.ctaPrimaryHref ?? "/contact"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        hero: { ...homeConfig.hero, ctaPrimaryHref: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Secondary Button Label</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.hero.ctaSecondaryLabel ?? "Our Services"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        hero: { ...homeConfig.hero, ctaSecondaryLabel: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Secondary Button Destination URL</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.hero.ctaSecondaryHref ?? "/services"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        hero: { ...homeConfig.hero, ctaSecondaryHref: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Section 3: Hero Mosaic Photos (4 Showcase Images) */}
@@ -2081,6 +2145,715 @@ export default function AdminPage() {
                       setHomeConfig({
                         ...homeConfig,
                         telemetry: { ...homeConfig.telemetry, lighthouseScore: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 6: Why Choose Us (Headline & CTA) */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head" style={{ flexWrap: "wrap", gap: 14 }}>
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    Why Choose Us (Section Copy &amp; CTA)
+                  </h3>
+                  <p>Edit the section badge, headline, value proposition text, and exploration button.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSaveHomeConfig}
+                  className="admin-btn admin-btn-outline admin-btn-sm"
+                >
+                  Save Section Changes
+                </button>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Section Kicker</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.whyChoose?.kicker ?? "Why Akiba Tech"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        whyChoose: { ...homeConfig.whyChoose, kicker: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Title Prefix</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.whyChoose?.title ?? "Why Choose"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        whyChoose: { ...homeConfig.whyChoose, title: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Title Accent (Highlighted Brand Name)</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.whyChoose?.titleAccent ?? "Akiba Tech"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        whyChoose: { ...homeConfig.whyChoose, titleAccent: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Button Label</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.whyChoose?.btnLabel ?? "Explore Capabilities"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        whyChoose: { ...homeConfig.whyChoose, btnLabel: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Button Link / Destination</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.whyChoose?.btnHref ?? "/services"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        whyChoose: { ...homeConfig.whyChoose, btnHref: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Section Description (Lede)</label>
+                  <textarea
+                    rows={2}
+                    className="admin-textarea"
+                    value={homeConfig.whyChoose?.lede ?? ""}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        whyChoose: { ...homeConfig.whyChoose, lede: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 7: By The Numbers (Metrics & Counters) */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head" style={{ flexWrap: "wrap", gap: 14 }}>
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <line x1="18" y1="20" x2="18" y2="10" />
+                      <line x1="12" y1="20" x2="12" y2="4" />
+                      <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                    Akiba By The Numbers (Header &amp; 3 Stat Counters)
+                  </h3>
+                  <p>Customize the section titles and live count-up animation statistics.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSaveHomeConfig}
+                  className="admin-btn admin-btn-outline admin-btn-sm"
+                >
+                  Save Section Changes
+                </button>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Section Kicker</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.byTheNumbers?.kicker ?? "Engineering Scale • Proven Impact"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        byTheNumbers: { ...homeConfig.byTheNumbers, kicker: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Title Prefix</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.byTheNumbers?.title ?? "Akiba Technologies by the"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        byTheNumbers: { ...homeConfig.byTheNumbers, title: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Highlighted Word</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.byTheNumbers?.highlight ?? "numbers"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        byTheNumbers: { ...homeConfig.byTheNumbers, highlight: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Section Subtitle</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.byTheNumbers?.subtitle ?? "Delivering high-performance software with engineering rigor and scalable architecture."}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        byTheNumbers: { ...homeConfig.byTheNumbers, subtitle: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginTop: 14 }}>
+                <label style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--mint)", display: "block", marginBottom: 12 }}>
+                  3 Highlight Statistics (Animated Counter Targets):
+                </label>
+                <div className="admin-stats-edit-grid">
+                  {/* Stat 1 */}
+                  <div className="admin-stat-edit-card">
+                    <span className="admin-stat-badge-num">Metric #1</span>
+                    <div className="admin-fgroup">
+                      <label>Target Number</label>
+                      <input
+                        type="number"
+                        className="admin-input"
+                        value={homeConfig.byTheNumbers?.stat1Target ?? 50}
+                        onChange={(e) =>
+                          setHomeConfig({
+                            ...homeConfig,
+                            byTheNumbers: { ...homeConfig.byTheNumbers, stat1Target: parseFloat(e.target.value) || 0 },
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="admin-fgroup">
+                      <label>Suffix (e.g. + or %)</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        value={homeConfig.byTheNumbers?.stat1Suffix ?? "+"}
+                        onChange={(e) =>
+                          setHomeConfig({
+                            ...homeConfig,
+                            byTheNumbers: { ...homeConfig.byTheNumbers, stat1Suffix: e.target.value },
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="admin-fgroup">
+                      <label>Label</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        value={homeConfig.byTheNumbers?.stat1Label ?? "Enterprise Deployments"}
+                        onChange={(e) =>
+                          setHomeConfig({
+                            ...homeConfig,
+                            byTheNumbers: { ...homeConfig.byTheNumbers, stat1Label: e.target.value },
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  {/* Stat 2 */}
+                  <div className="admin-stat-edit-card">
+                    <span className="admin-stat-badge-num">Metric #2</span>
+                    <div className="admin-fgroup">
+                      <label>Target Number</label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        className="admin-input"
+                        value={homeConfig.byTheNumbers?.stat2Target ?? 99.9}
+                        onChange={(e) =>
+                          setHomeConfig({
+                            ...homeConfig,
+                            byTheNumbers: { ...homeConfig.byTheNumbers, stat2Target: parseFloat(e.target.value) || 0 },
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="admin-fgroup">
+                      <label>Suffix (e.g. + or %)</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        value={homeConfig.byTheNumbers?.stat2Suffix ?? "%"}
+                        onChange={(e) =>
+                          setHomeConfig({
+                            ...homeConfig,
+                            byTheNumbers: { ...homeConfig.byTheNumbers, stat2Suffix: e.target.value },
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="admin-fgroup">
+                      <label>Label</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        value={homeConfig.byTheNumbers?.stat2Label ?? "System Uptime SLA"}
+                        onChange={(e) =>
+                          setHomeConfig({
+                            ...homeConfig,
+                            byTheNumbers: { ...homeConfig.byTheNumbers, stat2Label: e.target.value },
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  {/* Stat 3 */}
+                  <div className="admin-stat-edit-card">
+                    <span className="admin-stat-badge-num">Metric #3</span>
+                    <div className="admin-fgroup">
+                      <label>Target Number</label>
+                      <input
+                        type="number"
+                        className="admin-input"
+                        value={homeConfig.byTheNumbers?.stat3Target ?? 200}
+                        onChange={(e) =>
+                          setHomeConfig({
+                            ...homeConfig,
+                            byTheNumbers: { ...homeConfig.byTheNumbers, stat3Target: parseFloat(e.target.value) || 0 },
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="admin-fgroup">
+                      <label>Suffix (e.g. + or %)</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        value={homeConfig.byTheNumbers?.stat3Suffix ?? "+"}
+                        onChange={(e) =>
+                          setHomeConfig({
+                            ...homeConfig,
+                            byTheNumbers: { ...homeConfig.byTheNumbers, stat3Suffix: e.target.value },
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="admin-fgroup">
+                      <label>Label</label>
+                      <input
+                        type="text"
+                        className="admin-input"
+                        value={homeConfig.byTheNumbers?.stat3Label ?? "Engineers Trained"}
+                        onChange={(e) =>
+                          setHomeConfig({
+                            ...homeConfig,
+                            byTheNumbers: { ...homeConfig.byTheNumbers, stat3Label: e.target.value },
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Section 8: Development Process (Headline & Methodology Copy) */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head" style={{ flexWrap: "wrap", gap: 14 }}>
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <polyline points="16 18 22 12 16 6" />
+                      <polyline points="8 6 2 12 8 18" />
+                    </svg>
+                    Development Process (Headline &amp; Methodology Copy)
+                  </h3>
+                  <p>Configure the section header introducing the 4 engineering lifecycle phases.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSaveHomeConfig}
+                  className="admin-btn admin-btn-outline admin-btn-sm"
+                >
+                  Save Section Changes
+                </button>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Section Kicker</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.process?.kicker ?? "DEVELOPMENT PROCESS"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        process: { ...homeConfig.process, kicker: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Title Prefix</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.process?.title ?? "Agile software development methodology that delivers"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        process: { ...homeConfig.process, title: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Title Accent (Highlighted Conclusion)</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.process?.titleAccent ?? "high-quality solutions"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        process: { ...homeConfig.process, titleAccent: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Process Description (Lede)</label>
+                  <textarea
+                    rows={2}
+                    className="admin-textarea"
+                    value={homeConfig.process?.lede ?? ""}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        process: { ...homeConfig.process, lede: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 9: AkibaTech Academy (Headline, Lede & Hub Registration) */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head" style={{ flexWrap: "wrap", gap: 14 }}>
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                      <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                    AkibaTech Academy (Headline, Lede &amp; Hub Registration)
+                  </h3>
+                  <p>Manage curriculum messaging and callout links to the Akiba Hub portal.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSaveHomeConfig}
+                  className="admin-btn admin-btn-outline admin-btn-sm"
+                >
+                  Save Section Changes
+                </button>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Section Kicker</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.academy?.kicker ?? "Engineering Rigor • AkibaTech Academy"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        academy: { ...homeConfig.academy, kicker: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Title Prefix</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.academy?.title ?? "We don’t just consume modern tech"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        academy: { ...homeConfig.academy, title: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Title Accent</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.academy?.titleAccent ?? "we teach it."}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        academy: { ...homeConfig.academy, titleAccent: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Academy Description (Lede)</label>
+                  <textarea
+                    rows={2}
+                    className="admin-textarea"
+                    value={homeConfig.academy?.lede ?? ""}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        academy: { ...homeConfig.academy, lede: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Akiba Hub Button Label</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.academy?.hubBtnLabel ?? "Akiba Hub • Register"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        academy: { ...homeConfig.academy, hubBtnLabel: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Akiba Hub Portal URL</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.academy?.hubBtnHref ?? "https://hub.akibatech.com/login"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        academy: { ...homeConfig.academy, hubBtnHref: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Services Button Label</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.academy?.servicesBtnLabel ?? "Explore Our Services"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        academy: { ...homeConfig.academy, servicesBtnLabel: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Services Button Destination URL</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.academy?.servicesBtnHref ?? "/services"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        academy: { ...homeConfig.academy, servicesBtnHref: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 10: Bottom Call to Action Banner (Band) */}
+            <div className="admin-card admin-cms-section">
+              <div className="admin-cms-sec-head" style={{ flexWrap: "wrap", gap: 14 }}>
+                <div>
+                  <h3>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" color="var(--mint)">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                    </svg>
+                    Bottom Call to Action Banner (Band)
+                  </h3>
+                  <p>Configure the high-converting conversion banner at the very bottom of the homepage.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSaveHomeConfig}
+                  className="admin-btn admin-btn-outline admin-btn-sm"
+                >
+                  Save Section Changes
+                </button>
+              </div>
+
+              <div className="admin-fgroup">
+                <label>Banner Heading</label>
+                <input
+                  type="text"
+                  className="admin-input"
+                  value={homeConfig.ctaBand?.heading ?? "Let’s build something that saves you time, money and resources."}
+                  onChange={(e) =>
+                    setHomeConfig({
+                      ...homeConfig,
+                      ctaBand: { ...homeConfig.ctaBand, heading: e.target.value },
+                    })
+                  }
+                />
+              </div>
+
+              <div className="admin-grid-2">
+                <div className="admin-fgroup">
+                  <label>Action Button Label</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.ctaBand?.btnLabel ?? "Start a project"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        ctaBand: { ...homeConfig.ctaBand, btnLabel: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Action Button Destination URL</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.ctaBand?.btnHref ?? "/contact"}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        ctaBand: { ...homeConfig.ctaBand, btnHref: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="admin-grid-3">
+                <div className="admin-fgroup">
+                  <label>Slogan Phrase #1</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.ctaBand?.sloganPart1 ?? "Save time."}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        ctaBand: { ...homeConfig.ctaBand, sloganPart1: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Slogan Phrase #2</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.ctaBand?.sloganPart2 ?? "Save money."}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        ctaBand: { ...homeConfig.ctaBand, sloganPart2: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="admin-fgroup">
+                  <label>Slogan Phrase #3</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    value={homeConfig.ctaBand?.sloganPart3 ?? "Save resources."}
+                    onChange={(e) =>
+                      setHomeConfig({
+                        ...homeConfig,
+                        ctaBand: { ...homeConfig.ctaBand, sloganPart3: e.target.value },
                       })
                     }
                   />
