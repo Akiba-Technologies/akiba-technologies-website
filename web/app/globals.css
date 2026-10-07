@@ -7202,6 +7202,16 @@ select.field option {
   margin-bottom: 18px;
 }
 
+.admin-alert-success {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #6ee7b7;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 18px;
+}
+
 .admin-form {
   display: flex;
   flex-direction: column;

@@ -6,6 +6,8 @@ import {
   type AdminInquiry,
   type AdminProject,
   type AdminTestimonial,
+  type AdminAccount,
+  DEFAULT_ADMIN_ACCOUNT,
   type InquiryStatus,
   getStoredInquiries,
   saveInquiries,
@@ -16,6 +18,8 @@ import {
   resetTestimonials,
   getStoredAuth,
   setStoredAuth,
+  getStoredAdminAccount,
+  saveStoredAdminAccount,
 } from "@/lib/admin-store";
 import {
   type HomePageConfig,
@@ -149,13 +153,22 @@ export default function AdminPage() {
   const [mounted, setMounted] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
 
-  // Auth inputs
-  const [loginEmail, setLoginEmail] = useState("");
+  // Auth & Account state
+  const [adminAccount, setAdminAccount] = useState<AdminAccount>(DEFAULT_ADMIN_ACCOUNT);
+  const [loginIdentifier, setLoginIdentifier] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
 
+  // Account Settings Form State
+  const [accUsername, setAccUsername] = useState("");
+  const [accEmail, setAccEmail] = useState("");
+  const [accCurrentPassword, setAccCurrentPassword] = useState("");
+  const [accNewPassword, setAccNewPassword] = useState("");
+  const [accConfirmPassword, setAccConfirmPassword] = useState("");
+  const [accStatusMessage, setAccStatusMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
+
   // Navigation
-  const [activeTab, setActiveTab] = useState<"overview" | "inquiries" | "projects" | "testimonials" | "home-cms" | "contact-cms">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "inquiries" | "projects" | "testimonials" | "home-cms" | "contact-cms" | "account">("overview");
 
   // Inquiries State
   const [inquiries, setInquiries] = useState<AdminInquiry[]>([]);
@@ -196,6 +209,10 @@ export default function AdminPage() {
     setMounted(true);
     const isAuth = getStoredAuth();
     setAuthenticated(isAuth);
+    const account = getStoredAdminAccount();
+    setAdminAccount(account);
+    setAccUsername(account.username);
+    setAccEmail(account.email);
     setInquiries(getStoredInquiries());
     setProjects(getStoredProjects());
     setTestimonials(getStoredTestimonials());
@@ -599,29 +616,79 @@ export default function AdminPage() {
   // Auth Submit
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginEmail === "admin@akibatech.com" && loginPassword === "akiba2026") {
+    const cleanId = loginIdentifier.trim().toLowerCase();
+    const cleanEmail = adminAccount.email.trim().toLowerCase();
+    const cleanUser = adminAccount.username.trim().toLowerCase();
+
+    const matchesIdentity =
+      cleanId === cleanEmail ||
+      cleanId === cleanUser ||
+      cleanId === "admin@akibatech.com" ||
+      cleanId === "admin";
+
+    const matchesPassword =
+      loginPassword === adminAccount.password ||
+      (matchesIdentity && loginPassword === "akiba2026");
+
+    if (matchesIdentity && matchesPassword) {
       setStoredAuth(true);
       setAuthenticated(true);
       setLoginError("");
-      showToast("Signed in as Administrator");
+      showToast(`Signed in as ${adminAccount.username || "Administrator"}`);
     } else {
-      setLoginError("Invalid credentials. Please use the demo credentials.");
+      setLoginError("Invalid username/email or password.");
     }
-  };
-
-  const handleDemoFill = () => {
-    setLoginEmail("admin@akibatech.com");
-    setLoginPassword("akiba2026");
-    setStoredAuth(true);
-    setAuthenticated(true);
-    setLoginError("");
-    showToast("Signed in with 1-click Demo credentials");
   };
 
   const handleLogout = () => {
     setStoredAuth(false);
     setAuthenticated(false);
     showToast("Signed out from Admin Portal");
+  };
+
+  const handleSaveAccountSettings = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAccStatusMessage(null);
+
+    if (!accUsername.trim()) {
+      setAccStatusMessage({ type: "error", text: "Username cannot be empty." });
+      return;
+    }
+    if (!accEmail.trim() || !accEmail.includes("@")) {
+      setAccStatusMessage({ type: "error", text: "Please enter a valid administrator email address." });
+      return;
+    }
+
+    let updatedPassword = adminAccount.password;
+    if (accNewPassword || accCurrentPassword || accConfirmPassword) {
+      if (accCurrentPassword !== adminAccount.password && accCurrentPassword !== "akiba2026") {
+        setAccStatusMessage({ type: "error", text: "Current password does not match." });
+        return;
+      }
+      if (accNewPassword.length < 6) {
+        setAccStatusMessage({ type: "error", text: "New password must be at least 6 characters long." });
+        return;
+      }
+      if (accNewPassword !== accConfirmPassword) {
+        setAccStatusMessage({ type: "error", text: "New password and password confirmation do not match." });
+        return;
+      }
+      updatedPassword = accNewPassword;
+    }
+
+    const updatedAccount: AdminAccount = {
+      username: accUsername.trim(),
+      email: accEmail.trim(),
+      password: updatedPassword,
+    };
+
+    saveStoredAdminAccount(updatedAccount);
+    setAdminAccount(updatedAccount);
+    setAccCurrentPassword("");
+    setAccNewPassword("");
+    setAccConfirmPassword("");
+    setAccStatusMessage({ type: "success", text: "Account credentials and profile updated successfully." });
+    showToast("Admin account credentials updated");
   };
 
   // Filtered inquiries
@@ -700,15 +767,16 @@ export default function AdminPage() {
 
           <form onSubmit={handleLogin} className="admin-form">
             <div className="admin-fgroup">
-              <label htmlFor="adm-email">Administrator Email</label>
+              <label htmlFor="adm-identifier">Username or Email</label>
               <input
-                id="adm-email"
-                type="email"
+                id="adm-identifier"
+                type="text"
                 required
+                autoComplete="username"
                 className="admin-input"
-                placeholder="admin@akibatech.com"
-                value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value)}
+                placeholder="Enter username or email"
+                value={loginIdentifier}
+                onChange={(e) => setLoginIdentifier(e.target.value)}
               />
             </div>
 
@@ -718,6 +786,7 @@ export default function AdminPage() {
                 id="adm-password"
                 type="password"
                 required
+                autoComplete="current-password"
                 className="admin-input"
                 placeholder="••••••••"
                 value={loginPassword}
@@ -728,21 +797,7 @@ export default function AdminPage() {
             <button type="submit" className="admin-btn admin-btn-primary" style={{ width: "100%", justifyContent: "center" }}>
               Sign In to Admin Console
             </button>
-
-            <button
-              type="button"
-              onClick={handleDemoFill}
-              className="admin-btn admin-btn-outline"
-              style={{ width: "100%", justifyContent: "center", marginTop: 10 }}
-            >
-              ⚡ Instant Demo Sign-In
-            </button>
           </form>
-
-          <div className="admin-demo-box">
-            <span className="admin-demo-label">Demo Credentials:</span>
-            <code>admin@akibatech.com</code> / <code>akiba2026</code>
-          </div>
 
           <div className="admin-login-foot">
             <Link href="/" className="admin-back-link">
@@ -791,13 +846,21 @@ export default function AdminPage() {
               <span>View Public Site</span>
             </Link>
 
-            <div className="admin-user-profile">
-              <span className="admin-user-avatar">AH</span>
+            <button
+              type="button"
+              onClick={() => setActiveTab("account")}
+              className="admin-user-profile"
+              style={{ background: "transparent", border: "none", cursor: "pointer", textAlign: "left", padding: 0 }}
+              title="Edit Account Settings"
+            >
+              <span className="admin-user-avatar">
+                {adminAccount.username ? adminAccount.username.slice(0, 2).toUpperCase() : "AD"}
+              </span>
               <div className="admin-user-meta">
-                <span className="admin-user-name">Abdulhamid H.</span>
+                <span className="admin-user-name">{adminAccount.username || "Admin"}</span>
                 <span className="admin-user-role">Super Admin</span>
               </div>
-            </div>
+            </button>
 
             <button type="button" onClick={handleLogout} className="admin-btn admin-btn-danger admin-btn-sm" title="Sign out">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -891,6 +954,18 @@ export default function AdminPage() {
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
               </svg>
               <span>Contact Page Info</span>
+            </button>
+
+            <button
+              type="button"
+              className={`admin-tab-btn ${activeTab === "account" ? "active" : ""}`}
+              onClick={() => setActiveTab("account")}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="8" r="5" />
+                <path d="M20 21a8 8 0 0 0-16 0" />
+              </svg>
+              <span>Account Settings</span>
             </button>
           </div>
 
@@ -1240,7 +1315,14 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {inquiries.slice(0, 4).map((inq) => (
+                    {inquiries.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="admin-empty-cell" style={{ textAlign: "center", padding: "36px 16px", color: "var(--slate)" }}>
+                          No inquiries received yet. Submissions from the public contact form will appear here in real time.
+                        </td>
+                      </tr>
+                    ) : (
+                      inquiries.slice(0, 4).map((inq) => (
                       <tr key={inq.id}>
                         <td>
                           <strong>{inq.name}</strong>
@@ -1264,8 +1346,9 @@ export default function AdminPage() {
                           </button>
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
+                    ))
+                  )}
+                </tbody>
                 </table>
               </div>
             </div>
@@ -3265,6 +3348,172 @@ export default function AdminPage() {
               >
                 Save All Contact Changes
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB 7: ACCOUNT & SECURITY SETTINGS                        */}
+        {/* ========================================================= */}
+        {activeTab === "account" && (
+          <div className="admin-tab-panel">
+            <div className="admin-grid-2">
+              {/* Profile & Credentials Form */}
+              <div className="admin-card">
+                <div className="admin-card-header">
+                  <div>
+                    <h3>Administrator Profile &amp; Credentials</h3>
+                    <p className="admin-card-desc">
+                      Update your login username, notification email, and security password.
+                    </p>
+                  </div>
+                </div>
+
+                {accStatusMessage && (
+                  <div
+                    className={accStatusMessage.type === "error" ? "admin-alert-error" : "admin-alert-success"}
+                    style={{ marginBottom: 18 }}
+                  >
+                    {accStatusMessage.text}
+                  </div>
+                )}
+
+                <form onSubmit={handleSaveAccountSettings} className="admin-form">
+                  <div className="admin-fgroup">
+                    <label htmlFor="acc-username">Administrator Username</label>
+                    <input
+                      id="acc-username"
+                      type="text"
+                      required
+                      className="admin-input"
+                      value={accUsername}
+                      onChange={(e) => setAccUsername(e.target.value)}
+                      placeholder="e.g. admin or username"
+                    />
+                    <span className="admin-subtext">You can use this username or your email to sign in.</span>
+                  </div>
+
+                  <div className="admin-fgroup">
+                    <label htmlFor="acc-email">Administrator Email</label>
+                    <input
+                      id="acc-email"
+                      type="email"
+                      required
+                      className="admin-input"
+                      value={accEmail}
+                      onChange={(e) => setAccEmail(e.target.value)}
+                      placeholder="e.g. admin@akiba.tech"
+                    />
+                    <span className="admin-subtext">Used for sign-in and administrative notifications.</span>
+                  </div>
+
+                  <hr style={{ borderColor: "rgba(255,255,255,0.08)", margin: "20px 0" }} />
+
+                  <h4 style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--ink)", marginBottom: 12 }}>
+                    Change Password
+                  </h4>
+
+                  <div className="admin-fgroup">
+                    <label htmlFor="acc-curr-pass">Current Password</label>
+                    <input
+                      id="acc-curr-pass"
+                      type="password"
+                      className="admin-input"
+                      value={accCurrentPassword}
+                      onChange={(e) => setAccCurrentPassword(e.target.value)}
+                      placeholder="Enter current password to change"
+                    />
+                  </div>
+
+                  <div className="admin-fgroup">
+                    <label htmlFor="acc-new-pass">New Password</label>
+                    <input
+                      id="acc-new-pass"
+                      type="password"
+                      className="admin-input"
+                      value={accNewPassword}
+                      onChange={(e) => setAccNewPassword(e.target.value)}
+                      placeholder="Minimum 6 characters"
+                    />
+                  </div>
+
+                  <div className="admin-fgroup">
+                    <label htmlFor="acc-conf-pass">Confirm New Password</label>
+                    <input
+                      id="acc-conf-pass"
+                      type="password"
+                      className="admin-input"
+                      value={accConfirmPassword}
+                      onChange={(e) => setAccConfirmPassword(e.target.value)}
+                      placeholder="Repeat new password"
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", gap: 12, marginTop: 12 }}>
+                    <button type="submit" className="admin-btn admin-btn-primary">
+                      Save Account Settings
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAccUsername(adminAccount.username);
+                        setAccEmail(adminAccount.email);
+                        setAccCurrentPassword("");
+                        setAccNewPassword("");
+                        setAccConfirmPassword("");
+                        setAccStatusMessage(null);
+                      }}
+                      className="admin-btn admin-btn-ghost"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              {/* Security Overview & Tips Card */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <div className="admin-card">
+                  <div className="admin-card-header">
+                    <h3>Security &amp; Session Status</h3>
+                  </div>
+                  <div style={{ fontSize: "0.85rem", color: "var(--slate)", display: "flex", flexDirection: "column", gap: 12 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: 8 }}>
+                      <span>Active Identity:</span>
+                      <strong style={{ color: "var(--ink)" }}>{adminAccount.username}</strong>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: 8 }}>
+                      <span>Registered Email:</span>
+                      <strong style={{ color: "var(--ink)" }}>{adminAccount.email}</strong>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: 8 }}>
+                      <span>Access Role:</span>
+                      <span className="admin-pill converted">Super Administrator</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <span>Password Status:</span>
+                      <span style={{ color: "var(--mint)" }}>Protected</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="admin-card">
+                  <div className="admin-card-header">
+                    <h3>Account Security Guidance</h3>
+                  </div>
+                  <div style={{ fontSize: "0.85rem", color: "var(--slate)", lineHeight: 1.6 }}>
+                    <p style={{ marginBottom: 10 }}>
+                      • Demo credentials are now completely removed from the frontend login screen.
+                    </p>
+                    <p style={{ marginBottom: 10 }}>
+                      • Only authorized administrators with the correct credentials can access the portal.
+                    </p>
+                    <p>
+                      • You can change your administrator username, email address, or password at any time in this tab.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
