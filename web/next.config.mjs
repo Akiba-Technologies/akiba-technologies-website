@@ -2,6 +2,7 @@
 const nextConfig = {
   output: "export",
   reactStrictMode: true,
+  trailingSlash: true,
   images: {
     unoptimized: true, // no server to run image optimization
     remotePatterns: [

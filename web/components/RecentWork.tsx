@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "./Reveal";
-import { CASE_STUDIES, type CaseStudy } from "@/lib/case-studies";
+import { CASE_STUDIES, isLiveDemoUrl, type CaseStudy } from "@/lib/case-studies";
 
 const CAROUSEL_PROJECTS: CaseStudy[] = CASE_STUDIES.slice(0, 5);
 
@@ -198,15 +198,29 @@ export function RecentWork() {
                         </div>
 
                         <div className="portfolio-card-cta">
-                          <Link
-                            href={project.liveDemoUrl}
-                            className="portfolio-details-link"
-                          >
-                            <span>View details</span>
-                            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                              <path d="M4.167 10h11.666m-5-5l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                          </Link>
+                          {isLiveDemoUrl(project.liveDemoUrl) ? (
+                            <a
+                              href={project.liveDemoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="portfolio-details-link"
+                            >
+                              <span>Live demo</span>
+                              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                <path d="M4.167 10h11.666m-5-5l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </a>
+                          ) : (
+                            <Link
+                              href="/portfolio"
+                              className="portfolio-details-link"
+                            >
+                              <span>View details</span>
+                              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                <path d="M4.167 10h11.666m-5-5l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -221,6 +235,7 @@ export function RecentWork() {
                             fill
                             sizes="(max-width: 960px) 92vw, 540px"
                             className="portfolio-dashboard-img"
+                            style={{ objectFit: "contain", objectPosition: "center" }}
                             priority={idx === 0}
                           />
                         </div>

@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { Reveal } from "./Reveal";
+import { useHomeConfig, DEFAULT_HOME_CONFIG } from "@/lib/home-store";
 
 const DISCIPLINES = [
   {
@@ -50,6 +53,9 @@ const DISCIPLINES = [
 ];
 
 export function AcademySection() {
+  const { config } = useHomeConfig();
+  const acad = config.academy || DEFAULT_HOME_CONFIG.academy;
+
   return (
     <section className="sec sec-academy" id="academy" aria-labelledby="academy-h">
       {/* Background ambient lighting and subtle circuit grid */}
@@ -59,15 +65,15 @@ export function AcademySection() {
       <div className="wrap">
         {/* Section Header */}
         <Reveal className="sec-head academy-head">
-          <p className="kicker">Engineering Rigor &bull; AkibaTech Academy</p>
+          <p className="kicker">{acad.kicker || "Engineering Rigor • AkibaTech Academy"}</p>
 
           <h2 id="academy-h" className="academy-title">
-            We don&rsquo;t just consume modern tech <span className="title-accent">we teach it.</span>
+            {acad.title || "We don’t just consume modern tech"}{" "}
+            <span className="title-accent">{acad.titleAccent || "we teach it."}</span>
           </h2>
 
           <p className="lede academy-lede">
-            <b>200+ hand-selected engineers</b> trained in backend architecture, system design &amp; algorithms &mdash;
-            so our clients get a core team at the forefront of clean code.
+            {acad.lede || "200+ hand-selected engineers trained in backend architecture, system design & algorithms — so our clients get a core team at the forefront of clean code."}
           </p>
         </Reveal>
 
@@ -130,13 +136,13 @@ export function AcademySection() {
 
             <div className="hub-callout-actions">
               <a
-                href="https://hub.akibatech.com/login"
+                href={acad.hubBtnHref || "https://hub.akibatech.com/login"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-em btn-lg academy-hub-btn"
                 id="akiba-hub-register"
               >
-                <span>Akiba Hub &bull; Register</span>
+                <span>{acad.hubBtnLabel || "Akiba Hub • Register"}</span>
                 <svg className="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                   <polyline points="15 3 21 3 21 9" />
@@ -144,8 +150,8 @@ export function AcademySection() {
                 </svg>
               </a>
 
-              <Link href="/services" className="btn btn-ghost academy-services-btn">
-                Explore Our Services
+              <Link href={acad.servicesBtnHref || "/services"} className="btn btn-ghost academy-services-btn">
+                {acad.servicesBtnLabel || "Explore Our Services"}
               </Link>
             </div>
           </div>

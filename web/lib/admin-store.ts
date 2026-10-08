@@ -39,66 +39,8 @@ export type AdminTestimonial = {
   rating?: number;
 };
 
-export const INITIAL_INQUIRIES: AdminInquiry[] = [
-  {
-    id: "inq-1",
-    name: "Dawit Bekele",
-    email: "dawit@twayrealestate.et",
-    subject: "ERP & Multi-Property Tenant Portal Expansion",
-    message:
-      "We want to expand the real estate portal to integrate automated tenant rent reminders via SMS/Chapa and sync with our Bethel branch office.",
-    status: "in-review",
-    createdAt: "2026-09-28T07:14:00Z",
-    notes: "Followed up on Bethel office network latency. Preparing API quote for Chapa webhook listener.",
-    source: "Contact Page Form",
-  },
-  {
-    id: "inq-2",
-    name: "Selamawit Tadesse",
-    email: "s.tadesse@cbe-partner.com",
-    subject: "FinTech High-Concurrency API Integration",
-    message:
-      "Inquiring about Akiba's backend architects to build an ISO 8583 payment settlement microservice capable of 4,000 TPS with Redis caching.",
-    status: "new",
-    createdAt: "2026-09-27T14:32:00Z",
-    source: "Contact Page Form",
-  },
-  {
-    id: "inq-3",
-    name: "Yonas Girma",
-    email: "yonas.g@awashlogistics.com",
-    subject: "Fleet GPS & Offline-First Warehouse System",
-    message:
-      "Our trucks operate across regions with intermittent 4G. We need your offline-first synchronization architecture for our 45 transit vehicles.",
-    status: "contacted",
-    createdAt: "2026-09-25T11:20:00Z",
-    notes: "Initial discovery call completed with Efrem (CTO). Sending preliminary architecture proposal.",
-    source: "Direct Referral",
-  },
-  {
-    id: "inq-4",
-    name: "Dr. Aster Hailu",
-    email: "a.hailu@mint.gov.et",
-    subject: "AkibaTech Academy National Cohort Partnership",
-    message:
-      "Looking to sponsor 50 young Ethiopian university software graduates for the 2026 System Architecture and Cloud Bootcamp.",
-    status: "converted",
-    createdAt: "2026-09-22T09:00:00Z",
-    notes: "Contract finalized. First training session scheduled for November 2026.",
-    source: "Academy Inquiry",
-  },
-  {
-    id: "inq-5",
-    name: "Kidus Assefa",
-    email: "kidus@addisretail.com",
-    subject: "Multi-branch POS & Inventory Sync",
-    message:
-      "Need a modern POS with offline SQLite caching that syncs to central PostgreSQL when connectivity is restored.",
-    status: "new",
-    createdAt: "2026-09-21T16:45:00Z",
-    source: "Contact Page Form",
-  },
-];
+export const INITIAL_INQUIRIES: AdminInquiry[] = [];
+
 
 export const INITIAL_PROJECTS: AdminProject[] = [
   {
@@ -114,7 +56,6 @@ export const INITIAL_PROJECTS: AdminProject[] = [
     stack: ["Python", "Scikit-learn", "FastAPI", "Redis"],
     status: "published",
     image: "/work/hero-agrifarm-app.webp",
-    liveDemoUrl: "https://akibatech.com/portfolio#",
   },
   {
     id: "proj-2",
@@ -198,6 +139,8 @@ const PROJECTS_KEY = "akiba_admin_projects";
 const PROJECTS_EVENT_KEY = "akiba_projects_change";
 const AUTH_KEY = "akiba_admin_auth";
 
+const LEGACY_SAMPLE_INQUIRY_IDS = new Set(["inq-1", "inq-2", "inq-3", "inq-4", "inq-5"]);
+
 export function getStoredInquiries(): AdminInquiry[] {
   if (typeof window === "undefined") return INITIAL_INQUIRIES;
   try {
@@ -206,7 +149,15 @@ export function getStoredInquiries(): AdminInquiry[] {
       localStorage.setItem(INQUIRIES_KEY, JSON.stringify(INITIAL_INQUIRIES));
       return INITIAL_INQUIRIES;
     }
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      const cleaned = parsed.filter((inq: AdminInquiry) => !LEGACY_SAMPLE_INQUIRY_IDS.has(inq.id));
+      if (cleaned.length !== parsed.length) {
+        localStorage.setItem(INQUIRIES_KEY, JSON.stringify(cleaned));
+      }
+      return cleaned;
+    }
+    return INITIAL_INQUIRIES;
   } catch {
     return INITIAL_INQUIRIES;
   }
@@ -293,6 +244,48 @@ export function setStoredAuth(val: boolean): void {
     } else {
       localStorage.removeItem(AUTH_KEY);
     }
+  } catch {
+    // ignore
+  }
+}
+
+export type AdminAccount = {
+  username: string;
+  email: string;
+  password: string;
+};
+
+export const DEFAULT_ADMIN_ACCOUNT: AdminAccount = {
+  username: "admin",
+  email: "admin@akibatech.com",
+  password: "akiba2026",
+};
+
+const ACCOUNT_KEY = "akiba_admin_account";
+
+export function getStoredAdminAccount(): AdminAccount {
+  if (typeof window === "undefined") return DEFAULT_ADMIN_ACCOUNT;
+  try {
+    const raw = localStorage.getItem(ACCOUNT_KEY);
+    if (!raw) {
+      localStorage.setItem(ACCOUNT_KEY, JSON.stringify(DEFAULT_ADMIN_ACCOUNT));
+      return DEFAULT_ADMIN_ACCOUNT;
+    }
+    const parsed = JSON.parse(raw);
+    return {
+      username: parsed.username || DEFAULT_ADMIN_ACCOUNT.username,
+      email: parsed.email || DEFAULT_ADMIN_ACCOUNT.email,
+      password: parsed.password || DEFAULT_ADMIN_ACCOUNT.password,
+    };
+  } catch {
+    return DEFAULT_ADMIN_ACCOUNT;
+  }
+}
+
+export function saveStoredAdminAccount(account: AdminAccount): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(account));
   } catch {
     // ignore
   }

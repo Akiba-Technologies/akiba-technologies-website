@@ -18,9 +18,23 @@ export type CaseStudy = {
   metricLabel?: string;
   stack: string[];
   categories: CaseCategory[];
-  liveDemoUrl: string;
+  liveDemoUrl?: string;
   image?: CaseImage;
 };
+
+export function isLiveDemoUrl(url?: string): boolean {
+  if (!url) return false;
+  const trimmed = url.trim();
+  if (
+    trimmed === "" ||
+    trimmed === "#" ||
+    trimmed.startsWith("/portfolio#") ||
+    trimmed.includes("akibatech.com/portfolio#")
+  ) {
+    return false;
+  }
+  return true;
+}
 
 export const CASE_FILTERS: { key: CaseCategory | "all"; label: string }[] = [
   { key: "all", label: "All" },
@@ -43,7 +57,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     metricLabel: "government workflow & automated contracting",
     stack: ["Python", "FastAPI", "Azure OpenAI"],
     categories: ["ai-ml", "web"],
-    liveDemoUrl: "/portfolio#autobridge-systems",
     image: {
       src: "/work/autobridge-dashboard.jpg",
       alt: "AutoBridge Systems AI-powered government workflow and automated contracting dashboard",
@@ -63,7 +76,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     metricLabel: "disease detection & agricultural forecasting",
     stack: ["Python", "Scikit-learn", "FastAPI", "Redis"],
     categories: ["ai-ml", "mobile"],
-    liveDemoUrl: "https://akibatech.com/portfolio#",
     image: {
       src: "/work/hero-agrifarm-app.webp",
       alt: "DigiFarm AI agricultural operations, crop tracking, and disease detection platform",

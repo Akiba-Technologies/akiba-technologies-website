@@ -2,8 +2,12 @@
 
 import Link from "next/link";
 import { Reveal } from "./Reveal";
+import { useHomeConfig, DEFAULT_HOME_CONFIG } from "@/lib/home-store";
 
 export function WhyChooseKnocker() {
+  const { config } = useHomeConfig();
+  const wc = config.whyChoose || DEFAULT_HOME_CONFIG.whyChoose;
+
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -37,16 +41,18 @@ export function WhyChooseKnocker() {
           }}
         >
           <div>
-            <p className="kicker">Why Akiba Tech</p>
+            <p className="kicker">{wc.kicker || "Why Akiba Tech"}</p>
             <h2 id="why-knocker-h" className="why-title">
-              Why Choose <span className="title-accent">Akiba Tech</span>?
+              {wc.title || "Why Choose"}{" "}
+              <span className="title-accent">{wc.titleAccent || "Akiba Tech"}</span>?
             </h2>
             <p className="lede why-lede">
-              Empowering digital transformation through scalable, high-performance technology. We build modern, reliable, and high-impact software solutions with clean architecture and cutting-edge engineering.
+              {wc.lede ||
+                "Empowering digital transformation through scalable, high-performance technology. We build modern, reliable, and high-impact software solutions with clean architecture and cutting-edge engineering."}
             </p>
           </div>
-          <Link className="btn btn-ghost btn-sm" href="/services">
-            Explore Capabilities
+          <Link className="btn btn-ghost btn-sm" href={wc.btnHref || "/services"}>
+            {wc.btnLabel || "Explore Capabilities"}
             <svg className="btn-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
