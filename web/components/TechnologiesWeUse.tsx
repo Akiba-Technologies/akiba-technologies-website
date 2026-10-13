@@ -222,11 +222,9 @@ export function TechnologiesWeUse() {
               <p className="kicker">Battle-Tested Systems</p>
 
               <h2 id="tech-stack-h" className="tech-stack-title">
-                Engineered for Scale, <br />
-                <span className="title-accent">
-                  Built for <br />
-                  Production.
-                </span>
+                Engineered for, <br />
+                Scale Built for, <br />
+                <span className="title-accent">Production.</span>
               </h2>
 
               <p className="lede tech-stack-lede">

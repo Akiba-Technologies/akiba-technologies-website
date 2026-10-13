@@ -36,7 +36,9 @@ function mapAdminProjectToCaseStudy(p: AdminProject): CaseStudy {
     categories,
     liveDemoUrl:
       (p.slug || orig?.slug || p.id) === "akiba-erp" || p.title?.toLowerCase().includes("akiba erp")
-        ? p.liveDemoUrl || orig?.liveDemoUrl || "https://test2.qudwaerp.com/"
+        ? (p.liveDemoUrl && p.liveDemoUrl !== "https://test2.qudwaerp.com/"
+            ? p.liveDemoUrl
+            : orig?.liveDemoUrl || "https://akiba-erp.akibatech.com/")
         : "",
     image: {
       src: imageSrc,
