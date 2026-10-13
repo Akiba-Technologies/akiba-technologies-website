@@ -2453,7 +2453,7 @@ export default function AdminPage() {
                       <input
                         type="number"
                         className="admin-input"
-                        value={homeConfig.byTheNumbers?.stat1Target ?? 50}
+                        value={homeConfig.byTheNumbers?.stat1Target ?? 10}
                         onChange={(e) =>
                           setHomeConfig({
                             ...homeConfig,
@@ -3013,14 +3013,14 @@ export default function AdminPage() {
                 <div className="admin-preview-contact-item">
                   <span className="lbl">Business Hours</span>
                   <span className="val">
-                    {contactConfig.workingHours || "Mon – Fri: 8:30 AM – 5:30 PM (EAT)"}
+                    {contactConfig.workingHours || "Monday – Sunday: 8:30 AM – 5:30 PM (GMT)"}
                   </span>
                 </div>
 
                 <div className="admin-preview-contact-item">
                   <span className="lbl">Response SLA</span>
                   <span className="val" style={{ color: "#38bdf8" }}>
-                    {contactConfig.responseSLA || "Under 2 hours"}
+                    {contactConfig.responseSLA || "Within 24 hours"}
                   </span>
                 </div>
               </div>
@@ -3192,22 +3192,22 @@ export default function AdminPage() {
 
               <div className="admin-grid-2">
                 <div className="admin-fgroup">
-                  <label>Weekday Working Hours</label>
+                  <label>Business Hours</label>
                   <input
                     type="text"
                     className="admin-input"
-                    placeholder="Monday – Friday: 8:30 AM – 5:30 PM (EAT)"
+                    placeholder="Monday – Sunday: 8:30 AM – 5:30 PM (GMT)"
                     value={contactConfig.workingHours}
                     onChange={(e) => setContactConfig({ ...contactConfig, workingHours: e.target.value })}
                   />
                 </div>
 
                 <div className="admin-fgroup">
-                  <label>Weekend / Saturday Hours (Optional)</label>
+                  <label>Weekend Hours (Optional)</label>
                   <input
                     type="text"
                     className="admin-input"
-                    placeholder="Saturday: 9:00 AM – 1:00 PM (EAT)"
+                    placeholder="Optional"
                     value={contactConfig.weekendHours || ""}
                     onChange={(e) => setContactConfig({ ...contactConfig, weekendHours: e.target.value })}
                   />
@@ -3219,7 +3219,7 @@ export default function AdminPage() {
                 <input
                   type="text"
                   className="admin-input"
-                  placeholder="Under 2 hours during active business hours"
+                  placeholder="Within 24 hours"
                   value={contactConfig.responseSLA}
                   onChange={(e) => setContactConfig({ ...contactConfig, responseSLA: e.target.value })}
                 />

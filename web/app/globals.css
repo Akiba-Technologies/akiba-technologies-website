@@ -2114,8 +2114,8 @@ p {
 }
 
 .foot-soc-link.foot-soc-disabled {
-  opacity: .42;
-  cursor: not-allowed;
+  cursor: default;
+  pointer-events: none;
   user-select: none;
 }
 
@@ -3967,10 +3967,15 @@ select.field option {
   color: #94A3B8 !important;
 }
 
-[data-theme="light"] .foot-soc-link:hover {
+[data-theme="light"] .foot-soc-link:hover:not(.foot-soc-disabled) {
   color: #34D399 !important;
   border-color: rgba(16, 185, 129, 0.45) !important;
   background: rgba(16, 185, 129, 0.1) !important;
+}
+
+[data-theme="light"] .foot-soc-link.foot-soc-disabled {
+  cursor: default !important;
+  pointer-events: none !important;
 }
 
 [data-theme="light"] .foot-bar {
@@ -5346,6 +5351,10 @@ select.field option {
 
 .sec-process .kicker::before {
   background: #10B981 !important;
+}
+
+.sec-process .sec-head {
+  max-width: 1050px;
 }
 
 .sec-process .sec-head h2 {
@@ -9339,7 +9348,7 @@ select.field option {
 
 .tech-stack-split {
   display: grid;
-  grid-template-columns: 370px 1fr;
+  grid-template-columns: 420px 1fr;
   gap: 56px;
   align-items: start;
 }
@@ -9364,7 +9373,7 @@ select.field option {
 }
 
 .tech-stack-title {
-  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-size: clamp(1.9rem, 3.2vw, 2.75rem);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.03em;

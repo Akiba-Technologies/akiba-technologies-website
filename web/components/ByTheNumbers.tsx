@@ -10,7 +10,7 @@ export function ByTheNumbers() {
 
   const stats = [
     {
-      target: Number(btn.stat1Target) || 50,
+      target: btn.stat1Target === 50 ? 10 : Number(btn.stat1Target) || 10,
       suffix: btn.stat1Suffix ?? "+",
       label: btn.stat1Label || "Enterprise Deployments",
     },

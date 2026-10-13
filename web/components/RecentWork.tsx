@@ -6,7 +6,9 @@ import Link from "next/link";
 import { Reveal } from "./Reveal";
 import { CASE_STUDIES, isLiveDemoUrl, type CaseStudy } from "@/lib/case-studies";
 
-const CAROUSEL_PROJECTS: CaseStudy[] = CASE_STUDIES.slice(0, 5);
+const CAROUSEL_PROJECTS: CaseStudy[] = CASE_STUDIES.filter(
+  (p) => p.slug !== "autobridge-systems"
+).slice(0, 5);
 
 export function RecentWork() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -198,7 +200,7 @@ export function RecentWork() {
                         </div>
 
                         <div className="portfolio-card-cta">
-                          {isLiveDemoUrl(project.liveDemoUrl) ? (
+                          {project.slug === "akiba-erp" && isLiveDemoUrl(project.liveDemoUrl) ? (
                             <a
                               href={project.liveDemoUrl}
                               target="_blank"

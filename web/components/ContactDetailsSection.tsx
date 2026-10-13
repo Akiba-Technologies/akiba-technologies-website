@@ -159,12 +159,19 @@ export function ContactDetailsSection() {
             <span>
               <span className="k">Business Hours</span>
               <span className="v">
-                {config.workingHours}
-                {config.weekendHours && (
-                  <span style={{ display: "block", marginTop: 3, opacity: 0.85 }}>
-                    {config.weekendHours}
-                  </span>
-                )}
+                {config.workingHours === "Monday – Friday: 8:30 AM – 5:30 PM (EAT)" ||
+                config.workingHours === "Monday – Sunday" ||
+                !config.workingHours
+                  ? "Monday – Sunday: 8:30 AM – 5:30 PM (GMT)"
+                  : config.workingHours}
+                {config.weekendHours &&
+                  config.workingHours !== "Monday – Sunday" &&
+                  config.workingHours !== "Monday – Sunday: 8:30 AM – 5:30 PM (GMT)" &&
+                  config.workingHours !== "Monday – Friday: 8:30 AM – 5:30 PM (EAT)" && (
+                    <span style={{ display: "block", marginTop: 3, opacity: 0.85 }}>
+                      {config.weekendHours}
+                    </span>
+                  )}
               </span>
             </span>
           </div>
@@ -190,7 +197,11 @@ export function ContactDetailsSection() {
             </span>
             <span>
               <span className="k">Response Time SLA</span>
-              <span className="v">{config.responseSLA}</span>
+              <span className="v">
+                {config.responseSLA === "Under 2 hours during active business hours"
+                  ? "Within 24 hours"
+                  : config.responseSLA || "Within 24 hours"}
+              </span>
             </span>
           </div>
         )}
@@ -202,7 +213,7 @@ export function ContactDetailsSection() {
           </span>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             <a
-              href="https://linkedin.com/company/akibatech"
+              href={config.linkedin || "https://www.linkedin.com/company/akiba-tech"}
               target="_blank"
               rel="noopener noreferrer"
               className="chip"
@@ -210,51 +221,36 @@ export function ContactDetailsSection() {
             >
               LinkedIn
             </a>
-            <a
-              href="https://github.com/akibatech"
-              target="_blank"
-              rel="noopener noreferrer"
+            <span
               className="chip"
-              style={{ textDecoration: "none", fontSize: "0.82rem", padding: "4px 10px" }}
+              style={{ fontSize: "0.82rem", padding: "4px 10px", pointerEvents: "none", cursor: "default", userSelect: "none" }}
             >
               GitHub
-            </a>
-            <a
-              href="https://x.com/akibatech"
-              target="_blank"
-              rel="noopener noreferrer"
+            </span>
+            <span
               className="chip"
-              style={{ textDecoration: "none", fontSize: "0.82rem", padding: "4px 10px" }}
+              style={{ fontSize: "0.82rem", padding: "4px 10px", pointerEvents: "none", cursor: "default", userSelect: "none" }}
             >
               X / Twitter
-            </a>
-            <a
-              href="https://instagram.com/akibatech"
-              target="_blank"
-              rel="noopener noreferrer"
+            </span>
+            <span
               className="chip"
-              style={{ textDecoration: "none", fontSize: "0.82rem", padding: "4px 10px" }}
+              style={{ fontSize: "0.82rem", padding: "4px 10px", pointerEvents: "none", cursor: "default", userSelect: "none" }}
             >
               Instagram
-            </a>
-            <a
-              href="https://facebook.com/akibatech"
-              target="_blank"
-              rel="noopener noreferrer"
+            </span>
+            <span
               className="chip"
-              style={{ textDecoration: "none", fontSize: "0.82rem", padding: "4px 10px" }}
+              style={{ fontSize: "0.82rem", padding: "4px 10px", pointerEvents: "none", cursor: "default", userSelect: "none" }}
             >
               Facebook
-            </a>
-            <a
-              href="https://youtube.com/@akibatech"
-              target="_blank"
-              rel="noopener noreferrer"
+            </span>
+            <span
               className="chip"
-              style={{ textDecoration: "none", fontSize: "0.82rem", padding: "4px 10px" }}
+              style={{ fontSize: "0.82rem", padding: "4px 10px", pointerEvents: "none", cursor: "default", userSelect: "none" }}
             >
               YouTube
-            </a>
+            </span>
           </div>
         </div>
       </Reveal>

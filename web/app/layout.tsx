@@ -121,7 +121,7 @@ const structuredData = {
         addressCountry: "ET",
       },
       sameAs: [
-        "https://linkedin.com/company/akibatech",
+        "https://www.linkedin.com/company/akiba-tech",
         "https://x.com/akibatech",
         "https://facebook.com/akibatech",
         "https://instagram.com/akibatech",

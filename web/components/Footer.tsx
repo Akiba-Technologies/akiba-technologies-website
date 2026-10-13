@@ -100,66 +100,48 @@ export function Footer() {
               >
                 <LinkedinIcon />
               </a>
-              <a
-                href={SOCIAL_LINKS.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="foot-soc-link"
-                aria-label="GitHub - Akiba Tech"
-                title="GitHub - Akiba Tech"
+              <span
+                className="foot-soc-link foot-soc-disabled"
+                aria-label="GitHub"
+                aria-hidden="true"
               >
                 <GithubIcon />
-              </a>
-              <a
-                href={SOCIAL_LINKS.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="foot-soc-link"
-                aria-label="X (Twitter) - Akiba Tech"
-                title="X (Twitter) - Akiba Tech"
+              </span>
+              <span
+                className="foot-soc-link foot-soc-disabled"
+                aria-label="X (Twitter)"
+                aria-hidden="true"
               >
                 <XIcon />
-              </a>
-              <a
-                href={SOCIAL_LINKS.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="foot-soc-link"
-                aria-label="Facebook - Akiba Tech"
-                title="Facebook - Akiba Tech"
+              </span>
+              <span
+                className="foot-soc-link foot-soc-disabled"
+                aria-label="Facebook"
+                aria-hidden="true"
               >
                 <FacebookIcon />
-              </a>
-              <a
-                href={SOCIAL_LINKS.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="foot-soc-link"
-                aria-label="Instagram - Akiba Tech"
-                title="Instagram - Akiba Tech"
+              </span>
+              <span
+                className="foot-soc-link foot-soc-disabled"
+                aria-label="Instagram"
+                aria-hidden="true"
               >
                 <InstagramIcon />
-              </a>
-              <a
-                href={SOCIAL_LINKS.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="foot-soc-link"
-                aria-label="YouTube - Akiba Tech"
-                title="YouTube - Akiba Tech"
+              </span>
+              <span
+                className="foot-soc-link foot-soc-disabled"
+                aria-label="YouTube"
+                aria-hidden="true"
               >
                 <YoutubeIcon />
-              </a>
-              <a
-                href={SUPPORT_WHATSAPP}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="foot-soc-link"
-                aria-label="WhatsApp Support - Akiba Tech"
-                title="WhatsApp Support - Akiba Tech (+251 960 352 222)"
+              </span>
+              <span
+                className="foot-soc-link foot-soc-disabled"
+                aria-label="WhatsApp"
+                aria-hidden="true"
               >
                 <WhatsappIcon />
-              </a>
+              </span>
             </div>
           </div>
 

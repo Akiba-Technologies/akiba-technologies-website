@@ -35,10 +35,10 @@ export const DEFAULT_CONTACT_CONFIG: ContactPageConfig = {
   secondaryPhone: "",
   address: "Addis Ababa",
   cityCountry: "Ethiopia",
-  workingHours: "Monday – Friday: 8:30 AM – 5:30 PM (EAT)",
-  weekendHours: "Saturday: 9:00 AM – 1:00 PM (EAT)",
-  responseSLA: "Under 2 hours during active business hours",
-  linkedin: "https://linkedin.com/company/akibatech",
+  workingHours: "Monday – Sunday: 8:30 AM – 5:30 PM (GMT)",
+  weekendHours: "",
+  responseSLA: "Within 24 hours",
+  linkedin: "https://www.linkedin.com/company/akiba-tech",
   twitter: "https://x.com/akibatech",
   facebook: "https://facebook.com/akibatech",
   instagram: "https://instagram.com/akibatech",
@@ -57,7 +57,18 @@ export function getStoredContactConfig(): ContactPageConfig {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT_CONTACT_CONFIG;
     const parsed = JSON.parse(raw);
-    return { ...DEFAULT_CONTACT_CONFIG, ...parsed };
+    const config = { ...DEFAULT_CONTACT_CONFIG, ...parsed };
+    if (
+      config.workingHours === "Monday – Friday: 8:30 AM – 5:30 PM (EAT)" ||
+      config.workingHours === "Monday – Sunday" ||
+      !config.workingHours
+    ) {
+      config.workingHours = "Monday – Sunday: 8:30 AM – 5:30 PM (GMT)";
+    }
+    if (config.weekendHours === "Saturday: 9:00 AM – 1:00 PM (EAT)") {
+      config.weekendHours = "";
+    }
+    return config;
   } catch {
     return DEFAULT_CONTACT_CONFIG;
   }

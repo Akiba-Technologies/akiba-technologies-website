@@ -34,7 +34,10 @@ function mapAdminProjectToCaseStudy(p: AdminProject): CaseStudy {
     metricLabel: p.metricLabel || orig?.metricLabel || "verified platform impact",
     stack: p.stack && p.stack.length > 0 ? p.stack : orig?.stack || ["Laravel", "React"],
     categories,
-    liveDemoUrl: p.liveDemoUrl || orig?.liveDemoUrl || "",
+    liveDemoUrl:
+      (p.slug || orig?.slug || p.id) === "akiba-erp" || p.title?.toLowerCase().includes("akiba erp")
+        ? p.liveDemoUrl || orig?.liveDemoUrl || "https://test2.qudwaerp.com/"
+        : "",
     image: {
       src: imageSrc,
       alt: orig?.image?.alt || `${p.title} showcase screenshot`,
@@ -150,8 +153,8 @@ export function PortfolioBrowser() {
                 </div>
               )}
 
-              {/* Live Demo Action - only shown if project has an active demo link */}
-              {isLiveDemoUrl(c.liveDemoUrl) && (
+              {/* Live Demo Action - only shown for Akiba ERP */}
+              {c.slug === "akiba-erp" && isLiveDemoUrl(c.liveDemoUrl) && (
                 <div className="case-action">
                   <a
                     href={c.liveDemoUrl}

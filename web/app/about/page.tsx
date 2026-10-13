@@ -78,7 +78,7 @@ export default function AboutPage() {
             Akiba Tech builds modern, reliable, and high-impact software solutions. From full-stack web and cloud systems to custom enterprise platforms, we help modern businesses scale efficiently with clean architecture and cutting-edge engineering.
           </Reveal>
           <Reveal as="div" className="phead-meta" delay={180}>
-            <span><b>50+</b> Enterprise Deployments</span>
+            <span><b>10+</b> Enterprise Deployments</span>
             <span><b>200+</b> African Engineers Trained</span>
             <span><b>99.9%</b> System SLA Uptime</span>
           </Reveal>
@@ -246,9 +246,9 @@ export default function AboutPage() {
                   <a className="ilink" href="#" aria-label={`LinkedIn profile, ${person.name}`}>
                     <LinkedinIcon />
                   </a>
-                  <a className="ilink" href="#" aria-label={`GitHub profile, ${person.name}`}>
+                  <span className="ilink" style={{ pointerEvents: "none", cursor: "default" }} aria-hidden="true">
                     <GithubIcon />
-                  </a>
+                  </span>
                 </div>
               </Reveal>
             ))}

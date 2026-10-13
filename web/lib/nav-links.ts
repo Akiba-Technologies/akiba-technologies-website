@@ -26,7 +26,6 @@ export const FOOTER_COMPANY: NavLink[] = [
   { href: "/about#team", label: "Engineering pods" },
   { href: "https://hub.akibatech.com/login", label: "AkibaTech Academy (Hub)" },
   { href: "/contact", label: "Contact" },
-  { href: "/admin", label: "Admin Portal" },
 ];
 
 export const CONTACT_EMAIL = "akiba.tech.official@gmail.com";
@@ -34,7 +33,7 @@ export const SUPPORT_PHONE = "+251 960 352 222";
 export const SUPPORT_WHATSAPP = "https://wa.me/251960352222";
 
 export const SOCIAL_LINKS = {
-  linkedin: "https://linkedin.com/company/akibatech",
+  linkedin: "https://www.linkedin.com/company/akiba-tech",
   twitter: "https://x.com/akibatech",
   facebook: "https://facebook.com/akibatech",
   instagram: "https://instagram.com/akibatech",

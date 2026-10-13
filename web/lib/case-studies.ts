@@ -95,7 +95,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     metricLabel: "members, workout tracking & payment processing",
     stack: ["Laravel", "React.js", "REST API"],
     categories: ["web"],
-    liveDemoUrl: "https://www.amigosgym.app/login",
     image: {
       src: "/work/powerfit-gym.webp",
       alt: "GYM Management System member dashboard and workout schedule",
@@ -115,7 +114,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     metricLabel: "real-time stock tracking & barcode reorder alerts",
     stack: ["Laravel", "React", "MySQL", "REST API"],
     categories: ["web"],
-    liveDemoUrl: "https://test2.qudwaerp.com/",
+    liveDemoUrl: "https://akiba-erp.akibatech.com/",
     image: {
       src: "/work/akiba-erp-dashboard.png",
       alt: "Akiba ERP real-time inventory management, stock tracking, and supplier portal",
@@ -135,7 +134,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     metricLabel: "modern product showcase with admin CMS & SEO",
     stack: ["Laravel", "React", "MySQL", "Bootstrap"],
     categories: ["web"],
-    liveDemoUrl: "https://www.royalcandyandchocolate.com/",
     image: {
       src: "/work/royal-candy.jpg",
       alt: "Royal Candy & Chocolate company luxury showcase and responsive web layout",
@@ -155,7 +153,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     metricLabel: "international commodity catalogs & inquiry pipelines",
     stack: ["React", "Laravel", "MySQL", "Tailwind CSS"],
     categories: ["web"],
-    liveDemoUrl: "https://hm.addisvision.com/hm-importexport",
     image: {
       src: "/work/hailemariam-export.jpg",
       alt: "Hailemariam Melese Import & Export global trading portal",
@@ -175,7 +172,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     metricLabel: "optimized property listings & architectural inquiry platform",
     stack: ["React", "Laravel", "MySQL", "Tailwind CSS"],
     categories: ["web"],
-    liveDemoUrl: "https://www.twayrealestateplc.com/",
     image: {
       src: "/work/tway-realestate.jpg",
       alt: "Tway Realestate modern property listings and buyer inquiry portal",

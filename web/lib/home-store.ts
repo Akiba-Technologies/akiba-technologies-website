@@ -110,7 +110,7 @@ export const DEFAULT_HOME_CONFIG: HomePageConfig = {
     ctaSecondaryLabel: "Our Services",
     ctaSecondaryHref: "/services",
     stats: [
-      { id: "stat-1", value: "50+", label: "Enterprise Deployments" },
+      { id: "stat-1", value: "10+", label: "Enterprise Deployments" },
       { id: "stat-2", value: "99.9%", label: "System Uptime SLA" },
       { id: "stat-3", value: "200+", label: "Engineers Trained" },
     ],
@@ -128,7 +128,7 @@ export const DEFAULT_HOME_CONFIG: HomePageConfig = {
     title: "Akiba Technologies by the",
     highlight: "numbers",
     subtitle: "Delivering high-performance software with engineering rigor and scalable architecture.",
-    stat1Target: 50,
+    stat1Target: 10,
     stat1Suffix: "+",
     stat1Label: "Enterprise Deployments",
     stat2Target: 99.9,
@@ -224,6 +224,11 @@ export function getStoredHomeConfig(): HomePageConfig {
     if (!mosaic.photo3 || mosaic.photo3.endsWith(".webp")) mosaic.photo3 = DEFAULT_HOME_CONFIG.mosaic.photo3;
     if (!mosaic.photo4 || mosaic.photo4.endsWith(".webp")) mosaic.photo4 = DEFAULT_HOME_CONFIG.mosaic.photo4;
     const hero = { ...DEFAULT_HOME_CONFIG.hero, ...(parsed.hero || {}) };
+    if (hero.stats) {
+      hero.stats = hero.stats.map((s: { id: string; value: string; label: string }) =>
+        s.id === "stat-1" && s.value === "50+" ? { ...s, value: "10+" } : s
+      );
+    }
     if (!hero.lede || hero.lede.startsWith("Akiba Tech builds") || hero.lede.startsWith("We build modern") || hero.lede.startsWith("We engineer modern, reliable, and high-impact software solutions. From full-stack")) {
       hero.lede = DEFAULT_HOME_CONFIG.hero.lede;
     }

@@ -70,7 +70,6 @@ export const INITIAL_PROJECTS: AdminProject[] = [
     stack: ["Laravel", "React.js", "REST API"],
     status: "published",
     image: "/work/powerfit-gym.webp",
-    liveDemoUrl: "https://www.amigosgym.app/login",
   },
   {
     id: "proj-3",
@@ -100,7 +99,6 @@ export const INITIAL_PROJECTS: AdminProject[] = [
     stack: ["Laravel", "React", "MySQL", "Bootstrap"],
     status: "published",
     image: "/work/royal-candy.jpg",
-    liveDemoUrl: "https://www.royalcandyandchocolate.com/",
   },
   {
     id: "proj-5",
@@ -115,7 +113,6 @@ export const INITIAL_PROJECTS: AdminProject[] = [
     stack: ["React", "Laravel", "MySQL", "Tailwind CSS"],
     status: "published",
     image: "/work/hailemariam-export.jpg",
-    liveDemoUrl: "https://hm.addisvision.com/hm-importexport",
   },
   {
     id: "proj-6",
@@ -130,7 +127,6 @@ export const INITIAL_PROJECTS: AdminProject[] = [
     stack: ["React", "Laravel", "MySQL", "Tailwind CSS"],
     status: "published",
     image: "/work/tway-realestate.jpg",
-    liveDemoUrl: "https://www.twayrealestateplc.com/",
   },
 ];
 

@@ -223,7 +223,10 @@ export function TechnologiesWeUse() {
 
               <h2 id="tech-stack-h" className="tech-stack-title">
                 Engineered for Scale, <br />
-                <span className="title-accent">Built for Production.</span>
+                <span className="title-accent">
+                  Built for <br />
+                  Production.
+                </span>
               </h2>
 
               <p className="lede tech-stack-lede">

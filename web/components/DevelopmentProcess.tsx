@@ -108,8 +108,18 @@ export function DevelopmentProcess() {
         <Reveal className="sec-head">
           <p className="kicker">{proc.kicker || "DEVELOPMENT PROCESS"}</p>
           <h2 id="process-h">
-            {proc.title || "Agile software development methodology that delivers"}{" "}
-            <span className="title-accent">{proc.titleAccent || "high-quality solutions"}</span>
+            {proc.title && proc.title !== "Agile software development methodology that delivers" ? (
+              <>
+                {proc.title} <br className="process-title-br" />
+                <span className="title-accent">{proc.titleAccent || "high-quality solutions"}</span>
+              </>
+            ) : (
+              <>
+                Agile software development methodology <br className="process-title-br" />
+                that delivers{" "}
+                <span className="title-accent">{proc.titleAccent || "high-quality solutions"}</span>
+              </>
+            )}
           </h2>
           <p className="lede">
             {proc.lede || "Structured engineering cycles designed for predictability, transparent milestones, and zero-defect production releases."}
