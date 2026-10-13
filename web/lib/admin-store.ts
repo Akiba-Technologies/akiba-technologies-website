@@ -84,7 +84,7 @@ export const INITIAL_PROJECTS: AdminProject[] = [
     stack: ["Laravel", "React", "MySQL", "REST API"],
     status: "published",
     image: "/work/akiba-erp-dashboard.png",
-    liveDemoUrl: "https://test2.qudwaerp.com/",
+    liveDemoUrl: "https://akiba-erp.akibatech.com/",
   },
   {
     id: "proj-4",
@@ -207,7 +207,21 @@ export function getStoredProjects(): AdminProject[] {
       localStorage.setItem(PROJECTS_KEY, JSON.stringify(INITIAL_PROJECTS));
       return INITIAL_PROJECTS;
     }
-    return parsed;
+
+    let modified = false;
+    const upgraded = parsed.map((p: AdminProject) => {
+      if (p.slug === "akiba-erp") {
+        if (!p.liveDemoUrl || p.liveDemoUrl === "https://test2.qudwaerp.com/") {
+          modified = true;
+          return { ...p, liveDemoUrl: "https://akiba-erp.akibatech.com/" };
+        }
+      }
+      return p;
+    });
+    if (modified) {
+      localStorage.setItem(PROJECTS_KEY, JSON.stringify(upgraded));
+    }
+    return upgraded;
   } catch {
     return INITIAL_PROJECTS;
   }
